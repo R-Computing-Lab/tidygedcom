@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(BGmisc)
+library(tidygedcom)
 
-test_check("BGmisc")
+test_check("tidygedcom")
