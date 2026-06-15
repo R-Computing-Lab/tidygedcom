@@ -1,16 +1,44 @@
 Package: tidygedcom
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Tidy Gedcom Files
 Version: 0.1.0
 Authors@R: c(
-    person(
-      "Jane", "Doe",
-      email = "jane@example.com",
-      role = c("aut", "cre")
-    )
+    person("S. Mason", "Garrison", , "garrissm@wfu.edu", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-4804-6003"))
   )
-Description: More about what it does (maybe more than one line).
-    Continuation lines should be indented.
-License: What license is it under?
+Description: Tidygedcom reads gedcom files and converts them into tidy datasets.
+License: GPL-3
+URL: https://github.com/R-Computing-Lab/tidygedcom/,
+    https://r-computing-lab.github.io/tidygedcom/
+BugReports: https://github.com/R-Computing-Lab/tidygedcom/issues
+Depends: 
+    R (>= 3.5.0)
+Imports: 
+    data.table,
+    igraph,
+    Matrix,
+    methods,
+    stats,
+    stringr
+Suggests: 
+    BGmisc,
+    discord,
+    dplyr,
+    EasyMx,
+    ggpedigree,
+    ggplot2,
+    kinship2,
+    knitr,
+    OpenMx,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    tidyverse,
+    withr
+VignetteBuilder: 
+    knitr
+Config/testthat/edition: 3
 Encoding: UTF-8
+Language: en-US
 LazyData: true
+Config/roxygen2/version: 8.0.0
+RoxygenNote: 8.0.0
