@@ -7,6 +7,7 @@
 #'
 #' @return A list containing the summary, members, structure, and relationships of the family tree.
 #' @export
+#' @importFrom stringr str_extract_all str_detect str_trim str_match
 readWikifamilytree <- function(text = NULL, verbose = FALSE, file_path = NULL, ...) {
   # Checks
   if (is.null(text) && is.null(file_path)) {
@@ -71,6 +72,8 @@ readWikifamilytree <- function(text = NULL, verbose = FALSE, file_path = NULL, .
 #' @param cols_to_pivot A character vector of column names to pivot.
 #' @return A long data frame containing the tree structure.
 #' @keywords internal
+#' @importFrom stats reshape
+#' @importFrom stringr str_trim
 convertGrid2LongTree <- function(tree_df, cols_to_pivot) {
   tree_long <- stats::reshape(tree_df,
     varying = cols_to_pivot,
@@ -91,6 +94,7 @@ convertGrid2LongTree <- function(tree_df, cols_to_pivot) {
 #' @inheritParams readWikifamilytree
 #' @return A data frame containing information about the members of the family tree.
 #' @keywords internal
+#' @importFrom stringr str_extract_all str_extract str_trim
 
 extractMemberTable <- function(text) {
   member_matches <- stringr::str_extract_all(text, "\\|\\s*([A-Za-z0-9]+)\\s*=\\s*([^|}]*)")[[1]]
@@ -116,6 +120,7 @@ extractMemberTable <- function(text) {
 #' @return A character string containing the summary text.
 #' @keywords internal
 #' @export
+#' @importFrom stringr str_match
 
 getWikiTreeSummary <- function(text) {
   summary_match <- stringr::str_match(text, "\\{\\{familytree/start \\|summary=(.*?)\\}\\}")
@@ -264,7 +269,8 @@ populateParents <- function(df, child, parent) {
 #' @param deduplicate Logical, if TRUE, will remove duplicate paths
 #' @return A data.frame with columns: from_id, to_id, direction, path_length, intermediates
 #' @export
-#'
+#' @importFrom igraph graph_from_data_frame shortest_paths V
+#' @importFrom stats setNames
 traceTreePaths <- function(tree_long, deduplicate = TRUE) {
   # Keep only relevant cells (people and path symbols)
   path_symbols <- c("|", "-", "+", "v", "^", "y", ",", ".", "`", "!", "~", "x", ")", "(")

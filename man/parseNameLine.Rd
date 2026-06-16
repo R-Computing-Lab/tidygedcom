@@ -17,3 +17,4 @@ The updated record with parsed name information.
 \description{
 Extracts full name information from a GEDCOM "NAME" line and updates the record accordingly.
 }
+\keyword{internal}

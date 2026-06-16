@@ -108,7 +108,8 @@
 #' If no individual records are found, the function returns `NULL` with a
 #' warning.
 #' @export
-#'
+
+
 readGedcom <- function(file_path,
                        verbose = FALSE,
                        post_process = TRUE,
@@ -253,6 +254,7 @@ splitIndividuals <- function(lines, verbose = FALSE) {
 #' @param verbose Logical indicating whether to print progress messages.
 #' @return A named list representing the parsed record for the individual, or NULL if no ID is found.
 #' @keywords internal
+#' @importFrom stringr str_extract str_squish str_replace
 parseIndividualBlock <- function(block, pattern_rows, all_var_names, verbose = FALSE) {
   record <- initializeRecord(all_var_names)
   n_lines <- length(block)
@@ -318,7 +320,7 @@ parseIndividualBlock <- function(block, pattern_rows, all_var_names, verbose = F
       list(tag = "OCCU", field = "attribute_occupation", mode = "replace"),
       list(tag = "PROP", field = "attribute_property", mode = "replace"),
       list(tag = "RELI", field = "attribute_religion", mode = "replace"),
-      list(tag = "RESI", field = "attribute_residence", mode = "replace"),
+      list(tag = "RESI", field = "attribute_residence", mode = "append"),
       list(tag = "SSN", field = "attribute_ssn", mode = "replace"),
       list(tag = "TITL", field = "attribute_title", mode = "replace")
     )
@@ -365,6 +367,8 @@ parseIndividualBlock <- function(block, pattern_rows, all_var_names, verbose = F
 #' @param line A character string containing the name line.
 #' @param record A named list representing the individual's record.
 #' @return The updated record with parsed name information.
+#' @keywords internal
+#' @importFrom stringr str_extract str_squish str_replace
 parseNameLine <- function(line, record) {
   record$name <- extractInfo(line, "NAME")
   record$name_given <- stringr::str_extract(record$name, ".*(?= /)")
@@ -373,9 +377,28 @@ parseNameLine <- function(line, record) {
   record
 }
 
+#' @title Extract GEDCOM Level
+#'
+#' @description Extracts the GEDCOM level (the leading integer) from a line of GEDCOM data.
+#' This is used to determine the hierarchical structure of the data when parsing events and their sub-fields.
+#' @param line A character string representing a line from a GEDCOM file.
+#' @return An integer representing the GEDCOM level, or NA if no leading integer is found.
+#' @keywords internal
+#' @importFrom stringr str_extract
+
 extractGedcomLevel <- function(line) {
   as.integer(stringr::str_extract(line, "^\\d+"))
 }
+
+#' @title Extract Event Sub-Block
+#' @description
+#' Given a block of GEDCOM lines and a starting index corresponding to an event tag (e.g., "BIRT" or "DEAT"), this function extracts the sub-block of lines that are children of that event. It uses the GEDCOM level structure to determine which lines belong to the event's sub-block, returning all lines until it encounters a line with a level less than or equal to the event's level.
+#' @param block A character vector of GEDCOM lines representing an individual's record.
+#' @param start_idx An integer index indicating the line in the block where the event tag is located.
+#' @return A character vector containing the lines that are part of the event's sub-block, or an empty character vector if there are no child lines.
+#' @keywords internal
+
+
 
 extractEventSubBlock <- function(block, start_idx) {
   event_level <- extractGedcomLevel(block[start_idx])
@@ -398,6 +421,17 @@ extractEventSubBlock <- function(block, start_idx) {
   block[(start_idx + 1L):end_idx]
 }
 
+#' @title Extract Information from Lines by Tag
+#' @description
+#' Given a set of lines (e.g., direct children of an event) and a
+#' GEDCOM tag, this function searches for the first line that contains the tag as a whole word and extracts the relevant information using the `extractInfo()` function. If no matching line is found, it returns `NA_character_`.
+#' @param lines A character vector of GEDCOM lines to search through.
+#' @param tag A character string representing the GEDCOM tag to look for (e.g
+#' "DATE", "PLAC", "CAUS").
+#' @return A character string with the extracted information from the first matching line, or `NA_character_` if no matching line is found.
+#' @keywords internal
+
+
 extractInfoFromLines <- function(lines, tag) {
   pattern <- paste0("\\b", tag, "\\b")
   matches <- lines[grepl(pattern, lines)]
@@ -406,6 +440,18 @@ extractInfoFromLines <- function(lines, tag) {
   }
   extractInfo(matches[1L], tag)
 }
+
+#' @title Extract Coordinate from Event Sub-Block
+#' @description
+#' Given a sub-block of GEDCOM lines corresponding to an event (e.g., birth
+#' or death) and a coordinate tag ("LATI" or "LONG"), this function searches all lines in the sub-block for the first occurrence of the tag as a whole word. This approach allows it to find coordinates regardless of whether they are direct children of the event, nested under a "PLAC" structure, or nested under a "MAP" structure within "PLAC". If a matching line is found, it extracts the coordinate information using the `extractInfo()` function; otherwise, it returns `NA_character_`.
+#' @param sub_block A character vector of GEDCOM lines representing the sub-block of an
+#' event (e.g., birth or death) from which to extract the coordinate.
+#' @param tag A character string representing the coordinate tag to look for ("LATI" or "LONG").
+#' @return A character string with the extracted coordinate information from the first matching
+#' line, or `NA_character_` if no matching line is found.
+#' @keywords internal
+#'
 
 extractCoordFromSubBlock <- function(sub_block, tag) {
   # Searches all levels of the sub-block so it handles:
@@ -499,6 +545,7 @@ applyTagMappings <- function(line, record, pattern_rows, tag_mappings) {
 #' @param type A character string representing the type of information to extract.
 #' @return A character string with the extracted information.
 #' @keywords internal
+#' @importFrom stringr str_extract str_squish
 extractInfo <- function(line, type) {
   stringr::str_squish(stringr::str_extract(line, paste0("(?<=", type, " ).+")))
 }
@@ -610,6 +657,8 @@ processTag <- function(tag,
 #' @param df_temp A data frame produced by \code{readGedcom()}.
 #' @param verbose Logical indicating whether to print progress messages.
 #' @return The post-processed data frame.
+#' @keywords internal
+#' @importFrom stringr str_replace_all str_trim str_squish
 postProcessGedcom <- function(df_temp,
                               remove_empty_cols = TRUE,
                               combine_cols = TRUE,
@@ -693,6 +742,8 @@ postProcessGedcom <- function(df_temp,
 #' @param datasource Character string indicating the data source ("gedcom" or "wiki").
 #' @param person_id_col Character string indicating the column name for individual IDs (default "personID").
 #' @return The updated data frame with parent IDs added.
+#' @keywords internal
+
 processParents <- function(df_temp, datasource, person_id_col = "personID") {
   if (datasource %in% c("gedcom", "ged")) {
     required_cols <- c("FAMC", "sex", "FAMS")
@@ -764,6 +815,7 @@ mapFAMS2parents <- function(df_temp,
 #' @param family_to_parents A list mapping family IDs to parent IDs.
 #' @return A data frame with added momID and dad_ID columns.
 #' @keywords internal
+#'
 mapFAMC2parents <- function(df_temp, family_to_parents) {
   df_temp$momID <- NA_character_
   df_temp$dadID <- NA_character_

@@ -17,8 +17,13 @@ initializeRecord <- function(all_var_names) {
 #' @inheritParams readGedcom
 #' @param df_temp A data frame containing the columns to be combined.
 #' @return A data frame with the combined columns.
+#' @keywords internal
+
+
 collapseNames <- function(verbose, df_temp) {
-  if (verbose == TRUE) message("Combining Duplicate Name Columns...")
+  if (verbose == TRUE) {
+    message("Combining Duplicate Name Columns...")
+    }
 
   if (!all(is.na(df_temp$name_given_pieces)) || !all(is.na(df_temp$name_given))) {
     result <- combineColumns(df_temp$name_given, df_temp$name_given_pieces)
@@ -85,7 +90,7 @@ detectGedcomVersion <- function(lines) {
 #' @param x Character vector of GEDCOM latitude values.
 #' @return Numeric vector of decimal degrees (positive = N, negative = S).
 #' @examples
-#' BGmisc:::gedcomLatToNumeric(c("N51.5074", "S33.8688", NA))
+#' tidygedcom:::gedcomLatToNumeric(c("N51.5074", "S33.8688", NA))
 #' @keywords internal
 gedcomLatToNumeric <- function(x) {
   out <- rep(NA_real_, length(x))
@@ -97,12 +102,12 @@ gedcomLatToNumeric <- function(x) {
 #' Convert GEDCOM Longitude String to Numeric
 #'
 #' Converts GEDCOM-style longitude strings like `"E151.2093"` or `"W0.1278"` to
-#' signed decimal degrees. Returns `NA` for `NA` or unrecognised-prefix input.
+#' signed decimal degrees. Returns `NA` for `NA` or unrecognized-prefix input.
 #'
 #' @param x Character vector of GEDCOM longitude values.
 #' @return Numeric vector of decimal degrees (positive = E, negative = W).
 #' @examples
-#' BGmisc:::gedcomLonToNumeric(c("E151.2093", "W0.1278", NA))
+#' tidygedcom:::gedcomLonToNumeric(c("E151.2093", "W0.1278", NA))
 #' @keywords internal
 gedcomLonToNumeric <- function(x) {
   out <- rep(NA_real_, length(x))
@@ -118,6 +123,8 @@ gedcomLonToNumeric <- function(x) {
 #' @param col2 The second column to combine.
 #' @return A list with the combined column and a flag indicating if the second column should be retained.
 #' @keywords internal
+#' @importFrom stringr str_to_lower
+#'
 # Helper function to check for conflicts and merge columns
 combineColumns <- function(col1, col2) {
   col1_lower <- stringr::str_to_lower(col1)
