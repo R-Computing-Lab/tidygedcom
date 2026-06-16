@@ -15,16 +15,6 @@
 <url><loc>/reference/countPatternRows.html</loc></url>
 <url><loc>/reference/deduplicatePairs.html</loc></url>
 <url><loc>/reference/detectGedcomVersion.html</loc></url>
-<url><loc>/reference/dot-collapseNames.legacy.html</loc></url>
-<url><loc>/reference/dot-combine_columns.legacy.html</loc></url>
-<url><loc>/reference/dot-countPatternRows.legacy.html</loc></url>
-<url><loc>/reference/dot-extract_info.legacy.html</loc></url>
-<url><loc>/reference/dot-mapFAMC2parents.legacy.html</loc></url>
-<url><loc>/reference/dot-mapFAMS2parents.legacy.html</loc></url>
-<url><loc>/reference/dot-postProcessGedcom.legacy.html</loc></url>
-<url><loc>/reference/dot-processParents.legacy.html</loc></url>
-<url><loc>/reference/dot-process_tag.legacy.html</loc></url>
-<url><loc>/reference/dot-readGedcom.legacy.html</loc></url>
 <url><loc>/reference/extractInfo.html</loc></url>
 <url><loc>/reference/extractMemberTable.html</loc></url>
 <url><loc>/reference/gedcomLatToNumeric.html</loc></url>
@@ -46,6 +36,7 @@
 <url><loc>/reference/processTag.html</loc></url>
 <url><loc>/reference/readGedcom.html</loc></url>
 <url><loc>/reference/readWikifamilytree.html</loc></url>
+<url><loc>/reference/royal92.html</loc></url>
 <url><loc>/reference/splitIndividuals.html</loc></url>
 <url><loc>/reference/traceTreePaths.html</loc></url>
 </urlset>
