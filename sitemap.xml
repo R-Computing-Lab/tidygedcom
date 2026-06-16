@@ -15,7 +15,11 @@
 <url><loc>/reference/countPatternRows.html</loc></url>
 <url><loc>/reference/deduplicatePairs.html</loc></url>
 <url><loc>/reference/detectGedcomVersion.html</loc></url>
+<url><loc>/reference/extractCoordFromSubBlock.html</loc></url>
+<url><loc>/reference/extractEventSubBlock.html</loc></url>
+<url><loc>/reference/extractGedcomLevel.html</loc></url>
 <url><loc>/reference/extractInfo.html</loc></url>
+<url><loc>/reference/extractInfoFromLines.html</loc></url>
 <url><loc>/reference/extractMemberTable.html</loc></url>
 <url><loc>/reference/gedcomLatToNumeric.html</loc></url>
 <url><loc>/reference/gedcomLonToNumeric.html</loc></url>
