@@ -83,11 +83,17 @@
 #'   \item{birth_lat}{Latitude of the birthplace.}
 #'   \item{birth_long}{Longitude of the birthplace.}
 #'   \item{birth_place}{Birthplace of the individual.}
+#'   \item{chr_date}{Christening date of the individual (`CHR` tag).}
+#'   \item{chr_place}{Christening place of the individual.}
 #'   \item{death_caus}{Cause of death.}
 #'   \item{death_date}{Death date of the individual.}
 #'   \item{death_lat}{Latitude of the place of death.}
 #'   \item{death_long}{Longitude of the place of death.}
 #'   \item{death_place}{Place of death of the individual.}
+#'   \item{burial_date}{Burial date of the individual (`BURI` tag).}
+#'   \item{burial_lat}{Latitude of the burial place.}
+#'   \item{burial_long}{Longitude of the burial place.}
+#'   \item{burial_place}{Burial place of the individual.}
 #'   \item{attribute_caste}{Caste of the individual.}
 #'   \item{attribute_children}{Number of children of the individual.}
 #'   \item{attribute_description}{Description of the individual.}
@@ -145,7 +151,9 @@ readGedcom <- function(file_path,
     ),
     sex = c("sex"),
     birth = c("birth_date", "birth_lat", "birth_long", "birth_place"),
+    chr = c("chr_date", "chr_place"),
     death = c("death_caus", "death_date", "death_lat", "death_long", "death_place"),
+    burial = c("burial_date", "burial_lat", "burial_long", "burial_place"),
     attributes = c(
       "attribute_caste", "attribute_children",
       "attribute_description", "attribute_education",
@@ -284,8 +292,18 @@ parseIndividualBlock <- function(block, pattern_rows, all_var_names, verbose = F
       i <- i + 1 # Skip further processing of this line.
       next
     }
+    if (grepl("\\bCHR\\b", line) && pattern_rows$num_chr_rows > 0) {
+      record <- processEventLine("chr", block, i, record, pattern_rows)
+      i <- i + 1
+      next
+    }
     if (grepl(" DEAT", line) && pattern_rows$num_deat_rows > 0) {
       record <- processEventLine("death", block, i, record, pattern_rows)
+      i <- i + 1
+      next
+    }
+    if (grepl("\\bBURI\\b", line) && pattern_rows$num_buri_rows > 0) {
+      record <- processEventLine("burial", block, i, record, pattern_rows)
       i <- i + 1
       next
     }
@@ -399,7 +417,6 @@ extractGedcomLevel <- function(line) {
 #' @keywords internal
 
 
-
 extractEventSubBlock <- function(block, start_idx) {
   event_level <- extractGedcomLevel(block[start_idx])
   n <- length(block)
@@ -492,12 +509,20 @@ processEventLine <- function(event, block, i, record, pattern_rows) {
     record$birth_place <- extractInfoFromLines(direct_children, "PLAC")
     record$birth_lat <- extractCoordFromSubBlock(sub_block, "LATI")
     record$birth_long <- extractCoordFromSubBlock(sub_block, "LONG")
+  } else if (event == "chr") {
+    record$chr_date <- extractInfoFromLines(direct_children, "DATE")
+    record$chr_place <- extractInfoFromLines(direct_children, "PLAC")
   } else if (event == "death") {
     record$death_date <- extractInfoFromLines(direct_children, "DATE")
     record$death_place <- extractInfoFromLines(direct_children, "PLAC")
     record$death_caus <- extractInfoFromLines(direct_children, "CAUS")
     record$death_lat <- extractCoordFromSubBlock(sub_block, "LATI")
     record$death_long <- extractCoordFromSubBlock(sub_block, "LONG")
+  } else if (event == "burial") {
+    record$burial_date <- extractInfoFromLines(direct_children, "DATE")
+    record$burial_place <- extractInfoFromLines(direct_children, "PLAC")
+    record$burial_lat <- extractCoordFromSubBlock(sub_block, "LATI")
+    record$burial_long <- extractCoordFromSubBlock(sub_block, "LONG")
   }
   record
 }
@@ -563,9 +588,9 @@ countPatternRows <- function(file) {
   pattern_counts <- vapply(
     c(
       "@ INDI", " NAME", " GIVN", " NPFX", " NICK", " SURN", " NSFX", " _MARNM",
-      " BIRT", " DEAT", " SEX", " CAST", " DSCR", " EDUC", " IDNO", " NATI",
-      " NCHI", " NMR", " OCCU", " PROP", " RELI", " RESI", " SSN", " TITL",
-      " FAMC", " FAMS", " PLAC", " LATI", " LONG", " DATE", " CAUS"
+      " BIRT", " CHR", " DEAT", " BURI", " SEX", " CAST", " DSCR", " EDUC",
+      " IDNO", " NATI", " NCHI", " NMR", " OCCU", " PROP", " RELI", " RESI",
+      " SSN", " TITL", " FAMC", " FAMS", " PLAC", " LATI", " LONG", " DATE", " CAUS"
     ),
     function(pat) sum(grepl(pat, x, fixed = TRUE)),
     integer(1L)
@@ -580,7 +605,9 @@ countPatternRows <- function(file) {
     num_nsfx_rows = pattern_counts[" NSFX"],
     num_marnm_rows = pattern_counts[" _MARNM"],
     num_birt_rows = pattern_counts[" BIRT"],
+    num_chr_rows = pattern_counts[" CHR"],
     num_deat_rows = pattern_counts[" DEAT"],
+    num_buri_rows = pattern_counts[" BURI"],
     num_sex_rows = pattern_counts[" SEX"],
     num_cast_rows = pattern_counts[" CAST"],
     num_dscr_rows = pattern_counts[" DSCR"],
@@ -845,3 +872,177 @@ readGed <- readGedcom
 #' @rdname readGedcom
 #' @export
 readgedcom <- readGedcom
+
+
+# --- Family Records ---
+
+#' Read Family Records from a GEDCOM File
+#'
+#' Parses `FAM` records from a GEDCOM file and returns a tidy data frame with
+#' one row per family unit. Captures husband, wife, children, marriage event,
+#' and divorce event details.
+#'
+#' @param file_path Character string. Path to the GEDCOM file.
+#' @param verbose Logical. If `TRUE`, print progress messages.
+#' @param parse_dates Logical. If `TRUE`, attempt to parse `marr_date` and
+#'   `div_date` into `Date` objects, after stripping common GEDCOM qualifiers.
+#' @param remove_empty_cols Logical. If `TRUE`, drop columns that are entirely `NA`.
+#' @param ... Additional arguments. Currently unused.
+#' @return A data frame with one row per `FAM` record and the following columns:
+#' \describe{
+#'   \item{famID}{Family identifier from the `@ FAM` line.}
+#'   \item{husbID}{Person ID of the husband (`HUSB` tag).}
+#'   \item{wifeID}{Person ID of the wife (`WIFE` tag).}
+#'   \item{children}{Comma-separated person IDs of children (`CHIL` tags).}
+#'   \item{marr_date}{Marriage date (`MARR/DATE`).}
+#'   \item{marr_place}{Marriage place (`MARR/PLAC`).}
+#'   \item{marr_lat}{Marriage latitude (`MARR/.../LATI`).}
+#'   \item{marr_long}{Marriage longitude (`MARR/.../LONG`).}
+#'   \item{div_date}{Divorce date (`DIV/DATE`).}
+#'   \item{div_place}{Divorce place (`DIV/PLAC`).}
+#' }
+#' Returns `NULL` with a warning if no family records are found.
+#' @export
+readGedcomFamilies <- function(file_path,
+                               verbose = FALSE,
+                               parse_dates = FALSE,
+                               remove_empty_cols = TRUE,
+                               ...) {
+  if (!file.exists(file_path)) stop("File does not exist: ", file_path)
+  if (verbose) message("Reading file: ", file_path)
+  lines <- readLines(file_path)
+  if (verbose) message("File is ", length(lines), " lines long")
+
+  blocks <- splitFamilies(lines, verbose)
+  if (length(blocks) == 0) {
+    warning("No family records found in file")
+    return(NULL)
+  }
+
+  records <- lapply(blocks, parseFamilyBlock, verbose = verbose)
+  records <- Filter(Negate(is.null), records)
+
+  if (length(records) == 0) {
+    warning("No valid family records parsed")
+    return(NULL)
+  }
+
+  df <- do.call(rbind, lapply(records, as.data.frame, stringsAsFactors = FALSE))
+
+  if (parse_dates) {
+    date_cols <- c("marr_date", "div_date")
+    present <- date_cols[date_cols %in% colnames(df)]
+    if (length(present) > 0) {
+      calendar_escape_regex <- "@#D[A-Z ]+@\\s*"
+      qualifier_regex <- "\\b(?:[aA][bBfF][tT]|[bB][eE][tTfF])\\.?\\b\\s*"
+      df[present] <- lapply(df[present], function(x) {
+        if (is.character(x)) {
+          x <- stringr::str_replace_all(x, calendar_escape_regex, "")
+          x <- stringr::str_replace_all(x, qualifier_regex, "")
+          as.Date(stringr::str_trim(x), format = "%d %b %Y")
+        } else {
+          x
+        }
+      })
+    }
+  }
+
+  if (remove_empty_cols) {
+    df <- df[, colSums(is.na(df)) < nrow(df), drop = FALSE]
+  }
+
+  df
+}
+
+#' Split GEDCOM Lines into Family Blocks
+#'
+#' @param lines Character vector of lines from a GEDCOM file.
+#' @param verbose Logical. If `TRUE`, print progress messages.
+#' @return A list of character vectors, each representing one FAM record.
+#' @keywords internal
+splitFamilies <- function(lines, verbose = FALSE) {
+  fam_idx <- grep("@ FAM\\b", lines)
+  if (length(fam_idx) == 0) return(list())
+
+  record_idx <- grep("@ (INDI|FAM|SOUR|REPO|OBJE|SUB[MN]|NOTE|_MTCAT)\\b| TRLR\\b", lines)
+
+  blocks <- vector("list", length(fam_idx))
+  for (i in seq_along(fam_idx)) {
+    start <- fam_idx[i]
+    next_record <- record_idx[record_idx > start]
+    end <- if (length(next_record) > 0) next_record[1L] - 1L else length(lines)
+    blocks[[i]] <- lines[start:end]
+  }
+  if (verbose) message("Found ", length(blocks), " family blocks")
+  blocks
+}
+
+#' Parse a GEDCOM Family Block
+#'
+#' @param block Character vector of GEDCOM lines for one FAM record.
+#' @param verbose Logical. Currently unused.
+#' @return A named list with family fields, or `NULL` if no family ID is found.
+#' @keywords internal
+#' @importFrom stringr str_extract str_trim
+parseFamilyBlock <- function(block, verbose = FALSE) {
+  famID <- stringr::str_extract(block[1L], "(?<=@.)\\d*(?=@)")
+  if (is.na(famID) || !nzchar(famID)) return(NULL)
+
+  record <- list(
+    famID    = famID,
+    husbID   = NA_character_,
+    wifeID   = NA_character_,
+    children = NA_character_,
+    marr_date  = NA_character_,
+    marr_place = NA_character_,
+    marr_lat   = NA_character_,
+    marr_long  = NA_character_,
+    div_date   = NA_character_,
+    div_place  = NA_character_
+  )
+
+  n <- length(block)
+  i <- 1L
+  while (i <= n) {
+    line <- block[i]
+
+    if (grepl("\\bHUSB\\b", line)) {
+      record$husbID <- stringr::str_extract(line, "(?<=@.)\\d*(?=@)")
+    } else if (grepl("\\bWIFE\\b", line)) {
+      record$wifeID <- stringr::str_extract(line, "(?<=@.)\\d*(?=@)")
+    } else if (grepl("\\bCHIL\\b", line)) {
+      child_id <- stringr::str_extract(line, "(?<=@.)\\d*(?=@)")
+      record$children <- if (is.na(record$children)) {
+        child_id
+      } else {
+        paste0(record$children, ", ", child_id)
+      }
+    } else if (grepl("\\bMARR\\b", line)) {
+      sub_block <- extractEventSubBlock(block, i)
+      if (length(sub_block) > 0L) {
+        event_level <- extractGedcomLevel(block[i])
+        direct_children <- sub_block[
+          vapply(sub_block, extractGedcomLevel, integer(1L)) == event_level + 1L
+        ]
+        record$marr_date  <- extractInfoFromLines(direct_children, "DATE")
+        record$marr_place <- extractInfoFromLines(direct_children, "PLAC")
+        record$marr_lat   <- extractCoordFromSubBlock(sub_block, "LATI")
+        record$marr_long  <- extractCoordFromSubBlock(sub_block, "LONG")
+      }
+    } else if (grepl("\\bDIV\\b", line)) {
+      sub_block <- extractEventSubBlock(block, i)
+      if (length(sub_block) > 0L) {
+        event_level <- extractGedcomLevel(block[i])
+        direct_children <- sub_block[
+          vapply(sub_block, extractGedcomLevel, integer(1L)) == event_level + 1L
+        ]
+        record$div_date  <- extractInfoFromLines(direct_children, "DATE")
+        record$div_place <- extractInfoFromLines(direct_children, "PLAC")
+      }
+    }
+
+    i <- i + 1L
+  }
+
+  record
+}

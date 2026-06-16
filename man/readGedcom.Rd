@@ -97,11 +97,17 @@ A data frame containing information about individuals, with the following potent
   \item{birth_lat}{Latitude of the birthplace.}
   \item{birth_long}{Longitude of the birthplace.}
   \item{birth_place}{Birthplace of the individual.}
+  \item{chr_date}{Christening date of the individual (`CHR` tag).}
+  \item{chr_place}{Christening place of the individual.}
   \item{death_caus}{Cause of death.}
   \item{death_date}{Death date of the individual.}
   \item{death_lat}{Latitude of the place of death.}
   \item{death_long}{Longitude of the place of death.}
   \item{death_place}{Place of death of the individual.}
+  \item{burial_date}{Burial date of the individual (`BURI` tag).}
+  \item{burial_lat}{Latitude of the burial place.}
+  \item{burial_long}{Longitude of the burial place.}
+  \item{burial_place}{Burial place of the individual.}
   \item{attribute_caste}{Caste of the individual.}
   \item{attribute_children}{Number of children of the individual.}
   \item{attribute_description}{Description of the individual.}
