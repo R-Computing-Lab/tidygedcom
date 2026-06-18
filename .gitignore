@@ -1,1 +1,19 @@
+^.*\.Rproj$
+.Rhistory
+.RData
+.Ruserdata
+*.lnk
+*.code-workspace
+CRAN-SUBMISSION
+/revdep
+vignettes/articles/_paper.pdf
+*.log
+vignettes/articles/paper.bcf
+vignettes/articles/_paper.knit.md
+vignettes/articles/paper.aux
+vignettes/articles/paper.tex
+vignettes/articles/paper.log
+*DESKTOP-16M0RPI's conflicted*
+/.claude
+.positai
 *.tmp.*
