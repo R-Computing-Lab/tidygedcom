@@ -33,8 +33,8 @@ library(ggpedigree)
 # Convert IDs to numeric (required by BGmisc)
 ped_num <- ped
 ped_num$personID <- as.numeric(ped_num$personID)
-ped_num$momID    <- as.numeric(ped_num$momID)
-ped_num$dadID    <- as.numeric(ped_num$dadID)
+ped_num$momID <- as.numeric(ped_num$momID)
+ped_num$dadID <- as.numeric(ped_num$dadID)
 
 # Structure pedigree into family units and compute paternal line IDs
 ged_ped <- ped2fam(ped_num, personID = "personID") |>
@@ -42,7 +42,7 @@ ged_ped <- ped2fam(ped_num, personID = "personID") |>
 
 # Identify John William "Bud" Waugh as the focal person's great-grandfather
 # (the deepest ancestor in our sample with a known paternal chain)
-focal_ID  <- ged_ped$personID[grepl("John William", ged_ped$name)]
+focal_ID <- ged_ped$personID[grepl("John William", ged_ped$name)]
 y_line_ID <- ged_ped$patID[ged_ped$personID == focal_ID]
 
 # Flag Y-line membership — green branch = focal person's line
@@ -53,21 +53,21 @@ ged_ped$y_line <- ifelse(ged_ped$patID == y_line_ID, "Y Line", "Other Lines")
 ggpedigree(
   ged_ped,
   personID = "personID",
-  momID    = "momID",
-  dadID    = "dadID",
-  sexVar   = "sex",
-  config   = list(
-    label_include  = TRUE,
-    label_column   = "name",
+  momID = "momID",
+  dadID = "dadID",
+  sexVar = "sex",
+  config = list(
+    label_include = TRUE,
+    label_column = "name",
     label_text_size = 2,
     code_male = "M",
     code_female = "F",
-    segment_lineage_include          = TRUE,
-    segment_lineage_focal_personID   = focal_ID,
-    segment_lineage_component        = "paternal",
-    segment_lineage_legend_title     = "Patriline",
-  add_phantoms = TRUE,
-  founder_order_seed = 1L
+    segment_lineage_include = TRUE,
+    segment_lineage_focal_personID = focal_ID,
+    segment_lineage_component = "paternal",
+    segment_lineage_legend_title = "Patriline",
+    add_phantoms = TRUE,
+    founder_order_seed = 1L
   )
 )
 ```
@@ -103,7 +103,8 @@ raw_ged[line_num:(line_num + 20)]
 
 # Parse all INDI blocks
 ped <- readGedcom("W. Henderson Waugh Family Tree.ged",
-                  remove_empty_cols = TRUE, verbose = FALSE)
+  remove_empty_cols = TRUE, verbose = FALSE
+)
 
 # Add year columns robust to approximate dates
 ped$birth_year <- extractGedcomYear(ped$birth_date)
@@ -191,7 +192,8 @@ raw_ged[line_num:(line_num + 20)]
 
 # Parse all INDI blocks
 ped <- readGedcom("W. Henderson Waugh Family Tree.ged",
-                  remove_empty_cols = TRUE, verbose = FALSE)
+  remove_empty_cols = TRUE, verbose = FALSE
+)
 
 # Add year columns robust to approximate dates
 ped$birth_year <- extractGedcomYear(ped$birth_date)

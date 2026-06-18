@@ -179,7 +179,6 @@ sample_ged <- c(
   "0 @F4@ FAM",
   "1 HUSB @I5@",
   "1 CHIL @I8@",
-
   "0 TRLR"
 )
 
@@ -235,8 +234,10 @@ ped_dates[, c("name", "birth_date", "death_date")]
 Not all dates parse cleanly to `Date` objects — `"ABT 1835"` or `"OCT 1814"` have no day component. `extractGedcomYear()` handles all forms and returns an integer year:
 
 ```{r extract-year}
-dates_raw <- c("28 APR 1775", "14 AUG 1852", "ABT 1835", "OCT 1814",
-               "1844", "ABT JUN 1880", NA)
+dates_raw <- c(
+  "28 APR 1775", "14 AUG 1852", "ABT 1835", "OCT 1814",
+  "1844", "ABT JUN 1880", NA
+)
 extractGedcomYear(dates_raw)
 ```
 
@@ -297,9 +298,9 @@ coord_ged <- c(
 tmp_coord <- tempfile(fileext = ".ged")
 writeLines(coord_ged, tmp_coord)
 
-ped_raw  <- readGedcom(tmp_coord, remove_empty_cols = FALSE, verbose = FALSE)
+ped_raw <- readGedcom(tmp_coord, remove_empty_cols = FALSE, verbose = FALSE)
 ped_conv <- convertGedcomCoords(ped_raw)
-ped_raw[,  c("name", "burial_lat", "burial_long")]
+ped_raw[, c("name", "burial_lat", "burial_long")]
 ped_conv[, c("name", "burial_lat", "burial_long")]
 unlink(tmp_coord)
 ```
@@ -317,7 +318,6 @@ Once the data is in a tidy data frame, the `BGmisc` package provides the next la
 
 
 ```{r bgmisc, eval = requireNamespace("BGmisc", quietly = TRUE) }
-
 library(BGmisc)
 
 ped <- readGedcom(tmp_ged, verbose = FALSE)
@@ -328,7 +328,6 @@ checks <- checkPedigreeNetwork(ped,
   verbose = FALSE
 )
 checks$is_acyclic
-
 ```
 
 
@@ -347,23 +346,23 @@ ped <- readGedcom(tmp_ged, verbose = FALSE)
 ggpedigree(
   ped,
   personID = "personID",
-  momID    = "momID",
-  dadID    = "dadID",
-  sexVar   = "sex",
-  config   = list(
-    label_include  = TRUE,
-    code_male    = "M",
-    code_female  = "F",
-    label_column   = "name",
+  momID = "momID",
+  dadID = "dadID",
+  sexVar = "sex",
+  config = list(
+    label_include = TRUE,
+    code_male = "M",
+    code_female = "F",
+    label_column = "name",
     label_text_size = 2,
     focal_fill_include = TRUE,
     sex_color_include = F,
     focal_fill_personID = 1,
-    focal_fill_method  = "viridis_c",
-    segment_lineage_include          = TRUE,
-    segment_lineage_focal_personID   = 1,
-    segment_lineage_component        = "paternal",
-    segment_lineage_legend_title     = "Patriline",
+    focal_fill_method = "viridis_c",
+    segment_lineage_include = TRUE,
+    segment_lineage_focal_personID = 1,
+    segment_lineage_component = "paternal",
+    segment_lineage_legend_title = "Patriline",
     add_phantoms = TRUE
   )
 )

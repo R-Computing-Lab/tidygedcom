@@ -962,7 +962,9 @@ readGedcomFamilies <- function(file_path,
 #' @keywords internal
 splitFamilies <- function(lines, verbose = FALSE) {
   fam_idx <- grep("@ FAM\\b", lines)
-  if (length(fam_idx) == 0) return(list())
+  if (length(fam_idx) == 0) {
+    return(list())
+  }
 
   record_idx <- grep("@ (INDI|FAM|SOUR|REPO|OBJE|SUB[MN]|NOTE|_MTCAT)\\b| TRLR\\b", lines)
 
@@ -986,19 +988,21 @@ splitFamilies <- function(lines, verbose = FALSE) {
 #' @importFrom stringr str_extract str_trim
 parseFamilyBlock <- function(block, verbose = FALSE) {
   famID <- stringr::str_extract(block[1L], "(?<=@.)\\d*(?=@)")
-  if (is.na(famID) || !nzchar(famID)) return(NULL)
+  if (is.na(famID) || !nzchar(famID)) {
+    return(NULL)
+  }
 
   record <- list(
-    famID    = famID,
-    husbID   = NA_character_,
-    wifeID   = NA_character_,
+    famID = famID,
+    husbID = NA_character_,
+    wifeID = NA_character_,
     children = NA_character_,
-    marr_date  = NA_character_,
+    marr_date = NA_character_,
     marr_place = NA_character_,
-    marr_lat   = NA_character_,
-    marr_long  = NA_character_,
-    div_date   = NA_character_,
-    div_place  = NA_character_
+    marr_lat = NA_character_,
+    marr_long = NA_character_,
+    div_date = NA_character_,
+    div_place = NA_character_
   )
 
   n <- length(block)
@@ -1024,10 +1028,10 @@ parseFamilyBlock <- function(block, verbose = FALSE) {
         direct_children <- sub_block[
           vapply(sub_block, extractGedcomLevel, integer(1L)) == event_level + 1L
         ]
-        record$marr_date  <- extractInfoFromLines(direct_children, "DATE")
+        record$marr_date <- extractInfoFromLines(direct_children, "DATE")
         record$marr_place <- extractInfoFromLines(direct_children, "PLAC")
-        record$marr_lat   <- extractCoordFromSubBlock(sub_block, "LATI")
-        record$marr_long  <- extractCoordFromSubBlock(sub_block, "LONG")
+        record$marr_lat <- extractCoordFromSubBlock(sub_block, "LATI")
+        record$marr_long <- extractCoordFromSubBlock(sub_block, "LONG")
       }
     } else if (grepl("\\bDIV\\b", line)) {
       sub_block <- extractEventSubBlock(block, i)
@@ -1036,7 +1040,7 @@ parseFamilyBlock <- function(block, verbose = FALSE) {
         direct_children <- sub_block[
           vapply(sub_block, extractGedcomLevel, integer(1L)) == event_level + 1L
         ]
-        record$div_date  <- extractInfoFromLines(direct_children, "DATE")
+        record$div_date <- extractInfoFromLines(direct_children, "DATE")
         record$div_place <- extractInfoFromLines(direct_children, "PLAC")
       }
     }
