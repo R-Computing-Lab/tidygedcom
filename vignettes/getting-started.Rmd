@@ -1,11 +1,11 @@
-
+---
 title: "Getting Started with tidygedcom"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Getting Started with tidygedcom}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-
+---
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
@@ -53,56 +53,11 @@ Individual records (`INDI`) hold person-level facts; family records (`FAM`) link
 
 
 
-## The research question
+## Why use R for genealogy?
 
-This vignette uses a real family tree as its running example: the W. Henderson Waugh Family Tree. 
+The tidygedcom package provides tools for parsing and tidying GEDCOM files, making it easier to work with genealogical data in R. R's powerful data manipulation capabilities allow researchers to clean, analyze, and visualize genealogical data in ways that may not be possible with traditional genealogy software. Additionally, R's extensive ecosystem of packages for statistical analysis and machine learning can be applied to genealogical data to uncover patterns and insights that may not be immediately apparent.
 
-
-## Positioning statement
-
-This genetic genealogy project is a collaboration between two Wake Forest psychology faculty -- SMG and CEW. SMG is a behavioral geneticist with expertise in pedigree analysis and statistical genetics. CEW is a social psychologist with expertise in the self-regulation of emotion. CEW is a direct descendant of W. Henderson Waugh, the focal individual in the family tree, and is interested in understanding his paternal ancestry. SMG is interested in applying her expertise in pedigree analysis to a real-world case study, and in using the tidygedcom package to facilitate the data cleaning and analysis process. The product of this project is the tidygedcom package itself, which provides tools for parsing and tidying GEDCOM files, as well as a detailed case study of the Waugh family tree that demonstrates how to use these tools in practice. The project also aims to contribute to the broader field of genetic genealogy by providing a clear example of how to use pedigree analysis to investigate questions of ancestry and relatedness. We encourage readers to explore some of the history of the Waugh family tree as recounted [https://thewilkesrecord.com/the-legacy-of-%E2%80%9Cbud%E2%80%9D-mitchell-p2771-149.htm] as well as through the book
-https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832/
-
-
-
-
-
-The tidygedcom package provides the tools for parsing and tidying GEDCOM files
-
-, and the Waugh family tree provides a real-world test case for these tools. The project investigates the paternal ancestry of a living individual, Christian Emil WAUGH (b. 29 April 1978), through the lens of historical records and genetic genealogy.
-
-
-
-The project investigates the paternal ancestry of a living individual, Christian Emil WAUGH (b. 29 April 1978).
-
-
-
-
-investigates the paternal ancestry of a living individual, Christian Emil WAUGH (b. 29 April 1978).
-
-, a genetic genealogy project investigating the paternal ancestry of a living individual, Christian Emil WAUGH (b. 29 April 1978).
-
-The core research question is one of paternity. William Pitt Waugh (b. 28 April 1775, Adams County, Pennsylvania; d. 14 August 1852, Wilkes County, North Carolina) was a bachelor slaveholder. Historical records show he placed a "Runaway/Fugitive Enslaved Person" notice in the *Alexandria Gazette* on 21 March 1820. His last will and testament, filed in Wilkes County, names no lawful wife.
-
-Evidence in the tree points to two sons born to two different women of color — both outside of marriage:
-
-- **W. Henderson Waugh** (b. approximately 1835, Wilkes County NC), son of Matilda Grinton. The 1860 census lists Matilda's occupation as "House Woman." W. Henderson married Laura Watkins on 24 June 1877 and is the direct paternal ancestor of the focal individual.
-- **William Pitt Waugh Jr.** (b. 1844, Wilkes County NC), born as **William Segraves**, son of Martha Law Segraves. His birth note reads: *"Born out of wedlock to Martha Law Segraves. Uses her surname until 1865. Purported Natural son of William P Waugh (1775–1852)."* He served in the Civil War as "William Segraves, Company E, First Regiment Middle Tennessee Infantry," then took the Waugh name after the war. He was explicitly excluded from William Pitt Waugh's will: *"he did not make any bequest to his purported natural son by Martha Laws, William Segraves."*
-
-W. Henderson Waugh and William Pitt Waugh Jr. are, if the documentary evidence is correct, **paternal half-brothers** — both sons of William Pitt Waugh Sr. by different mothers. The question is whether their shared Y chromosome can be confirmed through genetic genealogy.
-
-The paternal chain from the focal individual back through history is:
-
-| Generation | Individual | Birth |
-||||
-| Self | Christian Emil WAUGH | 29 Apr 1978, Monterey County CA |
-| Father | Gregory Emil Waugh | Jun 1958 |
-| Grandfather | Warner F Waugh | abt 1933, NC |
-| Great-grandfather | John William "Bud" Waugh | abt Jun 1880, NC |
-| 2nd great-grandfather | **W. Henderson Waugh** | abt 1835, NC |
-| 3rd great-grandfather | **William Pitt Waugh Sr.** | 28 Apr 1775, Adams County PA |
-
-Because W. Henderson Waugh's paternity rests on historical record rather than DNA, a Y-chromosome match with a living male descendant of William Pitt Waugh Jr. (the Segraves line) would strongly corroborate that William Pitt Waugh Sr. fathered both half-brothers. Furthermore, the presence of a Y-chromosome match with a living male line descent of a brother of William Pitt Waugh Sr. would also support the paternal link between W. Henderson Waugh and William Pitt Waugh Sr., as well as the broader family tree.
+This vignette uses a real family tree as its running example: the W. Henderson Waugh Family Tree. We'll discuss more about our running example in another vignette. (But briefly, the Waugh family tree is a genetic genealogy collaboration between two Wake Forest psychology faculty -- SMG and CEW. See https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832 for more on the historical context of the Waugh family tree.) The tidygedcom package provides the tools for parsing and tidying GEDCOM files, and the Waugh family tree provides a real-world test case for these tools.
 
 
 
@@ -233,7 +188,6 @@ writeLines(sample_ged, tmp_ged)
 ```
 
 
-
 ## Reading individual records: `readGedcom()`
 
 `readGedcom()` parses all `INDI` blocks and returns one row per person. It infers `momID` and `dadID` automatically by tracing `FAMC` → `FAMS` links — no manual ID mapping required.
@@ -323,7 +277,6 @@ merge(
 ```
 
 
-
 ## Working with coordinates
 
 GEDCOM stores coordinates in compass-prefix notation (`N36.1234`, `W81.5678`). `convertGedcomCoords()` converts all `_lat`/`_long` columns to signed decimal degrees in one call:
@@ -358,43 +311,67 @@ gedcomLatToNumeric(c("N36.1548", "S33.8688", NA))
 gedcomLonToNumeric(c("W81.1845", "E151.2093", NA))
 ```
 
+## From GEDCOM to pedigree analysis
 
-## Working with a real GEDCOM file
+Once the data is in a tidy data frame, the `BGmisc` package provides the next layer of analysis: computing pairwise relatedness, tracing paternal lineages, and identifying Y-chromosome carriers. 
 
-To apply this workflow to a real Ancestry.com export:
 
-```{r real-file, eval = FALSE}
-# Unzip the Ancestry export
-unzip("W. Henderson Waugh Family Tree.zip", overwrite = TRUE)
+```{r bgmisc, eval = requireNamespace("BGmisc", quietly = TRUE) }
 
-# Peek at the raw file to orient yourself before parsing
-raw_ged <- readLines("W. Henderson Waugh Family Tree.ged")
-head(raw_ged, 15)
+library(BGmisc)
 
-# Locate the anchor individual by name
-line_num <- which(grepl("1 NAME W. Henderson /Waugh/", raw_ged, fixed = TRUE))
-raw_ged[line_num:(line_num + 20)]
+ped <- readGedcom(tmp_ged, verbose = FALSE)
 
-# Parse all INDI blocks
-ped <- readGedcom("W. Henderson Waugh Family Tree.ged",
-                  remove_empty_cols = TRUE, verbose = FALSE)
+# Check the pedigree is acyclic and well-formed
+checks <- checkPedigreeNetwork(ped,
+  personID = "personID", momID = "momID", dadID = "dadID",
+  verbose = FALSE
+)
+checks$is_acyclic
 
-# Add year columns robust to approximate dates
-ped$birth_year <- extractGedcomYear(ped$birth_date)
-ped$death_year <- extractGedcomYear(ped$death_date)
-
-# Quick overview
-summarizeGedcom(ped)
-
-# Parse family/marriage records
-fam <- readGedcomFamilies("W. Henderson Waugh Family Tree.ged", verbose = FALSE)
 ```
 
-Note that Ancestry.com regenerates person IDs each time you export, so ID values will differ between exports. Always locate individuals by name or birth date rather than by a hardcoded ID.
+
+Please see the vignette "From GEDCOM to pedigree analysis" for a longer walkthrough of these steps using the W. Henderson Waugh family tree as a case study.
 
 
+## From GEDCOM to pedigree diagrams
+
+You can also visualize the family tree with the `ggpedigree` package. The `config` argument allows you to customize the plot with a wide range of options. 
+
+```{r ggped, eval = requireNamespace("BGmisc", quietly = TRUE) && requireNamespace("ggpedigree", quietly = TRUE), warning = FALSE, message = FALSE }
+library(BGmisc)
+library(ggpedigree)
+ped <- readGedcom(tmp_ged, verbose = FALSE)
+
+ggpedigree(
+  ped,
+  personID = "personID",
+  momID    = "momID",
+  dadID    = "dadID",
+  sexVar   = "sex",
+  config   = list(
+    label_include  = TRUE,
+    code_male    = "M",
+    code_female  = "F",
+    label_column   = "name",
+    label_text_size = 2,
+    focal_fill_include = TRUE,
+    sex_color_include = F,
+    focal_fill_personID = 1,
+    focal_fill_method  = "viridis_c",
+    segment_lineage_include          = TRUE,
+    segment_lineage_focal_personID   = 1,
+    segment_lineage_component        = "paternal",
+    segment_lineage_legend_title     = "Patriline",
+    add_phantoms = TRUE
+  )
+)
 
 ## Cleaning up
+```
+
+Please see the vignettes from the `ggpedigree` package for more on customizing pedigree diagrams with `ggpedigree()`. 
 
 ```{r cleanup}
 unlink(tmp_ged)

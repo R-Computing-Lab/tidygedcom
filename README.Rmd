@@ -59,11 +59,13 @@ print(citation(package = "tidygedcom"), style = "text", bibtex = FALSE)
 ```
 
 A BibTeX entry for LaTeX users is
+
 ```{r,comment='',echo=FALSE}
 toBibtex(citation(package = "tidygedcom"))
 ```
 
 ## Contributing
+
 Contributions to the tidygedcom project are welcome. For guidelines on how to contribute, please refer to the [Contributing Guidelines](https://github.com/R-Computing-Lab/tidygedcom/blob/main/CONTRIBUTING.md). Issues and pull requests should be submitted on the GitHub repository. For support, please use the GitHub issues page.
 
 
