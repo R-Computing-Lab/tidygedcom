@@ -6,5 +6,5 @@ checks_sans <- checks_sans[!grepl("rcmdcheck", checks_sans)]
 
 # Check the package
 gp <- goodpractice::gp(
-checks = checks_sans
+  checks = checks_sans
 )

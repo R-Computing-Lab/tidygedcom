@@ -82,3 +82,32 @@ postProcessGedcom <- function(df_temp,
   }
   df_temp
 }
+
+#' collapse Names
+#'
+#' This function combines the `name_given` and `name_given_pieces` columns in a data frame. If both columns have non-missing values that differ, a warning is issued and the original `name_given` is retained. If one column is missing, the other is used. The same logic applies to the `name_surn` and `name_surn_pieces` columns.
+#'
+#' @inheritParams readGedcom
+#' @param df_temp A data frame containing the columns to be combined.
+#' @return A data frame with the combined columns.
+#' @keywords internal
+
+
+collapseNames <- function(verbose, df_temp) {
+  if (verbose == TRUE) {
+    message("Combining Duplicate Name Columns...")
+  }
+
+  if (!all(is.na(df_temp$name_given_pieces)) || !all(is.na(df_temp$name_given))) {
+    result <- combineColumns(df_temp$name_given, df_temp$name_given_pieces)
+    df_temp$name_given <- result$combined
+    if (!result$retain_col2) df_temp$name_given_pieces <- NULL
+  }
+
+  if (!all(is.na(df_temp$name_surn_pieces)) || !all(is.na(df_temp$name_surn))) {
+    result <- combineColumns(df_temp$name_surn, df_temp$name_surn_pieces)
+    df_temp$name_surn <- result$combined
+    if (!result$retain_col2) df_temp$name_surn_pieces <- NULL
+  }
+  df_temp
+}

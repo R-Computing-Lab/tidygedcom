@@ -1,5 +1,3 @@
-# --- Family Records ---
-
 #' Read Family Records from a GEDCOM File
 #'
 #' Parses `FAM` records from a GEDCOM file and returns a tidy data frame with
@@ -277,4 +275,3 @@ mapFAMC2parents <- function(df_temp, family_to_parents) {
   }
   df_temp
 }
-
