@@ -133,6 +133,7 @@ The strategy for the Waugh paternity question is:
 
 ``` r
 
+
 library(BGmisc)
 #> 
 #> Attaching package: 'BGmisc'
