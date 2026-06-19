@@ -15,7 +15,10 @@ readWikifamilytree <- function(text = NULL, verbose = FALSE, file_path = NULL, .
   }
   # read from file if provided
   if (!is.null(file_path)) {
-    if (!file.exists(file_path)) stop("File does not exist: ", file_path)
+    if (!file.exists(file_path)) {
+      stop_msg <- paste0("File does not exist: ", file_path)
+      stop(stop_msg)
+    }
 
     if (verbose == TRUE) {
       message(paste("Reading file:", file_path))

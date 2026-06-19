@@ -60,5 +60,3 @@ parseNameLine <- function(line, record) {
 extractGedcomLevel <- function(line) {
   as.integer(stringr::str_extract(line, "^\\d+"))
 }
-
-

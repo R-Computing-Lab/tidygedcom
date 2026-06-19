@@ -11,7 +11,8 @@
 gedcomLat2Numeric <- function(x) {
   out <- rep(NA_real_, length(x))
   ok <- !is.na(x) & (startsWith(x, "N") | startsWith(x, "S"))
-  out[ok] <- as.numeric(substring(x[ok], 2)) * ifelse(startsWith(x[ok], "N"), 1, -1)
+  out[ok] <- as.numeric(substring(x[ok], 2)) *
+    ifelse(startsWith(x[ok], "N"), 1, -1)
   out
 }
 
@@ -28,7 +29,8 @@ gedcomLat2Numeric <- function(x) {
 gedcomLon2Numeric <- function(x) {
   out <- rep(NA_real_, length(x))
   ok <- !is.na(x) & (startsWith(x, "E") | startsWith(x, "W"))
-  out[ok] <- as.numeric(substring(x[ok], 2)) * ifelse(startsWith(x[ok], "E"), 1, -1)
+  out[ok] <- as.numeric(substring(x[ok], 2)) *
+    ifelse(startsWith(x[ok], "E"), 1, -1)
   out
 }
 
@@ -53,8 +55,12 @@ gedcomLon2Numeric <- function(x) {
 #' convertGedcomCoords(df)
 #' @export
 convertGedcomCoords <- function(df, lat_cols = NULL, long_cols = NULL) {
-  if (is.null(lat_cols)) lat_cols <- grep("_lat$", colnames(df), value = TRUE)
-  if (is.null(long_cols)) long_cols <- grep("_long$", colnames(df), value = TRUE)
+  if (is.null(lat_cols)) {
+    lat_cols <- grep("_lat$", colnames(df), value = TRUE)
+  }
+  if (is.null(long_cols)) {
+    long_cols <- grep("_long$", colnames(df), value = TRUE)
+  }
   df[lat_cols] <- lapply(df[lat_cols], gedcomLat2Numeric)
   df[long_cols] <- lapply(df[long_cols], gedcomLon2Numeric)
   df

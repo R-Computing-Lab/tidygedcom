@@ -25,7 +25,7 @@ GEDCOM (Genealogical Data Communication) is a plain-text file format used by vir
 
 The file itself is a structured text file. Here is a small slice:
 
-```{r gedcom-sample, eval = FALSE}
+```
 0 @I1@ INDI
 1 NAME William Pitt /Waugh/
 1 SEX M

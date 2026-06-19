@@ -16,15 +16,15 @@ postProcessGedcom <- function(df_temp,
                               clean_names = TRUE,
                               skinny = TRUE,
                               verbose = FALSE) {
-  if (add_parents == TRUE) {
-    if (verbose == TRUE) message("Processing parents")
+  if (isTRUE(add_parents)) {
+    if (isTRUE(verbose)) message("Processing parents")
     df_temp <- processParents(df_temp, datasource = "gedcom")
   }
   if (combine_cols == TRUE) {
     df_temp <- collapseNames(verbose = verbose, df_temp = df_temp)
   }
   if (remove_empty_cols == TRUE || skinny == TRUE) {
-    if (verbose == TRUE) message("Removing empty columns")
+    if (isTRUE(verbose)) message("Removing empty columns")
     df_temp <- df_temp[, colSums(is.na(df_temp)) < nrow(df_temp)]
   }
   if (parse_dates == TRUE) {
@@ -32,11 +32,11 @@ postProcessGedcom <- function(df_temp,
     calendar_escape_regex <- "@#D[A-Z ]+@\\s*"
     date_qualifier_regex <- "\\b(?:[aA][bBfF][tT]|[bB][eE][tTfF])\\.?\\b\\s*"
 
-    if (verbose == TRUE) {
+    if (isTRUE(verbose)) {
       message("Parsing date columns: ", paste(date_cols[date_cols %in% colnames(df_temp)], collapse = ", "))
     }
 
-    if (verbose == TRUE && any(date_cols %in% colnames(df_temp))) {
+    if (isTRUE(verbose) && any(date_cols %in% colnames(df_temp))) {
       has_qualifiers <- any(sapply(
         df_temp[date_cols[date_cols %in% colnames(df_temp)]],
         function(col) any(grepl(date_qualifier_regex, col, perl = TRUE))
@@ -61,9 +61,9 @@ postProcessGedcom <- function(df_temp,
     }
   }
   if (clean_names == TRUE) {
-    if (verbose == TRUE) message("Cleaning column names")
+    if (isTRUE(verbose)) message("Cleaning column names")
     name_cols <- grep("^name", colnames(df_temp), value = TRUE)
-    if (verbose == TRUE && any(name_cols %in% colnames(df_temp))) {
+    if (isTRUE(verbose) && any(name_cols %in% colnames(df_temp))) {
       message("Cleaning name columns: ", paste(name_cols, collapse = ", "))
     }
     df_temp[name_cols] <- lapply(df_temp[name_cols], function(x) {
