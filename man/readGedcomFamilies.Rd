@@ -20,7 +20,7 @@ readGedcomFamilies(
 \item{parse_dates}{Logical. If `TRUE`, attempt to parse `marr_date` and
 `div_date` into `Date` objects, after stripping common GEDCOM qualifiers.}
 
-\item{remove_empty_cols}{Logical. If `TRUE`, drop columns that are entirely `NA`.}
+\item{remove_empty_cols}{Logical indicating whether to remove columns that are entirely missing.}
 
 \item{...}{Additional arguments. Currently unused.}
 }

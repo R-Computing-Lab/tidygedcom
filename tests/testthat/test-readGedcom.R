@@ -78,20 +78,20 @@ test_that("readGedcom reads and parses a GEDCOM file correctly", {
   expect_true("attribute_children" %in% colnames(df))
   # Check the contents of the data frame
   expect_equal(nrow(df), 2)
-  expect_equal(df$name_given[1], "John")
-  expect_equal(df$name_surn[1], "Doe")
-  expect_equal(df$name[1], "John Doe")
-  expect_equal(df$sex[1], "M")
-  expect_equal(df$birth_date[1], "1 JAN 1900")
-  expect_equal(df$birth_place[1], "Someplace")
+  expect_identical(df$name_given[1], "John")
+  expect_identical(df$name_surn[1], "Doe")
+  expect_identical(df$name[1], "John Doe")
+  expect_identical(df$sex[1], "M")
+  expect_identical(df$birth_date[1], "1 JAN 1900")
+  expect_identical(df$birth_place[1], "Someplace")
   expect_equal(df$attribute_children[1], NA_character_)
-  expect_equal(df$name_given[2], "Jane")
-  expect_equal(df$name_surn[2], "Smith")
-  expect_equal(df$name[2], "Jane Smith")
-  expect_equal(df$sex[2], "F")
-  expect_equal(df$birth_date[2], "2 FEB 1910")
-  expect_equal(df$birth_place[2], "Anotherplace")
-  expect_equal(df$attribute_children[2], "2")
+  expect_identical(df$name_given[2], "Jane")
+  expect_identical(df$name_surn[2], "Smith")
+  expect_identical(df$name[2], "Jane Smith")
+  expect_identical(df$sex[2], "F")
+  expect_identical(df$birth_date[2], "2 FEB 1910")
+  expect_identical(df$birth_place[2], "Anotherplace")
+  expect_identical(df$attribute_children[2], "2")
   expect_null(df$attribute_title)
 
   # Clean up temporary file
@@ -113,8 +113,8 @@ test_that("readGedcom combines duplicate columns correctly", {
 
   # Check the contents of the data frame
   expect_equal(nrow(df), 2)
-  expect_equal(df$name_given[1], "John")
-  expect_equal(df$name_given[2], "Jane")
+  expect_identical(df$name_given[1], "John")
+  expect_identical(df$name_given[2], "Jane")
 
   # Clean up temporary file
   unlink(temp_file)
@@ -245,7 +245,7 @@ test_that("readGedcom handles incomplete individual records gracefully", {
 
   # Expect one record with missing name fields.
   expect_equal(nrow(df), 1)
-  expect_true(is.null(df$name[1]))
+  expect_null(df$name[1])
 
   unlink(temp_file)
 })

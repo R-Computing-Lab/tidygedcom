@@ -3,13 +3,10 @@
 #' Parses `FAM` records from a GEDCOM file and returns a tidy data frame with
 #' one row per family unit. Captures husband, wife, children, marriage event,
 #' and divorce event details.
-#'
+#' @inheritParams readGedcom
 #' @param file_path Character string. Path to the GEDCOM file.
-#' @param verbose Logical. If `TRUE`, print progress messages.
 #' @param parse_dates Logical. If `TRUE`, attempt to parse `marr_date` and
 #'   `div_date` into `Date` objects, after stripping common GEDCOM qualifiers.
-#' @param remove_empty_cols Logical. If `TRUE`, drop columns that are entirely `NA`.
-#' @param ... Additional arguments. Currently unused.
 #' @return A data frame with one row per `FAM` record and the following columns:
 #' \describe{
 #'   \item{famID}{Family identifier from the `@ FAM` line.}

@@ -8,3 +8,4 @@ checks_sans <- checks_sans[!grepl("rcmdcheck", checks_sans)]
 gp <- goodpractice::gp(
   checks = checks_sans
 )
+gp
