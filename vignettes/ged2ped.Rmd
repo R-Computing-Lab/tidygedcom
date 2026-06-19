@@ -150,39 +150,6 @@ This isolates individuals descended from William Pitt Waugh Sr. but **not** thro
 
 
 
-## Working with a real GEDCOM file
-
-To apply this workflow to a real Ancestry.com export:
-
-```{r real-file, eval = FALSE}
-# Unzip the Ancestry export
-unzip("W. Henderson Waugh Family Tree.zip", overwrite = TRUE)
-
-# Peek at the raw file to orient yourself before parsing
-raw_ged <- readLines("W. Henderson Waugh Family Tree.ged")
-head(raw_ged, 15)
-
-# Locate the anchor individual by name
-line_num <- which(grepl("1 NAME W. Henderson /Waugh/", raw_ged, fixed = TRUE))
-raw_ged[line_num:(line_num + 20)]
-
-# Parse all INDI blocks
-ped <- readGedcom("W. Henderson Waugh Family Tree.ged",
-  remove_empty_cols = TRUE, verbose = FALSE
-)
-
-# Add year columns robust to approximate dates
-ped$birth_year <- extractGedcomYear(ped$birth_date)
-ped$death_year <- extractGedcomYear(ped$death_date)
-
-# Quick overview
-summarizeGedcom(ped)
-
-# Parse family/marriage records
-fam <- readGedcomFamilies("W. Henderson Waugh Family Tree.ged", verbose = FALSE)
-```
-
-Note that Ancestry.com regenerates person IDs each time you export, so ID values will differ between exports. Always locate individuals by name or birth date rather than by a hardcoded ID.
 
 
 
