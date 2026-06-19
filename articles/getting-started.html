@@ -4,91 +4,68 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> • tidygedcom</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Getting Started with tidygedcom • tidygedcom</title>
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting Started with tidygedcom">
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">tidygedcom</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
-      </span>
-    </div>
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
+    <a class="navbar-brand me-2" href="../index.html">tidygedcom</a>
 
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/getting-started.html">UNKNOWN TITLE</a>
-    </li>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/ged2ped.html">GEDCOM to Pedigree Analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/getting-started.html">Getting Started with tidygedcom</a></li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/R-Computing-Lab/tidygedcom/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
-
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/R-Computing-Lab/tidygedcom/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
 
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip></h1>
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+
+      <h1>Getting Started with tidygedcom</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/R-Computing-Lab/tidygedcom/blob/main/vignettes/getting-started.Rmd" class="external-link"><code>vignettes/getting-started.Rmd</code></a></small>
-      <div class="hidden name"><code>getting-started.Rmd</code></div>
-
+      <div class="d-none name"><code>getting-started.Rmd</code></div>
     </div>
 
     
     
-<p>title: “Getting Started with tidygedcom” output:
-rmarkdown::html_vignette vignette: &gt; % % %</p>
 <div class="section level2">
 <h2 id="what-is-a-gedcom-file">What is a GEDCOM file?<a class="anchor" aria-label="anchor" href="#what-is-a-gedcom-file"></a>
 </h2>
@@ -122,67 +99,31 @@ page.</li>
 0 @F29@ FAM
 1 HUSB @I1@
 1 WIFE @I4@
-1 CHIL @I5@
-1 _SREL friend</code></pre>
+1 CHIL @I5@</code></pre>
 <p>Individual records (<code>INDI</code>) hold person-level facts;
 family records (<code>FAM</code>) link spouses and children and carry
-marriage or divorce events. Non-standard tags like <code>_SREL</code>
-are used by Ancestry.com to annotate relationship types — here marking a
-non-marital union. <code>tidygedcom</code> reads both.</p>
+marriage or divorce events.</p>
 </div>
 <div class="section level2">
-<h2 id="the-research-question">The research question<a class="anchor" aria-label="anchor" href="#the-research-question"></a>
+<h2 id="why-use-r-for-genealogy">Why use R for genealogy?<a class="anchor" aria-label="anchor" href="#why-use-r-for-genealogy"></a>
 </h2>
+<p>The tidygedcom package provides tools for parsing and tidying GEDCOM
+files, making it easier to work with genealogical data in R. R’s
+powerful data manipulation capabilities allow researchers to clean,
+analyze, and visualize genealogical data in ways that may not be
+possible with traditional genealogy software. Additionally, R’s
+extensive ecosystem of packages for statistical analysis and machine
+learning can be applied to genealogical data to uncover patterns and
+insights that may not be immediately apparent.</p>
 <p>This vignette uses a real family tree as its running example: the W.
-Henderson Waugh Family Tree, a genetic genealogy project investigating
-the paternal ancestry of a living individual, Christian Emil WAUGH (b.
-29 April 1978).</p>
-<p>The core research question is one of paternity. William Pitt Waugh
-(b. 28 April 1775, Adams County, Pennsylvania; d. 14 August 1852, Wilkes
-County, North Carolina) was a bachelor slaveholder. Historical records
-show he placed a “Runaway/Fugitive Enslaved Person” notice in the
-<em>Alexandria Gazette</em> on 21 March 1820. His last will and
-testament, filed in Wilkes County, names no lawful wife.</p>
-<p>Evidence in the tree points to two sons born to two different women
-of color — both outside of marriage:</p>
-<ul>
-<li>
-<strong>W. Henderson Waugh</strong> (b. approximately 1835, Wilkes
-County NC), son of Matilda Grinton. The 1860 census lists Matilda’s
-occupation as “House Woman.” W. Henderson married Laura Watkins on 24
-June 1877 and is the direct paternal ancestor of the focal
-individual.</li>
-<li>
-<strong>William Pitt Waugh Jr.</strong> (b. 1844, Wilkes County NC),
-born as <strong>William Segraves</strong>, son of Martha Law Segraves.
-His birth note reads: <em>“Born out of wedlock to Martha Law Segraves.
-Uses her surname until 1865. Purported Natural son of William P Waugh
-(1775–1852).”</em> He served in the Civil War as “William Segraves,
-Company E, First Regiment Middle Tennessee Infantry,” then took the
-Waugh name after the war. He was explicitly excluded from William Pitt
-Waugh’s will: <em>“he did not make any bequest to his purported natural
-son by Martha Laws, William Segraves.”</em>
-</li>
-</ul>
-<p>W. Henderson Waugh and William Pitt Waugh Jr. are, if the documentary
-evidence is correct, <strong>paternal half-brothers</strong> — both sons
-of William Pitt Waugh Sr. by different mothers. The question is whether
-their shared Y chromosome can be confirmed through genetic
-genealogy.</p>
-<p>The paternal chain from the focal individual back through history
-is:</p>
-<div class="line-block">Generation | Individual | Birth |</div>
-<p>|||| | Self | Christian Emil WAUGH | 29 Apr 1978, Monterey County CA
-| | Father | Gregory Emil Waugh | Jun 1958 | | Grandfather | Warner F
-Waugh | abt 1933, NC | | Great-grandfather | John William “Bud” Waugh |
-abt Jun 1880, NC | | 2nd great-grandfather | <strong>W. Henderson
-Waugh</strong> | abt 1835, NC | | 3rd great-grandfather |
-<strong>William Pitt Waugh Sr.</strong> | 28 Apr 1775, Adams County PA
-|</p>
-<p>Because W. Henderson Waugh’s paternity rests on historical record
-rather than DNA, a Y-chromosome match with a living male descendant of
-William Pitt Waugh Jr. (the Segraves line) would strongly corroborate
-that William Pitt Waugh Sr. fathered both half-brothers.</p>
+Henderson Waugh Family Tree. We’ll discuss more about our running
+example in another vignette. (But briefly, the Waugh family tree is a
+genetic genealogy collaboration between two Wake Forest psychology
+faculty – SMG and CEW. See <a href="https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832" class="external-link uri">https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832</a>
+for more on the historical context of the Waugh family tree.) The
+tidygedcom package provides the tools for parsing and tidying GEDCOM
+files, and the Waugh family tree provides a real-world test case for
+these tools.</p>
 </div>
 <div class="section level2">
 <h2 id="a-minimal-example">A minimal example<a class="anchor" aria-label="anchor" href="#a-minimal-example"></a>
@@ -304,7 +245,6 @@ run without an external file.</p>
 <span>  <span class="st">"0 @F4@ FAM"</span>,</span>
 <span>  <span class="st">"1 HUSB @I5@"</span>,</span>
 <span>  <span class="st">"1 CHIL @I8@"</span>,</span>
-<span></span>
 <span>  <span class="st">"0 TRLR"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -398,8 +338,10 @@ first:</p>
 component. <code><a href="../reference/extractGedcomYear.html">extractGedcomYear()</a></code> handles all forms and
 returns an integer year:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dates_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"28 APR 1775"</span>, <span class="st">"14 AUG 1852"</span>, <span class="st">"ABT 1835"</span>, <span class="st">"OCT 1814"</span>,</span>
-<span>               <span class="st">"1844"</span>, <span class="st">"ABT JUN 1880"</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">dates_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"28 APR 1775"</span>, <span class="st">"14 AUG 1852"</span>, <span class="st">"ABT 1835"</span>, <span class="st">"OCT 1814"</span>,</span>
+<span>  <span class="st">"1844"</span>, <span class="st">"ABT JUN 1880"</span>, <span class="cn">NA</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/extractGedcomYear.html">extractGedcomYear</a></span><span class="op">(</span><span class="va">dates_raw</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1775 1852 1835 1814 1844 1880   NA</span></span></code></pre></div>
 <p>A typical use: add a <code>birth_year</code> column robust to
@@ -486,9 +428,9 @@ in one call:</p>
 <span><span class="va">tmp_coord</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".ged"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines</a></span><span class="op">(</span><span class="va">coord_ged</span>, <span class="va">tmp_coord</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">ped_raw</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcom.html">readGedcom</a></span><span class="op">(</span><span class="va">tmp_coord</span>, remove_empty_cols <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">ped_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcom.html">readGedcom</a></span><span class="op">(</span><span class="va">tmp_coord</span>, remove_empty_cols <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">ped_conv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/convertGedcomCoords.html">convertGedcomCoords</a></span><span class="op">(</span><span class="va">ped_raw</span><span class="op">)</span></span>
-<span><span class="va">ped_raw</span><span class="op">[</span>,  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"burial_lat"</span>, <span class="st">"burial_long"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">ped_raw</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"burial_lat"</span>, <span class="st">"burial_long"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;                 name burial_lat burial_long</span></span>
 <span><span class="co">#&gt; 1 William Pitt Waugh   N36.1548    W81.1845</span></span>
 <span><span class="va">ped_conv</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"burial_lat"</span>, <span class="st">"burial_long"</span><span class="op">)</span><span class="op">]</span></span>
@@ -509,20 +451,6 @@ in one call:</p>
 package provides the next layer of analysis: computing pairwise
 relatedness, tracing paternal lineages, and identifying Y-chromosome
 carriers.</p>
-<p>The strategy for the Waugh paternity question is:</p>
-<ol style="list-style-type: decimal">
-<li>Identify the focal individual and trace his Y-chromosome line back
-to William Pitt Waugh Sr.</li>
-<li>Flag all individuals descended from William Pitt Waugh Sr. who are
-<strong>not</strong> in W. Henderson Waugh’s branch — these are
-descendants of William Pitt Waugh Jr. (the Segraves line).</li>
-<li>Among those, find living males: they carry the same Y chromosome as
-William Pitt Waugh Sr. and are potential DNA match candidates.</li>
-<li>A Y-chromosome match between a living Segraves-line male and the
-focal individual (or his close Y-line relatives) would strongly confirm
-that W. Henderson Waugh and William Pitt Waugh Jr. share the same
-father.</li>
-</ol>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-Computing-Lab/BGmisc/" class="external-link">BGmisc</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -531,108 +459,63 @@ father.</li>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     buildTreeGrid, getWikiTreeSummary, readGed, readgedcom, readGedcom,</span></span>
 <span><span class="co">#&gt;     readWikifamilytree, royal92, traceTreePaths</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-Computing-Lab/ggpedigree/" class="external-link">ggpedigree</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Convert IDs to numeric (required by BGmisc)</span></span>
-<span><span class="va">ped_num</span> <span class="op">&lt;-</span> <span class="va">ped</span></span>
-<span><span class="va">ped_num</span><span class="op">$</span><span class="va">personID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">ped_num</span><span class="op">$</span><span class="va">personID</span><span class="op">)</span></span>
-<span><span class="va">ped_num</span><span class="op">$</span><span class="va">momID</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">ped_num</span><span class="op">$</span><span class="va">momID</span><span class="op">)</span></span>
-<span><span class="va">ped_num</span><span class="op">$</span><span class="va">dadID</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">ped_num</span><span class="op">$</span><span class="va">dadID</span><span class="op">)</span></span>
+<span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcom.html">readGedcom</a></span><span class="op">(</span><span class="va">tmp_ged</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Structure pedigree into family units and compute paternal line IDs</span></span>
-<span><span class="va">ged_ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-computing-lab.github.io/BGmisc/reference/ped2fam.html" class="external-link">ped2fam</a></span><span class="op">(</span><span class="va">ped_num</span>, personID <span class="op">=</span> <span class="st">"personID"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://r-computing-lab.github.io/BGmisc/reference/ped2paternal.html" class="external-link">ped2paternal</a></span><span class="op">(</span>personID <span class="op">=</span> <span class="st">"personID"</span>, momID <span class="op">=</span> <span class="st">"momID"</span>, dadID <span class="op">=</span> <span class="st">"dadID"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Identify John William "Bud" Waugh as the focal person's great-grandfather</span></span>
-<span><span class="co"># (the deepest ancestor in our sample with a known paternal chain)</span></span>
-<span><span class="va">focal_ID</span>  <span class="op">&lt;-</span> <span class="va">ged_ped</span><span class="op">$</span><span class="va">personID</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"John William"</span>, <span class="va">ged_ped</span><span class="op">$</span><span class="va">name</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">y_line_ID</span> <span class="op">&lt;-</span> <span class="va">ged_ped</span><span class="op">$</span><span class="va">patID</span><span class="op">[</span><span class="va">ged_ped</span><span class="op">$</span><span class="va">personID</span> <span class="op">==</span> <span class="va">focal_ID</span><span class="op">]</span></span>
-<span></span>
-<span><span class="co"># Flag Y-line membership — green branch = focal person's line</span></span>
-<span><span class="va">ged_ped</span><span class="op">$</span><span class="va">y_line</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">ged_ped</span><span class="op">$</span><span class="va">patID</span> <span class="op">==</span> <span class="va">y_line_ID</span>, <span class="st">"Y Line"</span>, <span class="st">"Other Lines"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Check the pedigree is acyclic and well-formed</span></span>
+<span><span class="va">checks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-computing-lab.github.io/BGmisc/reference/checkPedigreeNetwork.html" class="external-link">checkPedigreeNetwork</a></span><span class="op">(</span><span class="va">ped</span>,</span>
+<span>  personID <span class="op">=</span> <span class="st">"personID"</span>, momID <span class="op">=</span> <span class="st">"momID"</span>, dadID <span class="op">=</span> <span class="st">"dadID"</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">checks</span><span class="op">$</span><span class="va">is_acyclic</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p>Please see the vignette “From GEDCOM to pedigree analysis” for a
+longer walkthrough of these steps using the W. Henderson Waugh family
+tree as a case study.</p>
+</div>
+<div class="section level2">
+<h2 id="from-gedcom-to-pedigree-diagrams">From GEDCOM to pedigree diagrams<a class="anchor" aria-label="anchor" href="#from-gedcom-to-pedigree-diagrams"></a>
+</h2>
+<p>You can also visualize the family tree with the
+<code>ggpedigree</code> package. The <code>config</code> argument allows
+you to customize the plot with a wide range of options.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://r-computing-lab.github.io/ggpedigree/reference/ggPedigree.html" class="external-link">ggpedigree</a></span><span class="op">(</span></span>
-<span>  <span class="va">ged_ped</span>,</span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-Computing-Lab/BGmisc/" class="external-link">BGmisc</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-Computing-Lab/ggpedigree/" class="external-link">ggpedigree</a></span><span class="op">)</span></span>
+<span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcom.html">readGedcom</a></span><span class="op">(</span><span class="va">tmp_ged</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://r-computing-lab.github.io/ggpedigree/reference/ggPedigree.html" class="external-link">ggpedigree</a></span><span class="op">(</span></span>
+<span>  <span class="va">ped</span>,</span>
 <span>  personID <span class="op">=</span> <span class="st">"personID"</span>,</span>
-<span>  momID    <span class="op">=</span> <span class="st">"momID"</span>,</span>
-<span>  dadID    <span class="op">=</span> <span class="st">"dadID"</span>,</span>
-<span>  sexVar   <span class="op">=</span> <span class="st">"sex"</span>,</span>
-<span>  config   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    label_include  <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    label_column   <span class="op">=</span> <span class="st">"name"</span>,</span>
-<span>    label_text_size <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  momID <span class="op">=</span> <span class="st">"momID"</span>,</span>
+<span>  dadID <span class="op">=</span> <span class="st">"dadID"</span>,</span>
+<span>  sexVar <span class="op">=</span> <span class="st">"sex"</span>,</span>
+<span>  config <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    label_include <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    code_male <span class="op">=</span> <span class="st">"M"</span>,</span>
 <span>    code_female <span class="op">=</span> <span class="st">"F"</span>,</span>
-<span>    segment_lineage_include          <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    segment_lineage_focal_personID   <span class="op">=</span> <span class="va">focal_ID</span>,</span>
-<span>    segment_lineage_component        <span class="op">=</span> <span class="st">"paternal"</span>,</span>
-<span>    segment_lineage_legend_title     <span class="op">=</span> <span class="st">"Patriline"</span>,</span>
-<span>  add_phantoms <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  founder_order_seed <span class="op">=</span> <span class="fl">1L</span></span>
+<span>    label_column <span class="op">=</span> <span class="st">"name"</span>,</span>
+<span>    label_text_size <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>    focal_fill_include <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    sex_color_include <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>    focal_fill_personID <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    focal_fill_method <span class="op">=</span> <span class="st">"viridis_c"</span>,</span>
+<span>    segment_lineage_include <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    segment_lineage_focal_personID <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    segment_lineage_component <span class="op">=</span> <span class="st">"paternal"</span>,</span>
+<span>    segment_lineage_legend_title <span class="op">=</span> <span class="st">"Patriline"</span>,</span>
+<span>    add_phantoms <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in buildPlotConfig(default_config = default_config, config = config, :</span></span>
-<span><span class="co">#&gt; The following config values are not recognized by getDefaultPlotConfig():</span></span>
-<span><span class="co">#&gt; segment_lineage_include, segment_lineage_focal_personID,</span></span>
-<span><span class="co">#&gt; segment_lineage_component, segment_lineage_legend_title, founder_order_seed</span></span>
 <span><span class="co">#&gt; REPAIR IN EARLY ALPHA</span></span></code></pre></div>
-<p><img src="getting-started_files/figure-html/pedigree-plot-1.png" class="r-plt" alt="Pedigree plot of the Waugh family sample showing William Pitt Waugh Sr. at top with two branches: the focal person's Y line through W. Henderson Waugh on the left, and the Segraves Y-DNA candidate branch through William Pitt Waugh Jr. on the right." width="672"></p>
-<p>The plot shows both branches descending from William Pitt Waugh Sr.:
-the green (focal) line through W. Henderson Waugh on the left, and the
-Segraves branch through William Pitt Waugh Jr. on the right. These are
-distinct people with distinct IDs — the shared surname is what makes the
-tree appear circular at first glance, but there is no loop.</p>
-<p>In the full Waugh analysis, <code>addPaternalChain()</code> and
-<code>addPaternalLineFlag()</code> from <code>BGmisc</code> extend this
-further by flagging descendants of specific ancestors. The key variable
-is:</p>
+<p><img src="getting-started_files/figure-html/ggped-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">in_granddad_henderson_line_not_dad_henderson_line</span> <span class="op">=</span></span>
-<span>  <span class="va">in_granddad_henderson_line</span> <span class="op">&amp;</span> <span class="op">!</span><span class="va">in_dad_henderson_line</span></span></code></pre></div>
-<p>This isolates individuals descended from William Pitt Waugh Sr. but
-<strong>not</strong> through W. Henderson Waugh — i.e., the Segraves
-(William Pitt Jr.) branch — who are the primary Y-DNA match candidates.
-<code><a href="https://r-computing-lab.github.io/ggpedigree/reference/ggPedigreeInteractive.html" class="external-link">ggPedigreeInteractive()</a></code> renders the full tree with nodes
-colored by additive genetic relatedness to the focal individual and
-edges highlighted by patriline membership.</p>
-</div>
-<div class="section level2">
-<h2 id="working-with-a-real-gedcom-file">Working with a real GEDCOM file<a class="anchor" aria-label="anchor" href="#working-with-a-real-gedcom-file"></a>
-</h2>
-<p>To apply this workflow to a real Ancestry.com export:</p>
+<code class="sourceCode R"><span></span>
+<span><span class="co">## Cleaning up</span></span></code></pre></div>
+<p>Please see the vignettes from the <code>ggpedigree</code> package for
+more on customizing pedigree diagrams with
+<code><a href="https://r-computing-lab.github.io/ggpedigree/reference/ggPedigree.html" class="external-link">ggpedigree()</a></code>.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Unzip the Ancestry export</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="st">"W. Henderson Waugh Family Tree.zip"</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Peek at the raw file to orient yourself before parsing</span></span>
-<span><span class="va">raw_ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="st">"W. Henderson Waugh Family Tree.ged"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">raw_ged</span>, <span class="fl">15</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Locate the anchor individual by name</span></span>
-<span><span class="va">line_num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"1 NAME W. Henderson /Waugh/"</span>, <span class="va">raw_ged</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">raw_ged</span><span class="op">[</span><span class="va">line_num</span><span class="op">:</span><span class="op">(</span><span class="va">line_num</span> <span class="op">+</span> <span class="fl">20</span><span class="op">)</span><span class="op">]</span></span>
-<span></span>
-<span><span class="co"># Parse all INDI blocks</span></span>
-<span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcom.html">readGedcom</a></span><span class="op">(</span><span class="st">"W. Henderson Waugh Family Tree.ged"</span>,</span>
-<span>                  remove_empty_cols <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Add year columns robust to approximate dates</span></span>
-<span><span class="va">ped</span><span class="op">$</span><span class="va">birth_year</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractGedcomYear.html">extractGedcomYear</a></span><span class="op">(</span><span class="va">ped</span><span class="op">$</span><span class="va">birth_date</span><span class="op">)</span></span>
-<span><span class="va">ped</span><span class="op">$</span><span class="va">death_year</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractGedcomYear.html">extractGedcomYear</a></span><span class="op">(</span><span class="va">ped</span><span class="op">$</span><span class="va">death_date</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Quick overview</span></span>
-<span><span class="fu"><a href="../reference/summarizeGedcom.html">summarizeGedcom</a></span><span class="op">(</span><span class="va">ped</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Parse family/marriage records</span></span>
-<span><span class="va">fam</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcomFamilies.html">readGedcomFamilies</a></span><span class="op">(</span><span class="st">"W. Henderson Waugh Family Tree.ged"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p>Note that Ancestry.com regenerates person IDs each time you export,
-so ID values will differ between exports. Always locate individuals by
-name or birth date rather than by a hardcoded ID.</p>
-</div>
-<div class="section level2">
-<h2 id="cleaning-up">Cleaning up<a class="anchor" aria-label="anchor" href="#cleaning-up"></a>
-</h2>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tmp_ged</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -650,29 +533,22 @@ name or birth date rather than by a hardcoded ID.</p>
 | <code>gedcomLonToNumeric(x)</code> | Convert a longitude string vector
 |</p>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-      </div>
-
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by S. Mason Garrison.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by S. Mason Garrison.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
-
 
 
 

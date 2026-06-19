@@ -1,0 +1,38 @@
+# Package index
+
+## All functions
+
+- [`applyTagMappings()`](https://r-computing-lab.github.io/tidygedcom/reference/applyTagMappings.md)
+  : Apply Tag Mappings to a Line
+- [`convertGedcomCoords()`](https://r-computing-lab.github.io/tidygedcom/reference/convertGedcomCoords.md)
+  : Convert GEDCOM Coordinate Columns to Numeric
+- [`countPatternRows()`](https://r-computing-lab.github.io/tidygedcom/reference/countPatternRows.md)
+  : Count GEDCOM Pattern Rows
+- [`extractGedcomYear()`](https://r-computing-lab.github.io/tidygedcom/reference/extractGedcomYear.md)
+  : Extract Year from a GEDCOM Date String
+- [`gedcomLatToNumeric()`](https://r-computing-lab.github.io/tidygedcom/reference/gedcomLatToNumeric.md)
+  : Convert GEDCOM Latitude String to Numeric
+- [`gedcomLonToNumeric()`](https://r-computing-lab.github.io/tidygedcom/reference/gedcomLonToNumeric.md)
+  : Convert GEDCOM Longitude String to Numeric
+- [`hello()`](https://r-computing-lab.github.io/tidygedcom/reference/hello.md)
+  : Hello, World!
+- [`initializeRecord()`](https://r-computing-lab.github.io/tidygedcom/reference/initializeRecord.md)
+  : Initialize an Empty Individual Record
+- [`mapFAMS2parents()`](https://r-computing-lab.github.io/tidygedcom/reference/mapFAMS2parents.md)
+  : Create a Mapping from Family IDs to Parent IDs
+- [`processEventLine()`](https://r-computing-lab.github.io/tidygedcom/reference/processEventLine.md)
+  : Process Event Lines (Birth or Death)
+- [`readGedcom()`](https://r-computing-lab.github.io/tidygedcom/reference/readGedcom.md)
+  [`readGed()`](https://r-computing-lab.github.io/tidygedcom/reference/readGedcom.md)
+  [`readgedcom()`](https://r-computing-lab.github.io/tidygedcom/reference/readGedcom.md)
+  : Read a GEDCOM File
+- [`readGedcomFamilies()`](https://r-computing-lab.github.io/tidygedcom/reference/readGedcomFamilies.md)
+  : Read Family Records from a GEDCOM File
+- [`readWikifamilytree()`](https://r-computing-lab.github.io/tidygedcom/reference/readWikifamilytree.md)
+  : Read Wiki Family Tree
+- [`royal92`](https://r-computing-lab.github.io/tidygedcom/reference/royal92.md)
+  : Royal pedigree data from 1992
+- [`summarizeGedcom()`](https://r-computing-lab.github.io/tidygedcom/reference/summarizeGedcom.md)
+  : Summarise a Parsed GEDCOM Data Frame
+- [`traceTreePaths()`](https://r-computing-lab.github.io/tidygedcom/reference/traceTreePaths.md)
+  : Trace paths between individuals in a family tree grid

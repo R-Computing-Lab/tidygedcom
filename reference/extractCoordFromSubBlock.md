@@ -1,0 +1,33 @@
+# Extract Coordinate from Event Sub-Block
+
+Given a sub-block of GEDCOM lines corresponding to an event (e.g., birth
+or death) and a coordinate tag ("LATI" or "LONG"), this function
+searches all lines in the sub-block for the first occurrence of the tag
+as a whole word. This approach allows it to find coordinates regardless
+of whether they are direct children of the event, nested under a "PLAC"
+structure, or nested under a "MAP" structure within "PLAC". If a
+matching line is found, it extracts the coordinate information using the
+\`extractInfo()\` function; otherwise, it returns \`NA_character\_\`.
+
+## Usage
+
+``` r
+extractCoordFromSubBlock(sub_block, tag)
+```
+
+## Arguments
+
+- sub_block:
+
+  A character vector of GEDCOM lines representing the sub-block of an
+  event (e.g., birth or death) from which to extract the coordinate.
+
+- tag:
+
+  A character string representing the coordinate tag to look for ("LATI"
+  or "LONG").
+
+## Value
+
+A character string with the extracted coordinate information from the
+first matching line, or \`NA_character\_\` if no matching line is found.
