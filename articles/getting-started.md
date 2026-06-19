@@ -13,27 +13,29 @@ MyHeritage, Gramps, and others. A typical workflow looks like this:
 
 The file itself is a structured text file. Here is a small slice:
 
-    0 @I1@ INDI
-    1 NAME William Pitt /Waugh/
-    1 SEX M
-    1 BIRT
-    2 DATE 28 APR 1775
-    2 PLAC Adams County, Pennsylvania, USA
-    1 DEAT
-    2 DATE 14 AUG 1852
-    2 PLAC Wilkes County, North Carolina, USA
-    1 FAMS @F28@
-    1 FAMS @F29@
+``` r
+0 @I1@ INDI
+1 NAME William Pitt /Waugh/
+1 SEX M
+1 BIRT
+2 DATE 28 APR 1775
+2 PLAC Adams County, Pennsylvania, USA
+1 DEAT
+2 DATE 14 AUG 1852
+2 PLAC Wilkes County, North Carolina, USA
+1 FAMS @F28@
+1 FAMS @F29@
 
-    0 @F28@ FAM
-    1 HUSB @I1@
-    1 WIFE @I2@
-    1 CHIL @I3@
+0 @F28@ FAM
+1 HUSB @I1@
+1 WIFE @I2@
+1 CHIL @I3@
 
-    0 @F29@ FAM
-    1 HUSB @I1@
-    1 WIFE @I4@
-    1 CHIL @I5@
+0 @F29@ FAM
+1 HUSB @I1@
+1 WIFE @I4@
+1 CHIL @I5@
+```
 
 Individual records (`INDI`) hold person-level facts; family records
 (`FAM`) link spouses and children and carry marriage or divorce events.
@@ -398,9 +400,9 @@ You can also call the underlying converters directly:
 
 ``` r
 
-gedcomLatToNumeric(c("N36.1548", "S33.8688", NA))
+gedcomLat2Numeric(c("N36.1548", "S33.8688", NA))
 #> [1]  36.1548 -33.8688       NA
-gedcomLonToNumeric(c("W81.1845", "E151.2093", NA))
+gedcomLon2Numeric(c("W81.1845", "E151.2093", NA))
 #> [1] -81.1845 151.2093       NA
 ```
 
@@ -499,6 +501,5 @@ Function \| Purpose \|
 family \| \| `summarizeGedcom(df)` \| Coverage counts and percentages \|
 \| `extractGedcomYear(x)` \| Year from any GEDCOM date string \| \|
 `convertGedcomCoords(df)` \| Convert `_lat`/`_long` columns to decimal
-degrees \| \| `gedcomLatToNumeric(x)` \| Convert a latitude string
-vector \| \| `gedcomLonToNumeric(x)` \| Convert a longitude string
-vector \|
+degrees \| \| `gedcomLat2Numeric(x)` \| Convert a latitude string vector
+\| \| `gedcomLon2Numeric(x)` \| Convert a longitude string vector \|

@@ -10,9 +10,9 @@
   : Count GEDCOM Pattern Rows
 - [`extractGedcomYear()`](https://r-computing-lab.github.io/tidygedcom/reference/extractGedcomYear.md)
   : Extract Year from a GEDCOM Date String
-- [`gedcomLatToNumeric()`](https://r-computing-lab.github.io/tidygedcom/reference/gedcomLatToNumeric.md)
+- [`gedcomLat2Numeric()`](https://r-computing-lab.github.io/tidygedcom/reference/gedcomLat2Numeric.md)
   : Convert GEDCOM Latitude String to Numeric
-- [`gedcomLonToNumeric()`](https://r-computing-lab.github.io/tidygedcom/reference/gedcomLonToNumeric.md)
+- [`gedcomLon2Numeric()`](https://r-computing-lab.github.io/tidygedcom/reference/gedcomLon2Numeric.md)
   : Convert GEDCOM Longitude String to Numeric
 - [`hello()`](https://r-computing-lab.github.io/tidygedcom/reference/hello.md)
   : Hello, World!

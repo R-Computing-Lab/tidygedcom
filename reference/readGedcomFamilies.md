@@ -33,7 +33,8 @@ readGedcomFamilies(
 
 - remove_empty_cols:
 
-  Logical. If \`TRUE\`, drop columns that are entirely \`NA\`.
+  Logical indicating whether to remove columns that are entirely
+  missing.
 
 - ...:
 

@@ -133,7 +133,6 @@ The strategy for the Waugh paternity question is:
 
 ``` r
 
-
 library(BGmisc)
 #> 
 #> Attaching package: 'BGmisc'
@@ -343,7 +342,7 @@ to the focal individual and edges highlighted by patriline membership.
 
 ``` r
 
-unlink(tmp_ged)
+#unlink(tmp_ged)
 ```
 
 ### Summary of functions

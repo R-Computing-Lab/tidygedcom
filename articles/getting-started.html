@@ -79,27 +79,27 @@ page.</li>
 <li>Load it into R with <code><a href="../reference/readGedcom.html">readGedcom()</a></code>.</li>
 </ol>
 <p>The file itself is a structured text file. Here is a small slice:</p>
-<pre><code>0 @I1@ INDI
-1 NAME William Pitt /Waugh/
-1 SEX M
-1 BIRT
-2 DATE 28 APR 1775
-2 PLAC Adams County, Pennsylvania, USA
-1 DEAT
-2 DATE 14 AUG 1852
-2 PLAC Wilkes County, North Carolina, USA
-1 FAMS @F28@
-1 FAMS @F29@
-
-0 @F28@ FAM
-1 HUSB @I1@
-1 WIFE @I2@
-1 CHIL @I3@
-
-0 @F29@ FAM
-1 HUSB @I1@
-1 WIFE @I4@
-1 CHIL @I5@</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="dv">0</span> <span class="sc">@</span>I1<span class="sc">@</span> INDI</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="dv">1</span> NAME William Pitt <span class="sc">/</span>Waugh<span class="sc">/</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="dv">1</span> SEX M</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="dv">1</span> BIRT</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="dv">2</span> DATE <span class="dv">28</span> APR <span class="dv">1775</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="dv">2</span> PLAC Adams County, Pennsylvania, USA</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="dv">1</span> DEAT</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="dv">2</span> DATE <span class="dv">14</span> AUG <span class="dv">1852</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="dv">2</span> PLAC Wilkes County, North Carolina, USA</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="dv">1</span> FAMS <span class="sc">@</span>F28<span class="sc">@</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="dv">1</span> FAMS <span class="sc">@</span>F29<span class="sc">@</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="dv">0</span> <span class="sc">@</span>F28<span class="sc">@</span> FAM</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="dv">1</span> HUSB <span class="sc">@</span>I1<span class="sc">@</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="dv">1</span> WIFE <span class="sc">@</span>I2<span class="sc">@</span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="dv">1</span> CHIL <span class="sc">@</span>I3<span class="sc">@</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="dv">0</span> <span class="sc">@</span>F29<span class="sc">@</span> FAM</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="dv">1</span> HUSB <span class="sc">@</span>I1<span class="sc">@</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="dv">1</span> WIFE <span class="sc">@</span>I4<span class="sc">@</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="dv">1</span> CHIL <span class="sc">@</span>I5<span class="sc">@</span></span></code></pre></div>
 <p>Individual records (<code>INDI</code>) hold person-level facts;
 family records (<code>FAM</code>) link spouses and children and carry
 marriage or divorce events.</p>
@@ -439,9 +439,9 @@ in one call:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tmp_coord</span><span class="op">)</span></span></code></pre></div>
 <p>You can also call the underlying converters directly:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/gedcomLatToNumeric.html">gedcomLatToNumeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"N36.1548"</span>, <span class="st">"S33.8688"</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/gedcomLat2Numeric.html">gedcomLat2Numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"N36.1548"</span>, <span class="st">"S33.8688"</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1]  36.1548 -33.8688       NA</span></span>
-<span><span class="fu"><a href="../reference/gedcomLonToNumeric.html">gedcomLonToNumeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"W81.1845"</span>, <span class="st">"E151.2093"</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/gedcomLon2Numeric.html">gedcomLon2Numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"W81.1845"</span>, <span class="st">"E151.2093"</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] -81.1845 151.2093       NA</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -529,8 +529,8 @@ more on customizing pedigree diagrams with
 <code>extractGedcomYear(x)</code> | Year from any GEDCOM date string | |
 <code>convertGedcomCoords(df)</code> | Convert
 <code>_lat</code>/<code>_long</code> columns to decimal degrees | |
-<code>gedcomLatToNumeric(x)</code> | Convert a latitude string vector |
-| <code>gedcomLonToNumeric(x)</code> | Convert a longitude string vector
+<code>gedcomLat2Numeric(x)</code> | Convert a latitude string vector | |
+<code>gedcomLon2Numeric(x)</code> | Convert a longitude string vector
 |</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
