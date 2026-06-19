@@ -92,8 +92,128 @@ The strategy for the Waugh paternity question is:
 4. A Y-chromosome match between a living Segraves-line male and the focal individual (or his close Y-line relatives) would strongly confirm that W. Henderson Waugh and William Pitt Waugh Jr. share the same father.
 
 ```{r bgmisc-workflow, eval = requireNamespace("BGmisc", quietly = TRUE) && requireNamespace("ggpedigree", quietly = TRUE)}
+```{r build-sample}
 library(BGmisc)
 library(ggpedigree)
+sample_ged <- c(
+  "0 HEAD",
+  "1 GEDC",
+  "2 VERS 5.5.1",
+  "1 CHAR UTF-8",
+
+  # William Pitt Waugh Sr. — the common paternal ancestor
+  "0 @I1@ INDI",
+  "1 NAME William Pitt /Waugh/",
+  "1 SEX M",
+  "1 BIRT",
+  "2 DATE 28 APR 1775",
+  "2 PLAC Adams County, Pennsylvania, USA",
+  "1 DEAT",
+  "2 DATE 14 AUG 1852",
+  "2 PLAC Wilkes County, North Carolina, USA",
+  "1 FAMS @F1@",
+  "1 FAMS @F2@",
+
+  # Matilda Grinton — mother of W. Henderson Waugh
+  "0 @I2@ INDI",
+  "1 NAME Matilda /Grinton/",
+  "1 SEX F",
+  "1 BIRT",
+  "2 DATE ABT 1797",
+  "2 PLAC North Carolina, USA",
+  "1 FAMS @F1@",
+
+  # W. Henderson Waugh — 2nd great-grandfather of focal person
+  "0 @I3@ INDI",
+  "1 NAME W. Henderson /Waugh/",
+  "1 SEX M",
+  "1 BIRT",
+  "2 DATE ABT 1835",
+  "2 PLAC Wilkes County, North Carolina, USA",
+  "1 FAMC @F1@",
+  "1 FAMS @F3@",
+
+  # Martha Law Segraves — mother of William Pitt Waugh Jr.
+  "0 @I4@ INDI",
+  "1 NAME Martha Law /Segraves/",
+  "1 SEX F",
+  "1 BIRT",
+  "2 DATE OCT 1814",
+  "1 FAMS @F2@",
+
+  # William Pitt Waugh Jr. (born William Segraves) — paternal half-brother of W. Henderson
+  "0 @I5@ INDI",
+  "1 NAME William Pitt /Waugh/ Jr.",
+  "1 SEX M",
+  "1 BIRT",
+  "2 DATE 1844",
+  "2 PLAC Wilkes County, North Carolina, USA",
+  "1 DEAT",
+  "2 DATE FEB 1880",
+  "1 FAMC @F2@",
+  "1 FAMS @F4@",
+
+  # Laura Watkins — wife of W. Henderson Waugh
+  "0 @I6@ INDI",
+  "1 NAME Laura /Watkins/",
+  "1 SEX F",
+  "1 BIRT",
+  "2 DATE ABT 1846",
+  "2 PLAC North Carolina, USA",
+  "1 FAMS @F3@",
+
+  # John William (Bud) Waugh — son of W. Henderson; great-grandfather of focal person
+  "0 @I7@ INDI",
+  "1 NAME John William /Waugh/",
+  "1 SEX M",
+  "1 BIRT",
+  "2 DATE ABT JUN 1880",
+  "2 PLAC North Carolina, USA",
+  "1 FAMC @F3@",
+
+  # James Monroe Waugh — son of William Pitt Jr.; Y-DNA candidate branch
+  "0 @I8@ INDI",
+  "1 NAME James Monroe /Waugh/",
+  "1 SEX M",
+  "1 BIRT",
+  "2 DATE 10 NOV 1867",
+  "1 DEAT",
+  "2 DATE 23 JUL 1937",
+  "1 FAMC @F4@",
+
+  # Family 1: William Pitt Sr. + Matilda Grinton -> W. Henderson Waugh
+  "0 @F1@ FAM",
+  "1 HUSB @I1@",
+  "1 WIFE @I2@",
+  "1 CHIL @I3@",
+
+  # Family 2: William Pitt Sr. + Martha Segraves -> William Pitt Jr.
+  # _SREL friend marks this as a non-marital relationship in Ancestry exports
+  "0 @F2@ FAM",
+  "1 HUSB @I1@",
+  "1 WIFE @I4@",
+  "1 CHIL @I5@",
+  "1 _SREL friend",
+
+  # Family 3: W. Henderson Waugh + Laura Watkins
+  "0 @F3@ FAM",
+  "1 HUSB @I3@",
+  "1 WIFE @I6@",
+  "1 CHIL @I7@",
+  "1 MARR",
+  "2 DATE 24 JUN 1877",
+  "2 PLAC Wilkes County, North Carolina, USA",
+
+  # Family 4: William Pitt Jr. + wife
+  "0 @F4@ FAM",
+  "1 HUSB @I5@",
+  "1 CHIL @I8@",
+  "0 TRLR"
+)
+
+tmp_ged <- tempfile(fileext = ".ged")
+writeLines(sample_ged, tmp_ged)
+ped <- readGedcom(tmp_ged, verbose = FALSE)
 
 # Convert IDs to numeric (required by BGmisc)
 ped_num <- ped
