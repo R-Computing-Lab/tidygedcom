@@ -92,7 +92,7 @@ The strategy for the Waugh paternity question is:
 4. A Y-chromosome match between a living Segraves-line male and the focal individual (or his close Y-line relatives) would strongly confirm that W. Henderson Waugh and William Pitt Waugh Jr. share the same father.
 
 ```{r bgmisc-workflow, eval = requireNamespace("BGmisc", quietly = TRUE) && requireNamespace("ggpedigree", quietly = TRUE)}
-```{r build-sample}
+
 library(BGmisc)
 library(ggpedigree)
 sample_ged <- c(
@@ -269,16 +269,11 @@ in_granddad_henderson_line_not_dad_henderson_line =
 This isolates individuals descended from William Pitt Waugh Sr. but **not** through W. Henderson Waugh — i.e., the Segraves (William Pitt Jr.) branch — who are the primary Y-DNA match candidates. `ggPedigreeInteractive()` renders the full tree with nodes colored by additive genetic relatedness to the focal individual and edges highlighted by patriline membership.
 
 
-
-
-
-
 ## Cleaning up
 
 ```{r cleanup}
 unlink(tmp_ged)
 ```
-
 
 
 ## Summary of functions
@@ -292,7 +287,4 @@ unlink(tmp_ged)
 | `convertGedcomCoords(df)` | Convert `_lat`/`_long` columns to decimal degrees |
 | `gedcomLatToNumeric(x)` | Convert a latitude string vector |
 | `gedcomLonToNumeric(x)` | Convert a longitude string vector |
-
-
-
 
