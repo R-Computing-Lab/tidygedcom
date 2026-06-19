@@ -13,29 +13,27 @@ MyHeritage, Gramps, and others. A typical workflow looks like this:
 
 The file itself is a structured text file. Here is a small slice:
 
-``` r
-0 @I1@ INDI
-1 NAME William Pitt /Waugh/
-1 SEX M
-1 BIRT
-2 DATE 28 APR 1775
-2 PLAC Adams County, Pennsylvania, USA
-1 DEAT
-2 DATE 14 AUG 1852
-2 PLAC Wilkes County, North Carolina, USA
-1 FAMS @F28@
-1 FAMS @F29@
+    0 @I1@ INDI
+    1 NAME William Pitt /Waugh/
+    1 SEX M
+    1 BIRT
+    2 DATE 28 APR 1775
+    2 PLAC Adams County, Pennsylvania, USA
+    1 DEAT
+    2 DATE 14 AUG 1852
+    2 PLAC Wilkes County, North Carolina, USA
+    1 FAMS @F28@
+    1 FAMS @F29@
 
-0 @F28@ FAM
-1 HUSB @I1@
-1 WIFE @I2@
-1 CHIL @I3@
+    0 @F28@ FAM
+    1 HUSB @I1@
+    1 WIFE @I2@
+    1 CHIL @I3@
 
-0 @F29@ FAM
-1 HUSB @I1@
-1 WIFE @I4@
-1 CHIL @I5@
-```
+    0 @F29@ FAM
+    1 HUSB @I1@
+    1 WIFE @I4@
+    1 CHIL @I5@
 
 Individual records (`INDI`) hold person-level facts; family records
 (`FAM`) link spouses and children and carry marriage or divorce events.
