@@ -25,7 +25,9 @@ signed decimal degrees. By default, all columns whose names end in `_lat`
 or `_long` are converted.
 }
 \examples{
-df <- data.frame(birth_lat = "N51.5074", birth_long = "W0.1278",
-                 stringsAsFactors = FALSE)
+df <- data.frame(
+  birth_lat = "N51.5074", birth_long = "W0.1278",
+  stringsAsFactors = FALSE
+)
 convertGedcomCoords(df)
 }

@@ -15,8 +15,73 @@ knitr::opts_chunk$set(
 library(tidygedcom)
 ```
 
+## Positioning statement
+
+This genetic genealogy project is a collaboration between two Wake Forest psychology faculty -- SMG and CEW. SMG is a behavioral geneticist with expertise in pedigree analysis and statistical genetics. CEW is a social psychologist with expertise in the self-regulation of emotion. CEW is a direct descendant of W. Henderson Waugh, the focal individual in the family tree, and is interested in understanding his paternal ancestry. SMG is interested in applying her expertise in pedigree analysis to a real-world case study, and developing tools that can be used by other researchers in the field of genetic genealogy. The project is motivated by a desire to understand the historical context of the Waugh family tree, as well as to explore the potential for genetic genealogy to shed light on questions of ancestry and relatedness. The project is also motivated by a desire to contribute to the development of tools and methods for working with genealogical data,
+
+We encourage readers to explore some of the history of the Waugh family tree as recounted [https://thewilkesrecord.com/the-legacy-of-%E2%80%9Cbud%E2%80%9D-mitchell-p2771-149.htm] as well as through the book
+https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832
 
 
+
+# History
+The core research question is one of paternity. William Pitt Waugh (b. 28 April 1775, Adams County, Pennsylvania; d. 14 August 1852, Wilkes County, North Carolina) was a bachelor slaveholder. Historical records show he placed a "Runaway/Fugitive Enslaved Person" notice in the *Alexandria Gazette* on 21 March 1820. His last will and testament, filed in Wilkes County, names no lawful wife.
+
+Evidence in the tree points to two sons born to two different women of color — both outside of marriage:
+
+- **W. Henderson Waugh** (b. approximately 1835, Wilkes County NC), son of Matilda Grinton. The 1860 census lists Matilda's occupation as "House Woman." W. Henderson married Laura Watkins on 24 June 1877 and is the direct paternal ancestor of the focal individual.
+- **William Pitt Waugh Jr.** (b. 1844, Wilkes County NC), born as **William Segraves**, son of Martha Law Segraves. His birth note reads: *"Born out of wedlock to Martha Law Segraves. Uses her surname until 1865. Purported Natural son of William P Waugh (1775–1852)."* He served in the Civil War as "William Segraves, Company E, First Regiment Middle Tennessee Infantry," then took the Waugh name after the war. He was explicitly excluded from William Pitt Waugh's will: *"he did not make any bequest to his purported natural son by Martha Laws, William Segraves."*
+
+W. Henderson Waugh and William Pitt Waugh Jr. are, if the documentary evidence is correct, **paternal half-brothers** — both sons of William Pitt Waugh Sr. by different mothers. The question is whether their shared Y chromosome can be confirmed through genetic genealogy.
+
+The paternal chain from the focal individual back through history is:
+
+| Generation | Individual | Birth |
+||||
+| Self | Christian Emil WAUGH | 29 Apr 1978, Monterey County CA |
+| Father | Gregory Emil Waugh | Jun 1958 |
+| Grandfather | Warner F Waugh | abt 1933, NC |
+| Great-grandfather | John William "Bud" Waugh | abt Jun 1880, NC |
+| 2nd great-grandfather | **W. Henderson Waugh** | abt 1835, NC |
+| 3rd great-grandfather | **William Pitt Waugh Sr.** | 28 Apr 1775, Adams County PA |
+
+Because W. Henderson Waugh's paternity rests on historical record rather than DNA, a Y-chromosome match with a living male descendant of William Pitt Waugh Jr. (the Segraves line) would strongly corroborate that William Pitt Waugh Sr. fathered both half-brothers. Furthermore, the presence of a Y-chromosome match with a living male line descent of a brother of William Pitt Waugh Sr. would also support the paternal link between W. Henderson Waugh and William Pitt Waugh Sr., as well as the broader family tree.
+
+## Working with a real GEDCOM file
+
+To apply this workflow to a real Ancestry.com export:
+
+```{r real-file, eval = FALSE}
+# Unzip the Ancestry export
+unzip("W. Henderson Waugh Family Tree.zip", overwrite = TRUE)
+
+# Peek at the raw file to orient yourself before parsing
+raw_ged <- readLines("W. Henderson Waugh Family Tree.ged")
+head(raw_ged, 15)
+
+# Locate the anchor individual by name
+line_num <- which(grepl("1 NAME W. Henderson /Waugh/", raw_ged, fixed = TRUE))
+raw_ged[line_num:(line_num + 20)]
+
+# Parse all INDI blocks
+ped <- readGedcom("W. Henderson Waugh Family Tree.ged",
+  remove_empty_cols = TRUE, verbose = FALSE
+)
+
+# Add year columns robust to approximate dates
+ped$birth_year <- extractGedcomYear(ped$birth_date)
+ped$death_year <- extractGedcomYear(ped$death_date)
+
+# Quick overview
+summarizeGedcom(ped)
+
+# Parse family/marriage records
+fam <- readGedcomFamilies("W. Henderson Waugh Family Tree.ged", verbose = FALSE)
+```
+
+Note that Ancestry.com regenerates person IDs each time you export, so ID values will differ between exports. Always locate individuals by name or birth date rather than by a hardcoded ID.
+
+## Analyzing the pedigree with BGmisc
 Once the data is in a tidy data frame, the `BGmisc` package provides the next layer of analysis: computing pairwise relatedness, tracing paternal lineages, and identifying Y-chromosome carriers.
 
 The strategy for the Waugh paternity question is:
@@ -142,70 +207,5 @@ unlink(tmp_ged)
 | `gedcomLonToNumeric(x)` | Convert a longitude string vector |
 
 
-## Positioning statement
-
-This genetic genealogy project is a collaboration between two Wake Forest psychology faculty -- SMG and CEW. SMG is a behavioral geneticist with expertise in pedigree analysis and statistical genetics. CEW is a social psychologist with expertise in the self-regulation of emotion. CEW is a direct descendant of W. Henderson Waugh, the focal individual in the family tree, and is interested in understanding his paternal ancestry. SMG is interested in applying her expertise in pedigree analysis to a real-world case study, and developing tools that can be used by other researchers in the field of genetic genealogy. The project is motivated by a desire to understand the historical context of the Waugh family tree, as well as to explore the potential for genetic genealogy to shed light on questions of ancestry and relatedness. The project is also motivated by a desire to contribute to the development of tools and methods for working with genealogical data,
-
-We encourage readers to explore some of the history of the Waugh family tree as recounted [https://thewilkesrecord.com/the-legacy-of-%E2%80%9Cbud%E2%80%9D-mitchell-p2771-149.htm] as well as through the book
-https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832
-
-
-
-# History
-The core research question is one of paternity. William Pitt Waugh (b. 28 April 1775, Adams County, Pennsylvania; d. 14 August 1852, Wilkes County, North Carolina) was a bachelor slaveholder. Historical records show he placed a "Runaway/Fugitive Enslaved Person" notice in the *Alexandria Gazette* on 21 March 1820. His last will and testament, filed in Wilkes County, names no lawful wife.
-
-Evidence in the tree points to two sons born to two different women of color — both outside of marriage:
-
-- **W. Henderson Waugh** (b. approximately 1835, Wilkes County NC), son of Matilda Grinton. The 1860 census lists Matilda's occupation as "House Woman." W. Henderson married Laura Watkins on 24 June 1877 and is the direct paternal ancestor of the focal individual.
-- **William Pitt Waugh Jr.** (b. 1844, Wilkes County NC), born as **William Segraves**, son of Martha Law Segraves. His birth note reads: *"Born out of wedlock to Martha Law Segraves. Uses her surname until 1865. Purported Natural son of William P Waugh (1775–1852)."* He served in the Civil War as "William Segraves, Company E, First Regiment Middle Tennessee Infantry," then took the Waugh name after the war. He was explicitly excluded from William Pitt Waugh's will: *"he did not make any bequest to his purported natural son by Martha Laws, William Segraves."*
-
-W. Henderson Waugh and William Pitt Waugh Jr. are, if the documentary evidence is correct, **paternal half-brothers** — both sons of William Pitt Waugh Sr. by different mothers. The question is whether their shared Y chromosome can be confirmed through genetic genealogy.
-
-The paternal chain from the focal individual back through history is:
-
-| Generation | Individual | Birth |
-||||
-| Self | Christian Emil WAUGH | 29 Apr 1978, Monterey County CA |
-| Father | Gregory Emil Waugh | Jun 1958 |
-| Grandfather | Warner F Waugh | abt 1933, NC |
-| Great-grandfather | John William "Bud" Waugh | abt Jun 1880, NC |
-| 2nd great-grandfather | **W. Henderson Waugh** | abt 1835, NC |
-| 3rd great-grandfather | **William Pitt Waugh Sr.** | 28 Apr 1775, Adams County PA |
-
-Because W. Henderson Waugh's paternity rests on historical record rather than DNA, a Y-chromosome match with a living male descendant of William Pitt Waugh Jr. (the Segraves line) would strongly corroborate that William Pitt Waugh Sr. fathered both half-brothers. Furthermore, the presence of a Y-chromosome match with a living male line descent of a brother of William Pitt Waugh Sr. would also support the paternal link between W. Henderson Waugh and William Pitt Waugh Sr., as well as the broader family tree.
-
-## Working with a real GEDCOM file
-
-To apply this workflow to a real Ancestry.com export:
-
-```{r real-file, eval = FALSE}
-# Unzip the Ancestry export
-unzip("W. Henderson Waugh Family Tree.zip", overwrite = TRUE)
-
-# Peek at the raw file to orient yourself before parsing
-raw_ged <- readLines("W. Henderson Waugh Family Tree.ged")
-head(raw_ged, 15)
-
-# Locate the anchor individual by name
-line_num <- which(grepl("1 NAME W. Henderson /Waugh/", raw_ged, fixed = TRUE))
-raw_ged[line_num:(line_num + 20)]
-
-# Parse all INDI blocks
-ped <- readGedcom("W. Henderson Waugh Family Tree.ged",
-  remove_empty_cols = TRUE, verbose = FALSE
-)
-
-# Add year columns robust to approximate dates
-ped$birth_year <- extractGedcomYear(ped$birth_date)
-ped$death_year <- extractGedcomYear(ped$death_date)
-
-# Quick overview
-summarizeGedcom(ped)
-
-# Parse family/marriage records
-fam <- readGedcomFamilies("W. Henderson Waugh Family Tree.ged", verbose = FALSE)
-```
-
-Note that Ancestry.com regenerates person IDs each time you export, so ID values will differ between exports. Always locate individuals by name or birth date rather than by a hardcoded ID.
 
 
