@@ -9,7 +9,7 @@ parseFamilyBlock(block, verbose = FALSE)
 \arguments{
 \item{block}{Character vector of GEDCOM lines for one FAM record.}
 
-\item{verbose}{Logical. Currently unused.}
+\item{verbose}{Logical. If `TRUE`, print progress messages.}
 }
 \value{
 A named list with family fields, or `NULL` if no family ID is found.

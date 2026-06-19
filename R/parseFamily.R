@@ -4,7 +4,6 @@
 #' one row per family unit. Captures husband, wife, children, marriage event,
 #' and divorce event details.
 #' @inheritParams readGedcom
-#' @param file_path Character string. Path to the GEDCOM file.
 #' @param parse_dates Logical. If `TRUE`, attempt to parse `marr_date` and
 #'   `div_date` into `Date` objects, after stripping common GEDCOM qualifiers.
 #' @return A data frame with one row per `FAM` record and the following columns:
@@ -74,9 +73,8 @@ readGedcomFamilies <- function(file_path,
 }
 
 #' Split GEDCOM Lines into Family Blocks
-#'
+#' @inheritParams readGedcom
 #' @param lines Character vector of lines from a GEDCOM file.
-#' @param verbose Logical. If `TRUE`, print progress messages.
 #' @return A list of character vectors, each representing one FAM record.
 #' @keywords internal
 splitFamilies <- function(lines, verbose = FALSE) {
@@ -100,8 +98,8 @@ splitFamilies <- function(lines, verbose = FALSE) {
 
 #' Parse a GEDCOM Family Block
 #'
+#' @inheritParams readGedcom
 #' @param block Character vector of GEDCOM lines for one FAM record.
-#' @param verbose Logical. Currently unused.
 #' @return A named list with family fields, or `NULL` if no family ID is found.
 #' @keywords internal
 #' @importFrom stringr str_extract str_trim
@@ -206,7 +204,7 @@ processParents <- function(df_temp, datasource, person_id_col = "personID") {
 #' This function scans the data frame and creates a mapping of family IDs
 #' to the corresponding parent IDs.
 #'
-#' @param df_temp A data frame produced by \code{readGedcom()}.
+#' @inheritParams processParents
 #' @param mom_sex Character string indicating the value of sex that corresponds to mothers (default "F").
 #' @param dad_sex Character string indicating the value of sex that corresponds to fathers (default "M").
 #' @return A list mapping family IDs to parent information.
@@ -247,7 +245,7 @@ mapFAMS2parents <- function(df_temp,
 #' This function assigns mother and father IDs to individuals in the data frame
 #' based on the mapping of family IDs to parent IDs. It updates the data frame in place.
 #'
-#' @param df_temp A data frame containing individual information.
+#' @inheritParams processParents
 #' @param family_to_parents A list mapping family IDs to parent IDs.
 #' @return A data frame with added momID and dad_ID columns.
 #' @keywords internal

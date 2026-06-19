@@ -7,7 +7,7 @@
 mapFAMC2parents(df_temp, family_to_parents)
 }
 \arguments{
-\item{df_temp}{A data frame containing individual information.}
+\item{df_temp}{A data frame produced by \code{readGedcom()}.}
 
 \item{family_to_parents}{A list mapping family IDs to parent IDs.}
 }
