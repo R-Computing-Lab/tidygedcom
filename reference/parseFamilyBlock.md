@@ -16,7 +16,7 @@ parseFamilyBlock(block, verbose = FALSE)
 
 - verbose:
 
-  Logical. Currently unused.
+  Logical. If \`TRUE\`, print progress messages.
 
 ## Value
 

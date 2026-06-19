@@ -14,7 +14,8 @@ mapFAMC2parents(df_temp, family_to_parents)
 
 - df_temp:
 
-  A data frame containing individual information.
+  A data frame produced by
+  [`readGedcom()`](https://r-computing-lab.github.io/tidygedcom/reference/readGedcom.md).
 
 - family_to_parents:
 
