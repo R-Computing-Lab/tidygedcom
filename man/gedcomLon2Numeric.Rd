@@ -17,5 +17,5 @@ Converts GEDCOM-style longitude strings like `"E151.2093"` or `"W0.1278"` to
 signed decimal degrees. Returns `NA` for `NA` or unrecognized-prefix input.
 }
 \examples{
-gedcomLonToNumeric(c("E151.2093", "W0.1278", NA))
+gedcomLon2Numeric(c("E151.2093", "W0.1278", NA))
 }

@@ -24,7 +24,7 @@ gedcomLat2Numeric <- function(x) {
 #' @param x Character vector of GEDCOM longitude values.
 #' @return Numeric vector of decimal degrees (positive = E, negative = W).
 #' @examples
-#' gedcomLonToNumeric(c("E151.2093", "W0.1278", NA))
+#' gedcomLon2Numeric(c("E151.2093", "W0.1278", NA))
 #' @export
 gedcomLon2Numeric <- function(x) {
   out <- rep(NA_real_, length(x))

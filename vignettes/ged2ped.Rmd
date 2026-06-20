@@ -2,7 +2,7 @@
 title: "GEDCOM to Pedigree Analysis"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{
+  %\VignetteIndexEntry{GEDCOM to Pedigree Analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -91,7 +91,7 @@ The strategy for the Waugh paternity question is:
 3. Among those, find living males: they carry the same Y chromosome as William Pitt Waugh Sr. and are potential DNA match candidates.
 4. A Y-chromosome match between a living Segraves-line male and the focal individual (or his close Y-line relatives) would strongly confirm that W. Henderson Waugh and William Pitt Waugh Jr. share the same father.
 
-```{r bgmisc-workflow, eval = requireNamespace("BGmisc", quietly = TRUE) && requireNamespace("ggpedigree", quietly = TRUE)}
+```{r bgmisc-workflow, eval = requireNamespace("BGmisc", quietly = TRUE) && requireNamespace("ggpedigree", quietly = TRUE), eval = FALSE}
 library(BGmisc)
 library(ggpedigree)
 sample_ged <- c(
@@ -233,7 +233,7 @@ y_line_ID <- ged_ped$patID[ged_ped$personID == focal_ID]
 ged_ped$y_line <- ifelse(ged_ped$patID == y_line_ID, "Y Line", "Other Lines")
 ```
 
-```{r pedigree-plot, eval = requireNamespace("BGmisc", quietly = TRUE) && requireNamespace("ggpedigree", quietly = TRUE), fig.width = 7, fig.height = 4, fig.alt = "Pedigree plot of the Waugh family sample showing William Pitt Waugh Sr. at top with two branches: the focal person's Y line through W. Henderson Waugh on the left, and the Segraves Y-DNA candidate branch through William Pitt Waugh Jr. on the right."}
+```{r pedigree-plot, eval = requireNamespace("BGmisc", quietly = TRUE) && requireNamespace("ggpedigree", quietly = TRUE), fig.width = 7, fig.height = 4, fig.alt = "Pedigree plot of the Waugh family sample showing William Pitt Waugh Sr. at top with two branches: the focal person's Y line through W. Henderson Waugh on the left, and the Segraves Y-DNA candidate branch through William Pitt Waugh Jr. on the right.", eval = FALSE}
 ggpedigree(
   ged_ped,
   personID = "personID",
@@ -270,8 +270,8 @@ This isolates individuals descended from William Pitt Waugh Sr. but **not** thro
 
 ## Cleaning up
 
-```{r cleanup}
-# unlink(tmp_ged)
+```{r cleanup, eval = FALSE}
+#unlink(tmp_ged)
 ```
 
 
