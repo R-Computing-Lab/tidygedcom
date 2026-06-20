@@ -14,11 +14,8 @@ BugReports: https://github.com/R-Computing-Lab/tidygedcom/issues
 Depends: 
     R (>= 3.5.0)
 Imports: 
-    data.table,
     igraph,
-    Matrix,
     methods,
-    stats,
     stringr
 Suggests: 
     BGmisc,
