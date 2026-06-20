@@ -134,12 +134,6 @@ The strategy for the Waugh paternity question is:
 ``` r
 
 library(BGmisc)
-#> 
-#> Attaching package: 'BGmisc'
-#> The following objects are masked from 'package:tidygedcom':
-#> 
-#>     buildTreeGrid, getWikiTreeSummary, readGed, readgedcom, readGedcom,
-#>     readWikifamilytree, royal92, traceTreePaths
 library(ggpedigree)
 sample_ged <- c(
   "0 HEAD",
@@ -302,18 +296,7 @@ ggpedigree(
     founder_order_seed = 1L
   )
 )
-#> Warning in buildPlotConfig(default_config = default_config, config = config, :
-#> The following config values are not recognized by getDefaultPlotConfig():
-#> segment_lineage_include, segment_lineage_focal_personID,
-#> segment_lineage_component, segment_lineage_legend_title, founder_order_seed
-#> REPAIR IN EARLY ALPHA
 ```
-
-![Pedigree plot of the Waugh family sample showing William Pitt Waugh
-Sr. at top with two branches: the focal person's Y line through W.
-Henderson Waugh on the left, and the Segraves Y-DNA candidate branch
-through William Pitt Waugh Jr. on the
-right.](ged2ped_files/figure-html/pedigree-plot-1.png)
 
 The plot shows both branches descending from William Pitt Waugh Sr.: the
 green (focal) line through W. Henderson Waugh on the left, and the
@@ -342,7 +325,7 @@ to the focal individual and edges highlighted by patriline membership.
 
 ``` r
 
-# unlink(tmp_ged)
+#unlink(tmp_ged)
 ```
 
 ### Summary of functions

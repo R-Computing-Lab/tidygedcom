@@ -23,6 +23,6 @@ Numeric vector of decimal degrees (positive = E, negative = W).
 ## Examples
 
 ``` r
-gedcomLonToNumeric(c("E151.2093", "W0.1278", NA))
-#> Error in gedcomLonToNumeric(c("E151.2093", "W0.1278", NA)): could not find function "gedcomLonToNumeric"
+gedcomLon2Numeric(c("E151.2093", "W0.1278", NA))
+#> [1] 151.2093  -0.1278       NA
 ```

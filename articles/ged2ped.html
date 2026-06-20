@@ -197,12 +197,6 @@ father.</li>
 </ol>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-Computing-Lab/BGmisc/" class="external-link">BGmisc</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'BGmisc'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:tidygedcom':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     buildTreeGrid, getWikiTreeSummary, readGed, readgedcom, readGedcom,</span></span>
-<span><span class="co">#&gt;     readWikifamilytree, royal92, traceTreePaths</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-Computing-Lab/ggpedigree/" class="external-link">ggpedigree</a></span><span class="op">)</span></span>
 <span><span class="va">sample_ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"0 HEAD"</span>,</span>
@@ -361,13 +355,7 @@ father.</li>
 <span>    add_phantoms <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    founder_order_seed <span class="op">=</span> <span class="fl">1L</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in buildPlotConfig(default_config = default_config, config = config, :</span></span>
-<span><span class="co">#&gt; The following config values are not recognized by getDefaultPlotConfig():</span></span>
-<span><span class="co">#&gt; segment_lineage_include, segment_lineage_focal_personID,</span></span>
-<span><span class="co">#&gt; segment_lineage_component, segment_lineage_legend_title, founder_order_seed</span></span>
-<span><span class="co">#&gt; REPAIR IN EARLY ALPHA</span></span></code></pre></div>
-<p><img src="ged2ped_files/figure-html/pedigree-plot-1.png" class="r-plt" alt="Pedigree plot of the Waugh family sample showing William Pitt Waugh Sr. at top with two branches: the focal person's Y line through W. Henderson Waugh on the left, and the Segraves Y-DNA candidate branch through William Pitt Waugh Jr. on the right." width="672"></p>
+<span><span class="op">)</span></span></code></pre></div>
 <p>The plot shows both branches descending from William Pitt Waugh Sr.:
 the green (focal) line through W. Henderson Waugh on the left, and the
 Segraves branch through William Pitt Waugh Jr. on the right. These are
@@ -391,7 +379,7 @@ edges highlighted by patriline membership.</p>
 <h3 id="cleaning-up">Cleaning up<a class="anchor" aria-label="anchor" href="#cleaning-up"></a>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># unlink(tmp_ged)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#unlink(tmp_ged)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="summary-of-functions">Summary of functions<a class="anchor" aria-label="anchor" href="#summary-of-functions"></a>

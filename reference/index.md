@@ -14,8 +14,6 @@
   : Convert GEDCOM Latitude String to Numeric
 - [`gedcomLon2Numeric()`](https://r-computing-lab.github.io/tidygedcom/reference/gedcomLon2Numeric.md)
   : Convert GEDCOM Longitude String to Numeric
-- [`hello()`](https://r-computing-lab.github.io/tidygedcom/reference/hello.md)
-  : Hello, World!
 - [`initializeRecord()`](https://r-computing-lab.github.io/tidygedcom/reference/initializeRecord.md)
   : Initialize an Empty Individual Record
 - [`mapFAMS2parents()`](https://r-computing-lab.github.io/tidygedcom/reference/mapFAMS2parents.md)

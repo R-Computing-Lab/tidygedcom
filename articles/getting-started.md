@@ -13,180 +13,152 @@ MyHeritage, Gramps, and others. A typical workflow looks like this:
 
 The file itself is a structured text file. Here is a small slice:
 
-    0 @I1@ INDI
-    1 NAME William Pitt /Waugh/
-    1 SEX M
-    1 BIRT
-    2 DATE 28 APR 1775
-    2 PLAC Adams County, Pennsylvania, USA
-    1 DEAT
-    2 DATE 14 AUG 1852
-    2 PLAC Wilkes County, North Carolina, USA
-    1 FAMS @F28@
-    1 FAMS @F29@
+\`\`\`{gedcom-sample, eval = FALSE} 0 @I1@ INDI 1 NAME William Pitt
+/Waugh/ 1 SEX M 1 BIRT 2 DATE 28 APR 1775 2 PLAC Adams County,
+Pennsylvania, USA 1 DEAT 2 DATE 14 AUG 1852 2 PLAC Wilkes County, North
+Carolina, USA 1 FAMS @F28@ 1 FAMS @F29@
 
-    0 @F28@ FAM
-    1 HUSB @I1@
-    1 WIFE @I2@
-    1 CHIL @I3@
+0 @F28@ FAM 1 HUSB @I1@ 1 WIFE @I2@ 1 CHIL @I3@
 
-    0 @F29@ FAM
-    1 HUSB @I1@
-    1 WIFE @I4@
-    1 CHIL @I5@
+0 @F29@ FAM 1 HUSB @I1@ 1 WIFE @I4@ 1 CHIL @I5@
 
-Individual records (`INDI`) hold person-level facts; family records
-(`FAM`) link spouses and children and carry marriage or divorce events.
 
-## Why use R for genealogy?
+    Individual records (`INDI`) hold person-level facts; family records (`FAM`) link spouses and children and carry marriage or divorce events. 
 
-The tidygedcom package provides tools for parsing and tidying GEDCOM
-files, making it easier to work with genealogical data in R. R’s
-powerful data manipulation capabilities allow researchers to clean,
-analyze, and visualize genealogical data in ways that may not be
-possible with traditional genealogy software. Additionally, R’s
-extensive ecosystem of packages for statistical analysis and machine
-learning can be applied to genealogical data to uncover patterns and
-insights that may not be immediately apparent.
 
-This vignette uses a real family tree as its running example: the W.
-Henderson Waugh Family Tree. We’ll discuss more about our running
-example in another vignette. (But briefly, the Waugh family tree is a
-genetic genealogy collaboration between two Wake Forest psychology
-faculty – SMG and CEW. See
-<https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832>
-for more on the historical context of the Waugh family tree.) The
-tidygedcom package provides the tools for parsing and tidying GEDCOM
-files, and the Waugh family tree provides a real-world test case for
-these tools.
 
-## A minimal example
+    ## Why use R for genealogy?
 
-We construct a small GEDCOM in memory that captures the key
-relationships described above. This allows all code examples below to
-run without an external file.
+    The tidygedcom package provides tools for parsing and tidying GEDCOM files, making it easier to work with genealogical data in R. R's powerful data manipulation capabilities allow researchers to clean, analyze, and visualize genealogical data in ways that may not be possible with traditional genealogy software. Additionally, R's extensive ecosystem of packages for statistical analysis and machine learning can be applied to genealogical data to uncover patterns and insights that may not be immediately apparent.
 
-``` r
+    This vignette uses a real family tree as its running example: the W. Henderson Waugh Family Tree. We'll discuss more about our running example in another vignette. (But briefly, the Waugh family tree is a genetic genealogy collaboration between two Wake Forest psychology faculty -- SMG and CEW. See https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832 for more on the historical context of the Waugh family tree.) The tidygedcom package provides the tools for parsing and tidying GEDCOM files, and the Waugh family tree provides a real-world test case for these tools.
 
-sample_ged <- c(
-  "0 HEAD",
-  "1 GEDC",
-  "2 VERS 5.5.1",
-  "1 CHAR UTF-8",
 
-  # William Pitt Waugh Sr. — the common paternal ancestor
-  "0 @I1@ INDI",
-  "1 NAME William Pitt /Waugh/",
-  "1 SEX M",
-  "1 BIRT",
-  "2 DATE 28 APR 1775",
-  "2 PLAC Adams County, Pennsylvania, USA",
-  "1 DEAT",
-  "2 DATE 14 AUG 1852",
-  "2 PLAC Wilkes County, North Carolina, USA",
-  "1 FAMS @F1@",
-  "1 FAMS @F2@",
 
-  # Matilda Grinton — mother of W. Henderson Waugh
-  "0 @I2@ INDI",
-  "1 NAME Matilda /Grinton/",
-  "1 SEX F",
-  "1 BIRT",
-  "2 DATE ABT 1797",
-  "2 PLAC North Carolina, USA",
-  "1 FAMS @F1@",
+    ## A minimal example
 
-  # W. Henderson Waugh — 2nd great-grandfather of focal person
-  "0 @I3@ INDI",
-  "1 NAME W. Henderson /Waugh/",
-  "1 SEX M",
-  "1 BIRT",
-  "2 DATE ABT 1835",
-  "2 PLAC Wilkes County, North Carolina, USA",
-  "1 FAMC @F1@",
-  "1 FAMS @F3@",
+    We construct a small GEDCOM in memory that captures the key relationships described above. This allows all code examples below to run without an external file.
 
-  # Martha Law Segraves — mother of William Pitt Waugh Jr.
-  "0 @I4@ INDI",
-  "1 NAME Martha Law /Segraves/",
-  "1 SEX F",
-  "1 BIRT",
-  "2 DATE OCT 1814",
-  "1 FAMS @F2@",
 
-  # William Pitt Waugh Jr. (born William Segraves) — paternal half-brother of W. Henderson
-  "0 @I5@ INDI",
-  "1 NAME William Pitt /Waugh/ Jr.",
-  "1 SEX M",
-  "1 BIRT",
-  "2 DATE 1844",
-  "2 PLAC Wilkes County, North Carolina, USA",
-  "1 DEAT",
-  "2 DATE FEB 1880",
-  "1 FAMC @F2@",
-  "1 FAMS @F4@",
+    ``` r
+    sample_ged <- c(
+      "0 HEAD",
+      "1 GEDC",
+      "2 VERS 5.5.1",
+      "1 CHAR UTF-8",
 
-  # Laura Watkins — wife of W. Henderson Waugh
-  "0 @I6@ INDI",
-  "1 NAME Laura /Watkins/",
-  "1 SEX F",
-  "1 BIRT",
-  "2 DATE ABT 1846",
-  "2 PLAC North Carolina, USA",
-  "1 FAMS @F3@",
+      # William Pitt Waugh Sr. — the common paternal ancestor
+      "0 @I1@ INDI",
+      "1 NAME William Pitt /Waugh/",
+      "1 SEX M",
+      "1 BIRT",
+      "2 DATE 28 APR 1775",
+      "2 PLAC Adams County, Pennsylvania, USA",
+      "1 DEAT",
+      "2 DATE 14 AUG 1852",
+      "2 PLAC Wilkes County, North Carolina, USA",
+      "1 FAMS @F1@",
+      "1 FAMS @F2@",
 
-  # John William (Bud) Waugh — son of W. Henderson; great-grandfather of focal person
-  "0 @I7@ INDI",
-  "1 NAME John William /Waugh/",
-  "1 SEX M",
-  "1 BIRT",
-  "2 DATE ABT JUN 1880",
-  "2 PLAC North Carolina, USA",
-  "1 FAMC @F3@",
+      # Matilda Grinton — mother of W. Henderson Waugh
+      "0 @I2@ INDI",
+      "1 NAME Matilda /Grinton/",
+      "1 SEX F",
+      "1 BIRT",
+      "2 DATE ABT 1797",
+      "2 PLAC North Carolina, USA",
+      "1 FAMS @F1@",
 
-  # James Monroe Waugh — son of William Pitt Jr.; Y-DNA candidate branch
-  "0 @I8@ INDI",
-  "1 NAME James Monroe /Waugh/",
-  "1 SEX M",
-  "1 BIRT",
-  "2 DATE 10 NOV 1867",
-  "1 DEAT",
-  "2 DATE 23 JUL 1937",
-  "1 FAMC @F4@",
+      # W. Henderson Waugh — 2nd great-grandfather of focal person
+      "0 @I3@ INDI",
+      "1 NAME W. Henderson /Waugh/",
+      "1 SEX M",
+      "1 BIRT",
+      "2 DATE ABT 1835",
+      "2 PLAC Wilkes County, North Carolina, USA",
+      "1 FAMC @F1@",
+      "1 FAMS @F3@",
 
-  # Family 1: William Pitt Sr. + Matilda Grinton -> W. Henderson Waugh
-  "0 @F1@ FAM",
-  "1 HUSB @I1@",
-  "1 WIFE @I2@",
-  "1 CHIL @I3@",
+      # Martha Law Segraves — mother of William Pitt Waugh Jr.
+      "0 @I4@ INDI",
+      "1 NAME Martha Law /Segraves/",
+      "1 SEX F",
+      "1 BIRT",
+      "2 DATE OCT 1814",
+      "1 FAMS @F2@",
 
-  # Family 2: William Pitt Sr. + Martha Segraves -> William Pitt Jr.
-  # _SREL friend marks this as a non-marital relationship in Ancestry exports
-  "0 @F2@ FAM",
-  "1 HUSB @I1@",
-  "1 WIFE @I4@",
-  "1 CHIL @I5@",
-  "1 _SREL friend",
+      # William Pitt Waugh Jr. (born William Segraves) — paternal half-brother of W. Henderson
+      "0 @I5@ INDI",
+      "1 NAME William Pitt /Waugh/ Jr.",
+      "1 SEX M",
+      "1 BIRT",
+      "2 DATE 1844",
+      "2 PLAC Wilkes County, North Carolina, USA",
+      "1 DEAT",
+      "2 DATE FEB 1880",
+      "1 FAMC @F2@",
+      "1 FAMS @F4@",
 
-  # Family 3: W. Henderson Waugh + Laura Watkins
-  "0 @F3@ FAM",
-  "1 HUSB @I3@",
-  "1 WIFE @I6@",
-  "1 CHIL @I7@",
-  "1 MARR",
-  "2 DATE 24 JUN 1877",
-  "2 PLAC Wilkes County, North Carolina, USA",
+      # Laura Watkins — wife of W. Henderson Waugh
+      "0 @I6@ INDI",
+      "1 NAME Laura /Watkins/",
+      "1 SEX F",
+      "1 BIRT",
+      "2 DATE ABT 1846",
+      "2 PLAC North Carolina, USA",
+      "1 FAMS @F3@",
 
-  # Family 4: William Pitt Jr. + wife
-  "0 @F4@ FAM",
-  "1 HUSB @I5@",
-  "1 CHIL @I8@",
-  "0 TRLR"
-)
+      # John William (Bud) Waugh — son of W. Henderson; great-grandfather of focal person
+      "0 @I7@ INDI",
+      "1 NAME John William /Waugh/",
+      "1 SEX M",
+      "1 BIRT",
+      "2 DATE ABT JUN 1880",
+      "2 PLAC North Carolina, USA",
+      "1 FAMC @F3@",
 
-tmp_ged <- tempfile(fileext = ".ged")
-writeLines(sample_ged, tmp_ged)
-```
+      # James Monroe Waugh — son of William Pitt Jr.; Y-DNA candidate branch
+      "0 @I8@ INDI",
+      "1 NAME James Monroe /Waugh/",
+      "1 SEX M",
+      "1 BIRT",
+      "2 DATE 10 NOV 1867",
+      "1 DEAT",
+      "2 DATE 23 JUL 1937",
+      "1 FAMC @F4@",
+
+      # Family 1: William Pitt Sr. + Matilda Grinton -> W. Henderson Waugh
+      "0 @F1@ FAM",
+      "1 HUSB @I1@",
+      "1 WIFE @I2@",
+      "1 CHIL @I3@",
+
+      # Family 2: William Pitt Sr. + Martha Segraves -> William Pitt Jr.
+      # _SREL friend marks this as a non-marital relationship in Ancestry exports
+      "0 @F2@ FAM",
+      "1 HUSB @I1@",
+      "1 WIFE @I4@",
+      "1 CHIL @I5@",
+      "1 _SREL friend",
+
+      # Family 3: W. Henderson Waugh + Laura Watkins
+      "0 @F3@ FAM",
+      "1 HUSB @I3@",
+      "1 WIFE @I6@",
+      "1 CHIL @I7@",
+      "1 MARR",
+      "2 DATE 24 JUN 1877",
+      "2 PLAC Wilkes County, North Carolina, USA",
+
+      # Family 4: William Pitt Jr. + wife
+      "0 @F4@ FAM",
+      "1 HUSB @I5@",
+      "1 CHIL @I8@",
+      "0 TRLR"
+    )
+
+    tmp_ged <- tempfile(fileext = ".ged")
+    writeLines(sample_ged, tmp_ged)
 
 ## Reading individual records: `readGedcom()`
 
