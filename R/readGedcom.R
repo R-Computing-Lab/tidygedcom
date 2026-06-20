@@ -169,10 +169,20 @@ readGedcom <- function(file_path,
   # Split the file into blocks; each block corresponds to one individual.
   blocks <- splitIndividuals(lines, verbose)
 
+  # Build mapping tables once; passed into each block parser rather than rebuilt per block.
+  mappings <- list(
+    event_fields          = make_event_fields(),
+    name_piece_mappings   = make_name_piece_mappings(),
+    attribute_mappings    = make_attribute_mappings(),
+    relationship_mappings = make_relationship_mappings()
+  )
+
   # Parse each individual block into a record (a named list)
   records <- lapply(blocks, parseIndividualBlock,
     pattern_rows = pattern_rows,
-    all_var_names = all_var_names, verbose = verbose
+    all_var_names = all_var_names,
+    mappings = mappings,
+    verbose = verbose
   )
 
   # Remove any NULLs (if a block did not contain an individual id)

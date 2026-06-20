@@ -20,8 +20,9 @@ summarizeGedcom <- function(df) {
   n_female <- if ("sex" %in% colnames(df)) sum(df$sex == "F", na.rm = TRUE) else NA_integer_
   n_unknown_sex <- if (!is.na(n_male)) n_total - n_male - n_female else NA_integer_
 
-  count_non_na <- function(col) if (col %in% colnames(df)) sum(!is.na(df[[col]])) else NA_integer_
-
+  count_non_na <- function(col) {
+    if (col %in% colnames(df)){ sum(!is.na(df[[col]]))} else { NA_integer_ }
+}
   out <- list(
     n_individuals = n_total,
     n_male = n_male,

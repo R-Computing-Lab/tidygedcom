@@ -31,23 +31,63 @@ splitIndividuals <- function(lines, verbose = FALSE) {
   }
   record_idx <- grep("@ (INDI|FAM|SOUR|REPO|OBJE|SUB[MN]|NOTE|_MTCAT)\\b| TRLR\\b", lines)
 
-
-  blocks <- list()
+  blocks <- vector("list", length(indi_idx))
   for (i in seq_along(indi_idx)) {
     start <- indi_idx[i]
-
     next_record <- record_idx[record_idx > start]
-
-    end <- if (length(next_record) > 0) {
-      next_record[1] - 1
-    } else {
-      length(lines)
-    }
-    block <- lines[start:end]
-    blocks[[length(blocks) + 1]] <- block
+    end <- if (length(next_record) > 0) next_record[1] - 1 else length(lines)
+    blocks[[i]] <- lines[start:end]
   }
   if (verbose == TRUE) message("Found ", length(blocks), " individual blocks")
   blocks
+}
+
+
+#' @keywords internal
+make_name_piece_mappings <- function() {
+  list(
+    list(tag = "GIVN",   field = "name_given_pieces", mode = "replace"),
+    list(tag = "NPFX",   field = "name_npfx",         mode = "replace"),
+    list(tag = "NICK",   field = "name_nick",          mode = "replace"),
+    list(tag = "SURN",   field = "name_surn_pieces",   mode = "replace"),
+    list(tag = "NSFX",   field = "name_nsfx",          mode = "replace"),
+    list(tag = "_MARNM", field = "name_marriedsurn",   mode = "replace")
+  )
+}
+
+#' @keywords internal
+make_attribute_mappings <- function() {
+  list(
+    list(tag = "SEX",  field = "sex",                   mode = "replace"),
+    list(tag = "CAST", field = "attribute_caste",       mode = "replace"),
+    list(tag = "DSCR", field = "attribute_description", mode = "replace"),
+    list(tag = "EDUC", field = "attribute_education",   mode = "replace"),
+    list(tag = "IDNO", field = "attribute_idnumber",    mode = "replace"),
+    list(tag = "NATI", field = "attribute_nationality", mode = "replace"),
+    list(tag = "NCHI", field = "attribute_children",    mode = "replace"),
+    list(tag = "NMR",  field = "attribute_marriages",   mode = "replace"),
+    list(tag = "OCCU", field = "attribute_occupation",  mode = "replace"),
+    list(tag = "PROP", field = "attribute_property",    mode = "replace"),
+    list(tag = "RELI", field = "attribute_religion",    mode = "replace"),
+    list(tag = "RESI", field = "attribute_residence",   mode = "append"),
+    list(tag = "SSN",  field = "attribute_ssn",         mode = "replace"),
+    list(tag = "TITL", field = "attribute_title",       mode = "replace")
+  )
+}
+
+#' @keywords internal
+#' @importFrom stringr str_extract
+make_relationship_mappings <- function() {
+  list(
+    list(
+      tag = "FAMC", field = "FAMC", mode = "append",
+      extractor = function(x) stringr::str_extract(x, "(?<=@.)\\d*(?=@)")
+    ),
+    list(
+      tag = "FAMS", field = "FAMS", mode = "append",
+      extractor = function(x) stringr::str_extract(x, "(?<=@.)\\d*(?=@)")
+    )
+  )
 }
 
 
@@ -62,7 +102,7 @@ splitIndividuals <- function(lines, verbose = FALSE) {
 #' @return A named list representing the parsed record for the individual, or NULL if no ID is found.
 #' @keywords internal
 #' @importFrom stringr str_extract str_squish str_replace
-parseIndividualBlock <- function(block, pattern_rows, all_var_names, verbose = FALSE) {
+parseIndividualBlock <- function(block, pattern_rows, all_var_names, mappings, verbose = FALSE) {
   record <- initializeRecord(all_var_names)
   n_lines <- length(block)
 
@@ -85,92 +125,50 @@ parseIndividualBlock <- function(block, pattern_rows, all_var_names, verbose = F
       next
     }
 
-    # Process birth and death events by consuming multiple lines.
+    # Process life events by consuming the sub-block of child lines.
     if (grepl(" BIRT", line) && pattern_rows$num_birt_rows > 0) {
-      record <- processEventLine("birth", block, i, record, pattern_rows)
+      record <- processEventLine("birth", block, i, record, pattern_rows, mappings$event_fields)
       i <- i + 1 # Skip further processing of this line.
       next
     }
     if (grepl("\\bCHR\\b", line) && pattern_rows$num_chr_rows > 0) {
-      record <- processEventLine("chr", block, i, record, pattern_rows)
-      i <- i + 1
+      record <- processEventLine("chr", block, i, record, pattern_rows, mappings$event_fields)
+      i <- i + 1 # Skip further processing of this line.
       next
     }
     if (grepl(" DEAT", line) && pattern_rows$num_deat_rows > 0) {
-      record <- processEventLine("death", block, i, record, pattern_rows)
-      i <- i + 1
+      record <- processEventLine("death", block, i, record, pattern_rows, mappings$event_fields)
+      i <- i + 1 # Skip further processing of this line.
       next
     }
     if (grepl("\\bBURI\\b", line) && pattern_rows$num_buri_rows > 0) {
-      record <- processEventLine("burial", block, i, record, pattern_rows)
-      i <- i + 1
+      record <- processEventLine("burial", block, i, record, pattern_rows, mappings$event_fields)
+      i <- i + 1 # Skip further processing of this line.
       next
     }
 
-    # Process other tags using common mappings.
-    # Define mappings for name pieces (if not handled by NAME tag).
-    name_piece_mappings <- list(
-      list(tag = "GIVN", field = "name_given_pieces", mode = "replace"),
-      list(tag = "NPFX", field = "name_npfx", mode = "replace"),
-      list(tag = "NICK", field = "name_nick", mode = "replace"),
-      list(tag = "SURN", field = "name_surn_pieces", mode = "replace"),
-      list(tag = "NSFX", field = "name_nsfx", mode = "replace"),
-      list(tag = "_MARNM", field = "name_marriedsurn", mode = "replace")
-    )
-    out <- applyTagMappings(line, record, pattern_rows, name_piece_mappings)
+    # Process name-piece, attribute, and relationship tags via shared dispatcher.
+    out <- applyTagMappings(line, record, pattern_rows, mappings$name_piece_mappings)
     if (out$matched) {
       record <- out$record
       i <- i + 1
       next
     }
 
-    # Process attribute tags.
-    attribute_mappings <- list(
-      list(tag = "SEX", field = "sex", mode = "replace"),
-      list(tag = "CAST", field = "attribute_caste", mode = "replace"),
-      list(tag = "DSCR", field = "attribute_description", mode = "replace"),
-      list(tag = "EDUC", field = "attribute_education", mode = "replace"),
-      list(tag = "IDNO", field = "attribute_idnumber", mode = "replace"),
-      list(tag = "NATI", field = "attribute_nationality", mode = "replace"),
-      list(tag = "NCHI", field = "attribute_children", mode = "replace"),
-      list(tag = "NMR", field = "attribute_marriages", mode = "replace"),
-      list(tag = "OCCU", field = "attribute_occupation", mode = "replace"),
-      list(tag = "PROP", field = "attribute_property", mode = "replace"),
-      list(tag = "RELI", field = "attribute_religion", mode = "replace"),
-      list(tag = "RESI", field = "attribute_residence", mode = "append"),
-      list(tag = "SSN", field = "attribute_ssn", mode = "replace"),
-      list(tag = "TITL", field = "attribute_title", mode = "replace")
-    )
-    out <- applyTagMappings(line, record, pattern_rows, attribute_mappings)
+    out <- applyTagMappings(line, record, pattern_rows, mappings$attribute_mappings)
     if (out$matched) {
       record <- out$record
       i <- i + 1
       next
     }
 
-    # Process relationship tags, using a custom extractor.
-    relationship_mappings <- list(
-      list(
-        tag = "FAMC", field = "FAMC", mode = "append",
-        extractor = function(x) stringr::str_extract(x, "(?<=@.)\\d*(?=@)")
-      ),
-      list(
-        tag = "FAMS", field = "FAMS", mode = "append",
-        extractor = function(x) stringr::str_extract(x, "(?<=@.)\\d*(?=@)")
-      )
-    )
-    out <- applyTagMappings(
-      line, record,
-      pattern_rows,
-      relationship_mappings
-    )
+    out <- applyTagMappings(line, record, pattern_rows, mappings$relationship_mappings)
     if (out$matched) {
       record <- out$record
       i <- i + 1
       next
     }
 
-    # Optionally print progress for long records.
     i <- i + 1
   }
 

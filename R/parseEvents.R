@@ -1,3 +1,27 @@
+
+#' @keywords internal
+make_event_fields <- function() {
+  list(
+    birth  = list(
+      children = list(DATE = "birth_date",  PLAC = "birth_place"),
+      subblock = list(LATI = "birth_lat",   LONG = "birth_long")
+    ),
+    chr    = list(
+      children = list(DATE = "chr_date",    PLAC = "chr_place"),
+      subblock = list()
+    ),
+    death  = list(
+      children = list(DATE = "death_date",  PLAC = "death_place", CAUS = "death_caus"),
+      subblock = list(LATI = "death_lat",   LONG = "death_long")
+    ),
+    burial = list(
+      children = list(DATE = "burial_date", PLAC = "burial_place"),
+      subblock = list(LATI = "burial_lat",  LONG = "burial_long")
+    )
+  )
+}
+
+
 #' @title Extract Event Sub-Block
 #' @description
 #' Given a block of GEDCOM lines and a starting index corresponding to an event tag (e.g., "BIRT" or "DEAT"), this function extracts the sub-block of lines that are children of that event. It uses the GEDCOM level structure to determine which lines belong to the event's sub-block, returning all lines until it encounters a line with a level less than or equal to the event's level.
@@ -33,13 +57,13 @@ extractEventSubBlock <- function(block, start_idx) {
 #'
 #' @description Extracts event details (e.g., date, place, cause, latitude, longitude) from a block of GEDCOM lines.
 #' Uses level-aware sub-block parsing so fields are looked up by tag name rather than fixed offsets.
-#' @param event A character string indicating the event type ("birth" or "death").
+#' @param event A character string indicating the event type ("birth", "chr", "death", or "burial").
 #' @param block A character vector of GEDCOM lines.
 #' @param i The current line index where the event tag is found.
 #' @param record A named list representing the individual's record.
 #' @param pattern_rows A list with counts of GEDCOM tag occurrences.
 #' @return The updated record with parsed event information.
-processEventLine <- function(event, block, i, record, pattern_rows) {
+processEventLine <- function(event, block, i, record, pattern_rows, event_fields) {
   sub_block <- extractEventSubBlock(block, i)
   if (length(sub_block) == 0L) {
     return(record)
@@ -50,25 +74,12 @@ processEventLine <- function(event, block, i, record, pattern_rows) {
     vapply(sub_block, extractGedcomLevel, integer(1L)) == event_level + 1L
   ]
 
-  if (event == "birth") {
-    record$birth_date <- extractInfoFromLines(direct_children, "DATE")
-    record$birth_place <- extractInfoFromLines(direct_children, "PLAC")
-    record$birth_lat <- extractCoordFromSubBlock(sub_block, "LATI")
-    record$birth_long <- extractCoordFromSubBlock(sub_block, "LONG")
-  } else if (event == "chr") {
-    record$chr_date <- extractInfoFromLines(direct_children, "DATE")
-    record$chr_place <- extractInfoFromLines(direct_children, "PLAC")
-  } else if (event == "death") {
-    record$death_date <- extractInfoFromLines(direct_children, "DATE")
-    record$death_place <- extractInfoFromLines(direct_children, "PLAC")
-    record$death_caus <- extractInfoFromLines(direct_children, "CAUS")
-    record$death_lat <- extractCoordFromSubBlock(sub_block, "LATI")
-    record$death_long <- extractCoordFromSubBlock(sub_block, "LONG")
-  } else if (event == "burial") {
-    record$burial_date <- extractInfoFromLines(direct_children, "DATE")
-    record$burial_place <- extractInfoFromLines(direct_children, "PLAC")
-    record$burial_lat <- extractCoordFromSubBlock(sub_block, "LATI")
-    record$burial_long <- extractCoordFromSubBlock(sub_block, "LONG")
+  fields <- event_fields[[event]]
+  for (tag in names(fields$children)) {
+    record[[fields$children[[tag]]]] <- extractInfoFromLines(direct_children, tag)
+  }
+  for (tag in names(fields$subblock)) {
+    record[[fields$subblock[[tag]]]] <- extractCoordFromSubBlock(sub_block, tag)
   }
   record
 }
