@@ -60,3 +60,24 @@ parseNameLine <- function(line, record) {
 extractGedcomLevel <- function(line) {
   as.integer(stringr::str_extract(line, "^\\d+"))
 }
+
+#' Extract Year from a GEDCOM Date String
+#'
+#' Extracts a four-digit year from a GEDCOM date string, stripping calendar
+#' escapes (e.g., `\@#DGREGORIAN\@`) and common qualifiers (`ABT`, `BEF`,
+#' `AFT`, `BET`/`AND`) before searching for the year. Returns `NA_integer_`
+#' when no four-digit year is found.
+#'
+#' @param x Character vector of GEDCOM date strings.
+#' @return Integer vector of years.
+#' @examples
+#' extractGedcomYear(c("ABT 1 JAN 1900", "BEF 31 DEC 2000", "1850", NA))
+#' @export
+#' @importFrom stringr str_extract
+extractGedcomYear <- function(x) {
+  x <- gsub("@#D[A-Z ]+@\\s*", "", x)
+  x <- gsub("\\b(?:ABT|BEF|AFT|BET|AND)\\.?\\s*", "", x,
+    ignore.case = TRUE, perl = TRUE
+  )
+  as.integer(stringr::str_extract(x, "\\b\\d{4}\\b"))
+}

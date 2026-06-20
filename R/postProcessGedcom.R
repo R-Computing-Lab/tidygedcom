@@ -111,3 +111,129 @@ collapseNames <- function(verbose, df_temp) {
   }
   df_temp
 }
+
+#' Combine Columns
+#'
+#' This function combines two columns, handling conflicts and merging non-conflicting data.
+#' @param col1 The first column to combine.
+#' @param col2 The second column to combine.
+#' @return A list with the combined column and a flag indicating if the second column should be retained.
+#' @keywords internal
+#' @importFrom stringr str_to_lower
+#'
+# Helper function to check for conflicts and merge columns
+combineColumns <- function(col1, col2) {
+  col1_lower <- stringr::str_to_lower(col1)
+  col2_lower <- stringr::str_to_lower(col2)
+  conflicts <- !is.na(col1_lower) & !is.na(col2_lower) & col1_lower != col2_lower
+  if (any(conflicts)) {
+    warning("Columns have conflicting values. They were not merged.")
+    list(combined = col1, retain_col2 = TRUE)
+  } else {
+    combined <- ifelse(is.na(col1), col2, col1)
+    list(combined = combined, retain_col2 = FALSE)
+  }
+}
+
+#' Process Parents Information from GEDCOM Data
+#'
+#' @description This function adds mother and father IDs to individuals in the data frame
+#'
+#' @param df_temp A data frame produced by \code{readGedcom()}.
+#' @param datasource Character string indicating the data source ("gedcom" or "wiki").
+#' @param person_id_col Character string indicating the column name for individual IDs (default "personID").
+#' @return The updated data frame with parent IDs added.
+#' @keywords internal
+
+processParents <- function(df_temp, datasource, person_id_col = "personID") {
+  if (datasource %in% c("gedcom", "ged")) {
+    required_cols <- c("FAMC", "sex", "FAMS")
+  } else if (datasource == "wiki") {
+    required_cols <- c(person_id_col)
+  } else {
+    stop("Invalid datasource")
+  }
+  if (!all(required_cols %in% colnames(df_temp))) {
+    missing_cols <- setdiff(required_cols, colnames(df_temp))
+    warning("Missing necessary columns: ", paste(missing_cols, collapse = ", "))
+    return(df_temp)
+  }
+  family_to_parents <- mapFAMS2parents(df_temp)
+  if (is.null(family_to_parents) || length(family_to_parents) == 0) {
+    return(df_temp)
+  }
+  df_temp <- mapFAMC2parents(df_temp, family_to_parents)
+  df_temp
+}
+
+#' Create a Mapping from Family IDs to Parent IDs
+#'
+#' This function scans the data frame and creates a mapping of family IDs
+#' to the corresponding parent IDs.
+#'
+#' @inheritParams processParents
+#' @param mom_sex Character string indicating the value of sex that corresponds to mothers (default "F").
+#' @param dad_sex Character string indicating the value of sex that corresponds to fathers (default "M").
+#' @return A list mapping family IDs to parent information.
+mapFAMS2parents <- function(df_temp,
+                            mom_sex = "F",
+                            dad_sex = "M") {
+  if (!all(c("FAMS", "sex") %in% colnames(df_temp))) {
+    warning("The data frame does not contain the necessary columns (FAMS, sex)")
+    return(NULL)
+  }
+  family_to_parents <- list()
+  for (i in seq_len(nrow(df_temp))) {
+    if (!is.na(df_temp$FAMS[i])) {
+      fams_ids <- unlist(strsplit(df_temp$FAMS[i], ", "))
+      for (fams_id in fams_ids) {
+        if (!is.null(family_to_parents[[fams_id]])) {
+          if (df_temp$sex[i] == dad_sex) {
+            family_to_parents[[fams_id]]$father <- df_temp$personID[i]
+          } else if (df_temp$sex[i] == mom_sex) {
+            family_to_parents[[fams_id]]$mother <- df_temp$personID[i]
+          }
+        } else {
+          family_to_parents[[fams_id]] <- list()
+          if (df_temp$sex[i] == dad_sex) {
+            family_to_parents[[fams_id]]$father <- df_temp$personID[i]
+          } else if (df_temp$sex[i] == mom_sex) {
+            family_to_parents[[fams_id]]$mother <- df_temp$personID[i]
+          }
+        }
+      }
+    }
+  }
+  family_to_parents
+}
+
+#' Assign momID and dadID based on family mapping
+#'
+#' This function assigns mother and father IDs to individuals in the data frame
+#' based on the mapping of family IDs to parent IDs. It updates the data frame in place.
+#'
+#' @inheritParams processParents
+#' @param family_to_parents A list mapping family IDs to parent IDs.
+#' @return A data frame with added momID and dad_ID columns.
+#' @keywords internal
+#'
+mapFAMC2parents <- function(df_temp, family_to_parents) {
+  df_temp$momID <- NA_character_
+  df_temp$dadID <- NA_character_
+  for (i in seq_len(nrow(df_temp))) {
+    if (!is.na(df_temp$FAMC[i])) {
+      famc_ids <- unlist(strsplit(df_temp$FAMC[i], ", "))
+      for (famc_id in famc_ids) {
+        if (!is.null(family_to_parents[[famc_id]])) {
+          if (!is.null(family_to_parents[[famc_id]]$father)) {
+            df_temp$dadID[i] <- family_to_parents[[famc_id]]$father
+          }
+          if (!is.null(family_to_parents[[famc_id]]$mother)) {
+            df_temp$momID[i] <- family_to_parents[[famc_id]]$mother
+          }
+        }
+      }
+    }
+  }
+  df_temp
+}
