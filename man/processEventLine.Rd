@@ -4,10 +4,10 @@
 \alias{processEventLine}
 \title{Process Event Lines (Birth or Death)}
 \usage{
-processEventLine(event, block, i, record, pattern_rows)
+processEventLine(event, block, i, record, pattern_rows, event_fields)
 }
 \arguments{
-\item{event}{A character string indicating the event type ("birth" or "death").}
+\item{event}{A character string indicating the event type ("birth", "chr", "death", or "burial").}
 
 \item{block}{A character vector of GEDCOM lines.}
 
@@ -16,6 +16,9 @@ processEventLine(event, block, i, record, pattern_rows)
 \item{record}{A named list representing the individual's record.}
 
 \item{pattern_rows}{A list with counts of GEDCOM tag occurrences.}
+
+\item{event_fields}{A named list of field mappings as returned by
+\code{make_event_fields()}.}
 }
 \value{
 The updated record with parsed event information.

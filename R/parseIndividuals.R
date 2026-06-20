@@ -43,38 +43,70 @@ splitIndividuals <- function(lines, verbose = FALSE) {
 }
 
 
+#' Build Name-Piece Tag Mappings
+#'
+#' @description
+#' Returns a list of tag-to-field mappings for GEDCOM name-piece tags
+#' (\code{GIVN}, \code{NPFX}, \code{NICK}, \code{SURN}, \code{NSFX},
+#' \code{_MARNM}). Build this once and pass it to
+#' \code{parseIndividualBlock()} via the \code{mappings} argument.
+#'
+#' @return A list of mapping entries, each with \code{tag}, \code{field},
+#'   and \code{mode} elements.
 #' @keywords internal
 make_name_piece_mappings <- function() {
   list(
-    list(tag = "GIVN",   field = "name_given_pieces", mode = "replace"),
-    list(tag = "NPFX",   field = "name_npfx",         mode = "replace"),
-    list(tag = "NICK",   field = "name_nick",          mode = "replace"),
-    list(tag = "SURN",   field = "name_surn_pieces",   mode = "replace"),
-    list(tag = "NSFX",   field = "name_nsfx",          mode = "replace"),
-    list(tag = "_MARNM", field = "name_marriedsurn",   mode = "replace")
+    list(tag = "GIVN", field = "name_given_pieces", mode = "replace"),
+    list(tag = "NPFX", field = "name_npfx", mode = "replace"),
+    list(tag = "NICK", field = "name_nick", mode = "replace"),
+    list(tag = "SURN", field = "name_surn_pieces", mode = "replace"),
+    list(tag = "NSFX", field = "name_nsfx", mode = "replace"),
+    list(tag = "_MARNM", field = "name_marriedsurn", mode = "replace")
   )
 }
 
+#' Build Attribute Tag Mappings
+#'
+#' @description
+#' Returns a list of tag-to-field mappings for GEDCOM individual-attribute
+#' tags (\code{SEX}, \code{CAST}, \code{DSCR}, \code{EDUC}, \code{IDNO},
+#' \code{NATI}, \code{NCHI}, \code{NMR}, \code{OCCU}, \code{PROP},
+#' \code{RELI}, \code{RESI}, \code{SSN}, \code{TITL}). Build this once and
+#' pass it to \code{parseIndividualBlock()} via the \code{mappings} argument.
+#'
+#' @return A list of mapping entries, each with \code{tag}, \code{field},
+#'   and \code{mode} elements.
 #' @keywords internal
 make_attribute_mappings <- function() {
   list(
-    list(tag = "SEX",  field = "sex",                   mode = "replace"),
-    list(tag = "CAST", field = "attribute_caste",       mode = "replace"),
+    list(tag = "SEX", field = "sex", mode = "replace"),
+    list(tag = "CAST", field = "attribute_caste", mode = "replace"),
     list(tag = "DSCR", field = "attribute_description", mode = "replace"),
-    list(tag = "EDUC", field = "attribute_education",   mode = "replace"),
-    list(tag = "IDNO", field = "attribute_idnumber",    mode = "replace"),
+    list(tag = "EDUC", field = "attribute_education", mode = "replace"),
+    list(tag = "IDNO", field = "attribute_idnumber", mode = "replace"),
     list(tag = "NATI", field = "attribute_nationality", mode = "replace"),
-    list(tag = "NCHI", field = "attribute_children",    mode = "replace"),
-    list(tag = "NMR",  field = "attribute_marriages",   mode = "replace"),
-    list(tag = "OCCU", field = "attribute_occupation",  mode = "replace"),
-    list(tag = "PROP", field = "attribute_property",    mode = "replace"),
-    list(tag = "RELI", field = "attribute_religion",    mode = "replace"),
-    list(tag = "RESI", field = "attribute_residence",   mode = "append"),
-    list(tag = "SSN",  field = "attribute_ssn",         mode = "replace"),
-    list(tag = "TITL", field = "attribute_title",       mode = "replace")
+    list(tag = "NCHI", field = "attribute_children", mode = "replace"),
+    list(tag = "NMR", field = "attribute_marriages", mode = "replace"),
+    list(tag = "OCCU", field = "attribute_occupation", mode = "replace"),
+    list(tag = "PROP", field = "attribute_property", mode = "replace"),
+    list(tag = "RELI", field = "attribute_religion", mode = "replace"),
+    list(tag = "RESI", field = "attribute_residence", mode = "append"),
+    list(tag = "SSN", field = "attribute_ssn", mode = "replace"),
+    list(tag = "TITL", field = "attribute_title", mode = "replace")
   )
 }
 
+#' Build Relationship Tag Mappings
+#'
+#' @description
+#' Returns a list of tag-to-field mappings for GEDCOM family-relationship
+#' tags (\code{FAMC}, \code{FAMS}). Each entry includes a custom extractor
+#' that pulls the numeric family ID from the cross-reference pointer. Build
+#' this once and pass it to \code{parseIndividualBlock()} via the
+#' \code{mappings} argument.
+#'
+#' @return A list of mapping entries, each with \code{tag}, \code{field},
+#'   \code{mode}, and \code{extractor} elements.
 #' @keywords internal
 #' @importFrom stringr str_extract
 make_relationship_mappings <- function() {
@@ -98,6 +130,9 @@ make_relationship_mappings <- function() {
 #' @param block A character vector containing the GEDCOM lines for one individual.
 #' @param pattern_rows A list with counts of lines matching specific GEDCOM tags.
 #' @param all_var_names A character vector of variable names.
+#' @param mappings A named list of pre-built tag mappings as returned by
+#'   \code{make_event_fields()}, \code{make_name_piece_mappings()},
+#'   \code{make_attribute_mappings()}, and \code{make_relationship_mappings()}.
 #' @param verbose Logical indicating whether to print progress messages.
 #' @return A named list representing the parsed record for the individual, or NULL if no ID is found.
 #' @keywords internal

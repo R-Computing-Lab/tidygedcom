@@ -4,7 +4,13 @@
 \alias{parseIndividualBlock}
 \title{Parse a GEDCOM Individual Block}
 \usage{
-parseIndividualBlock(block, pattern_rows, all_var_names, verbose = FALSE)
+parseIndividualBlock(
+  block,
+  pattern_rows,
+  all_var_names,
+  mappings,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{block}{A character vector containing the GEDCOM lines for one individual.}
@@ -12,6 +18,10 @@ parseIndividualBlock(block, pattern_rows, all_var_names, verbose = FALSE)
 \item{pattern_rows}{A list with counts of lines matching specific GEDCOM tags.}
 
 \item{all_var_names}{A character vector of variable names.}
+
+\item{mappings}{A named list of pre-built tag mappings as returned by
+\code{make_event_fields()}, \code{make_name_piece_mappings()},
+\code{make_attribute_mappings()}, and \code{make_relationship_mappings()}.}
 
 \item{verbose}{Logical indicating whether to print progress messages.}
 }

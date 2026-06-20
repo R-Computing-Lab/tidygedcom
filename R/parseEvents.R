@@ -1,22 +1,33 @@
-
+#' Build Event Field Mappings
+#'
+#' @description
+#' Returns a named list mapping each supported GEDCOM life-event type to the
+#' record fields it populates. Each entry has two sublists: \code{children}
+#' (tags extracted from direct child lines via \code{extractInfoFromLines()})
+#' and \code{subblock} (tags searched across all descendant lines via
+#' \code{extractCoordFromSubBlock()}). Build this once and pass it to
+#' \code{processEventLine()} rather than constructing it on every call.
+#'
+#' @return A named list with entries \code{birth}, \code{chr}, \code{death},
+#'   and \code{burial}.
 #' @keywords internal
 make_event_fields <- function() {
   list(
-    birth  = list(
-      children = list(DATE = "birth_date",  PLAC = "birth_place"),
-      subblock = list(LATI = "birth_lat",   LONG = "birth_long")
+    birth = list(
+      children = list(DATE = "birth_date", PLAC = "birth_place"),
+      subblock = list(LATI = "birth_lat", LONG = "birth_long")
     ),
-    chr    = list(
-      children = list(DATE = "chr_date",    PLAC = "chr_place"),
+    chr = list(
+      children = list(DATE = "chr_date", PLAC = "chr_place"),
       subblock = list()
     ),
-    death  = list(
-      children = list(DATE = "death_date",  PLAC = "death_place", CAUS = "death_caus"),
-      subblock = list(LATI = "death_lat",   LONG = "death_long")
+    death = list(
+      children = list(DATE = "death_date", PLAC = "death_place", CAUS = "death_caus"),
+      subblock = list(LATI = "death_lat", LONG = "death_long")
     ),
     burial = list(
       children = list(DATE = "burial_date", PLAC = "burial_place"),
-      subblock = list(LATI = "burial_lat",  LONG = "burial_long")
+      subblock = list(LATI = "burial_lat", LONG = "burial_long")
     )
   )
 }
@@ -62,6 +73,8 @@ extractEventSubBlock <- function(block, start_idx) {
 #' @param i The current line index where the event tag is found.
 #' @param record A named list representing the individual's record.
 #' @param pattern_rows A list with counts of GEDCOM tag occurrences.
+#' @param event_fields A named list of field mappings as returned by
+#'   \code{make_event_fields()}.
 #' @return The updated record with parsed event information.
 processEventLine <- function(event, block, i, record, pattern_rows, event_fields) {
   sub_block <- extractEventSubBlock(block, i)
