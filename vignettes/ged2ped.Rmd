@@ -271,7 +271,7 @@ This isolates individuals descended from William Pitt Waugh Sr. but **not** thro
 ## Cleaning up
 
 ```{r cleanup}
-#unlink(tmp_ged)
+# unlink(tmp_ged)
 ```
 
 
