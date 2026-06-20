@@ -47,7 +47,7 @@ Uses level-aware sub-block parsing so fields are looked up by tag name rather th
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">processEventLine</span><span class="op">(</span><span class="va">event</span>, <span class="va">block</span>, <span class="va">i</span>, <span class="va">record</span>, <span class="va">pattern_rows</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">processEventLine</span><span class="op">(</span><span class="va">event</span>, <span class="va">block</span>, <span class="va">i</span>, <span class="va">record</span>, <span class="va">pattern_rows</span>, <span class="va">event_fields</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -55,7 +55,7 @@ Uses level-aware sub-block parsing so fields are looked up by tag name rather th
 
 
 <dl><dt id="arg-event">event<a class="anchor" aria-label="anchor" href="#arg-event"></a></dt>
-<dd><p>A character string indicating the event type ("birth" or "death").</p></dd>
+<dd><p>A character string indicating the event type ("birth", "chr", "death", or "burial").</p></dd>
 
 
 <dt id="arg-block">block<a class="anchor" aria-label="anchor" href="#arg-block"></a></dt>
@@ -72,6 +72,11 @@ Uses level-aware sub-block parsing so fields are looked up by tag name rather th
 
 <dt id="arg-pattern-rows">pattern_rows<a class="anchor" aria-label="anchor" href="#arg-pattern-rows"></a></dt>
 <dd><p>A list with counts of GEDCOM tag occurrences.</p></dd>
+
+
+<dt id="arg-event-fields">event_fields<a class="anchor" aria-label="anchor" href="#arg-event-fields"></a></dt>
+<dd><p>A named list of field mappings as returned by
+<code><a href="make_event_fields.html">make_event_fields()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

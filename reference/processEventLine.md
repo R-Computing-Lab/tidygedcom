@@ -7,14 +7,15 @@ fields are looked up by tag name rather than fixed offsets.
 ## Usage
 
 ``` r
-processEventLine(event, block, i, record, pattern_rows)
+processEventLine(event, block, i, record, pattern_rows, event_fields)
 ```
 
 ## Arguments
 
 - event:
 
-  A character string indicating the event type ("birth" or "death").
+  A character string indicating the event type ("birth", "chr", "death",
+  or "burial").
 
 - block:
 
@@ -31,6 +32,11 @@ processEventLine(event, block, i, record, pattern_rows)
 - pattern_rows:
 
   A list with counts of GEDCOM tag occurrences.
+
+- event_fields:
+
+  A named list of field mappings as returned by
+  [`make_event_fields()`](https://r-computing-lab.github.io/tidygedcom/reference/make_event_fields.md).
 
 ## Value
 

@@ -33,6 +33,10 @@
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/hello.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/index.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/initializeRecord.html</loc></url>
+<url><loc>https://r-computing-lab.github.io/tidygedcom/reference/make_attribute_mappings.html</loc></url>
+<url><loc>https://r-computing-lab.github.io/tidygedcom/reference/make_event_fields.html</loc></url>
+<url><loc>https://r-computing-lab.github.io/tidygedcom/reference/make_name_piece_mappings.html</loc></url>
+<url><loc>https://r-computing-lab.github.io/tidygedcom/reference/make_relationship_mappings.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/mapFAMC2parents.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/mapFAMS2parents.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/parseFamilyBlock.html</loc></url>
