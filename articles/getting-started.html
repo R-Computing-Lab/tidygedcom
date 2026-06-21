@@ -79,151 +79,177 @@ page.</li>
 <li>Load it into R with <code><a href="../reference/readGedcom.html">readGedcom()</a></code>.</li>
 </ol>
 <p>The file itself is a structured text file. Here is a small slice:</p>
-<p>```{gedcom-sample, eval = FALSE} 0 <span class="citation">@I1</span>@
-INDI 1 NAME William Pitt /Waugh/ 1 SEX M 1 BIRT 2 DATE 28 APR 1775 2
-PLAC Adams County, Pennsylvania, USA 1 DEAT 2 DATE 14 AUG 1852 2 PLAC
-Wilkes County, North Carolina, USA 1 FAMS <span class="citation">@F28</span>@ 1 FAMS <span class="citation">@F29</span>@</p>
-<p>0 <span class="citation">@F28</span>@ FAM 1 HUSB <span class="citation">@I1</span>@ 1 WIFE <span class="citation">@I2</span>@ 1
-CHIL <span class="citation">@I3</span>@</p>
-<p>0 <span class="citation">@F29</span>@ FAM 1 HUSB <span class="citation">@I1</span>@ 1 WIFE <span class="citation">@I4</span>@ 1
-CHIL <span class="citation">@I5</span>@</p>
-<pre><code>
-Individual records (`INDI`) hold person-level facts; family records (`FAM`) link spouses and children and carry marriage or divorce events. 
-
-
-
-## Why use R for genealogy?
-
-The tidygedcom package provides tools for parsing and tidying GEDCOM files, making it easier to work with genealogical data in R. R's powerful data manipulation capabilities allow researchers to clean, analyze, and visualize genealogical data in ways that may not be possible with traditional genealogy software. Additionally, R's extensive ecosystem of packages for statistical analysis and machine learning can be applied to genealogical data to uncover patterns and insights that may not be immediately apparent.
-
-This vignette uses a real family tree as its running example: the W. Henderson Waugh Family Tree. We'll discuss more about our running example in another vignette. (But briefly, the Waugh family tree is a genetic genealogy collaboration between two Wake Forest psychology faculty -- SMG and CEW. See https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832 for more on the historical context of the Waugh family tree.) The tidygedcom package provides the tools for parsing and tidying GEDCOM files, and the Waugh family tree provides a real-world test case for these tools.
-
-
-
-## A minimal example
-
-We construct a small GEDCOM in memory that captures the key relationships described above. This allows all code examples below to run without an external file.
-
-
-``` r
-sample_ged &lt;- c(
-  "0 HEAD",
-  "1 GEDC",
-  "2 VERS 5.5.1",
-  "1 CHAR UTF-8",
-
-  # William Pitt Waugh Sr. — the common paternal ancestor
-  "0 @I1@ INDI",
-  "1 NAME William Pitt /Waugh/",
-  "1 SEX M",
-  "1 BIRT",
-  "2 DATE 28 APR 1775",
-  "2 PLAC Adams County, Pennsylvania, USA",
-  "1 DEAT",
-  "2 DATE 14 AUG 1852",
-  "2 PLAC Wilkes County, North Carolina, USA",
-  "1 FAMS @F1@",
-  "1 FAMS @F2@",
-
-  # Matilda Grinton — mother of W. Henderson Waugh
-  "0 @I2@ INDI",
-  "1 NAME Matilda /Grinton/",
-  "1 SEX F",
-  "1 BIRT",
-  "2 DATE ABT 1797",
-  "2 PLAC North Carolina, USA",
-  "1 FAMS @F1@",
-
-  # W. Henderson Waugh — 2nd great-grandfather of focal person
-  "0 @I3@ INDI",
-  "1 NAME W. Henderson /Waugh/",
-  "1 SEX M",
-  "1 BIRT",
-  "2 DATE ABT 1835",
-  "2 PLAC Wilkes County, North Carolina, USA",
-  "1 FAMC @F1@",
-  "1 FAMS @F3@",
-
-  # Martha Law Segraves — mother of William Pitt Waugh Jr.
-  "0 @I4@ INDI",
-  "1 NAME Martha Law /Segraves/",
-  "1 SEX F",
-  "1 BIRT",
-  "2 DATE OCT 1814",
-  "1 FAMS @F2@",
-
-  # William Pitt Waugh Jr. (born William Segraves) — paternal half-brother of W. Henderson
-  "0 @I5@ INDI",
-  "1 NAME William Pitt /Waugh/ Jr.",
-  "1 SEX M",
-  "1 BIRT",
-  "2 DATE 1844",
-  "2 PLAC Wilkes County, North Carolina, USA",
-  "1 DEAT",
-  "2 DATE FEB 1880",
-  "1 FAMC @F2@",
-  "1 FAMS @F4@",
-
-  # Laura Watkins — wife of W. Henderson Waugh
-  "0 @I6@ INDI",
-  "1 NAME Laura /Watkins/",
-  "1 SEX F",
-  "1 BIRT",
-  "2 DATE ABT 1846",
-  "2 PLAC North Carolina, USA",
-  "1 FAMS @F3@",
-
-  # John William (Bud) Waugh — son of W. Henderson; great-grandfather of focal person
-  "0 @I7@ INDI",
-  "1 NAME John William /Waugh/",
-  "1 SEX M",
-  "1 BIRT",
-  "2 DATE ABT JUN 1880",
-  "2 PLAC North Carolina, USA",
-  "1 FAMC @F3@",
-
-  # James Monroe Waugh — son of William Pitt Jr.; Y-DNA candidate branch
-  "0 @I8@ INDI",
-  "1 NAME James Monroe /Waugh/",
-  "1 SEX M",
-  "1 BIRT",
-  "2 DATE 10 NOV 1867",
-  "1 DEAT",
-  "2 DATE 23 JUL 1937",
-  "1 FAMC @F4@",
-
-  # Family 1: William Pitt Sr. + Matilda Grinton -&gt; W. Henderson Waugh
-  "0 @F1@ FAM",
-  "1 HUSB @I1@",
-  "1 WIFE @I2@",
-  "1 CHIL @I3@",
-
-  # Family 2: William Pitt Sr. + Martha Segraves -&gt; William Pitt Jr.
-  # _SREL friend marks this as a non-marital relationship in Ancestry exports
-  "0 @F2@ FAM",
-  "1 HUSB @I1@",
-  "1 WIFE @I4@",
-  "1 CHIL @I5@",
-  "1 _SREL friend",
-
-  # Family 3: W. Henderson Waugh + Laura Watkins
-  "0 @F3@ FAM",
-  "1 HUSB @I3@",
-  "1 WIFE @I6@",
-  "1 CHIL @I7@",
-  "1 MARR",
-  "2 DATE 24 JUN 1877",
-  "2 PLAC Wilkes County, North Carolina, USA",
-
-  # Family 4: William Pitt Jr. + wife
-  "0 @F4@ FAM",
-  "1 HUSB @I5@",
-  "1 CHIL @I8@",
-  "0 TRLR"
-)
-
-tmp_ged &lt;- tempfile(fileext = ".ged")
-writeLines(sample_ged, tmp_ged)</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>0 @I1@ INDI</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>1 NAME William Pitt /Waugh/</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>1 SEX M</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>1 BIRT</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>2 DATE 28 APR 1775</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>2 PLAC Adams County, Pennsylvania, USA</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>1 DEAT</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>2 DATE 14 AUG 1852</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>2 PLAC Wilkes County, North Carolina, USA</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>1 FAMS @F28@</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>1 FAMS @F29@</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>0 @F28@ FAM</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>1 HUSB @I1@</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>1 WIFE @I2@</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>1 CHIL @I3@</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>0 @F29@ FAM</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>1 HUSB @I1@</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>1 WIFE @I4@</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>1 CHIL @I5@</span></code></pre></div>
+<p>Individual records (<code>INDI</code>) hold person-level facts;
+family records (<code>FAM</code>) link spouses and children and carry
+marriage or divorce events.</p>
+</div>
+<div class="section level2">
+<h2 id="why-use-r-for-genealogy">Why use R for genealogy?<a class="anchor" aria-label="anchor" href="#why-use-r-for-genealogy"></a>
+</h2>
+<p>The tidygedcom package provides tools for parsing and tidying GEDCOM
+files, making it easier to work with genealogical data in R. R’s
+powerful data manipulation capabilities allow researchers to clean,
+analyze, and visualize genealogical data in ways that may not be
+possible with traditional genealogy software. Additionally, R’s
+extensive ecosystem of packages for statistical analysis and machine
+learning can be applied to genealogical data to uncover patterns and
+insights that may not be immediately apparent.</p>
+<p>This vignette uses a real family tree as its running example: the W.
+Henderson Waugh Family Tree. We’ll discuss more about our running
+example in another vignette. (But briefly, the Waugh family tree is a
+genetic genealogy collaboration between two Wake Forest psychology
+faculty – SMG and CEW. See <a href="https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832" class="external-link uri">https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832</a>
+for more on the historical context of the Waugh family tree.) The
+tidygedcom package provides the tools for parsing and tidying GEDCOM
+files, and the Waugh family tree provides a real-world test case for
+these tools.</p>
+</div>
+<div class="section level2">
+<h2 id="a-minimal-example">A minimal example<a class="anchor" aria-label="anchor" href="#a-minimal-example"></a>
+</h2>
+<p>We construct a small GEDCOM in memory that captures the key
+relationships described above. This allows all code examples below to
+run without an external file.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sample_ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"0 HEAD"</span>,</span>
+<span>  <span class="st">"1 GEDC"</span>,</span>
+<span>  <span class="st">"2 VERS 5.5.1"</span>,</span>
+<span>  <span class="st">"1 CHAR UTF-8"</span>,</span>
+<span></span>
+<span>  <span class="co"># William Pitt Waugh Sr. — the common paternal ancestor</span></span>
+<span>  <span class="st">"0 @I1@ INDI"</span>,</span>
+<span>  <span class="st">"1 NAME William Pitt /Waugh/"</span>,</span>
+<span>  <span class="st">"1 SEX M"</span>,</span>
+<span>  <span class="st">"1 BIRT"</span>,</span>
+<span>  <span class="st">"2 DATE 28 APR 1775"</span>,</span>
+<span>  <span class="st">"2 PLAC Adams County, Pennsylvania, USA"</span>,</span>
+<span>  <span class="st">"1 DEAT"</span>,</span>
+<span>  <span class="st">"2 DATE 14 AUG 1852"</span>,</span>
+<span>  <span class="st">"2 PLAC Wilkes County, North Carolina, USA"</span>,</span>
+<span>  <span class="st">"1 FAMS @F1@"</span>,</span>
+<span>  <span class="st">"1 FAMS @F2@"</span>,</span>
+<span></span>
+<span>  <span class="co"># Matilda Grinton — mother of W. Henderson Waugh</span></span>
+<span>  <span class="st">"0 @I2@ INDI"</span>,</span>
+<span>  <span class="st">"1 NAME Matilda /Grinton/"</span>,</span>
+<span>  <span class="st">"1 SEX F"</span>,</span>
+<span>  <span class="st">"1 BIRT"</span>,</span>
+<span>  <span class="st">"2 DATE ABT 1797"</span>,</span>
+<span>  <span class="st">"2 PLAC North Carolina, USA"</span>,</span>
+<span>  <span class="st">"1 FAMS @F1@"</span>,</span>
+<span></span>
+<span>  <span class="co"># W. Henderson Waugh — 2nd great-grandfather of focal person</span></span>
+<span>  <span class="st">"0 @I3@ INDI"</span>,</span>
+<span>  <span class="st">"1 NAME W. Henderson /Waugh/"</span>,</span>
+<span>  <span class="st">"1 SEX M"</span>,</span>
+<span>  <span class="st">"1 BIRT"</span>,</span>
+<span>  <span class="st">"2 DATE ABT 1835"</span>,</span>
+<span>  <span class="st">"2 PLAC Wilkes County, North Carolina, USA"</span>,</span>
+<span>  <span class="st">"1 FAMC @F1@"</span>,</span>
+<span>  <span class="st">"1 FAMS @F3@"</span>,</span>
+<span></span>
+<span>  <span class="co"># Martha Law Segraves — mother of William Pitt Waugh Jr.</span></span>
+<span>  <span class="st">"0 @I4@ INDI"</span>,</span>
+<span>  <span class="st">"1 NAME Martha Law /Segraves/"</span>,</span>
+<span>  <span class="st">"1 SEX F"</span>,</span>
+<span>  <span class="st">"1 BIRT"</span>,</span>
+<span>  <span class="st">"2 DATE OCT 1814"</span>,</span>
+<span>  <span class="st">"1 FAMS @F2@"</span>,</span>
+<span></span>
+<span>  <span class="co"># William Pitt Waugh Jr. (born William Segraves) — paternal half-brother of W. Henderson</span></span>
+<span>  <span class="st">"0 @I5@ INDI"</span>,</span>
+<span>  <span class="st">"1 NAME William Pitt /Waugh/ Jr."</span>,</span>
+<span>  <span class="st">"1 SEX M"</span>,</span>
+<span>  <span class="st">"1 BIRT"</span>,</span>
+<span>  <span class="st">"2 DATE 1844"</span>,</span>
+<span>  <span class="st">"2 PLAC Wilkes County, North Carolina, USA"</span>,</span>
+<span>  <span class="st">"1 DEAT"</span>,</span>
+<span>  <span class="st">"2 DATE FEB 1880"</span>,</span>
+<span>  <span class="st">"1 FAMC @F2@"</span>,</span>
+<span>  <span class="st">"1 FAMS @F4@"</span>,</span>
+<span></span>
+<span>  <span class="co"># Laura Watkins — wife of W. Henderson Waugh</span></span>
+<span>  <span class="st">"0 @I6@ INDI"</span>,</span>
+<span>  <span class="st">"1 NAME Laura /Watkins/"</span>,</span>
+<span>  <span class="st">"1 SEX F"</span>,</span>
+<span>  <span class="st">"1 BIRT"</span>,</span>
+<span>  <span class="st">"2 DATE ABT 1846"</span>,</span>
+<span>  <span class="st">"2 PLAC North Carolina, USA"</span>,</span>
+<span>  <span class="st">"1 FAMS @F3@"</span>,</span>
+<span></span>
+<span>  <span class="co"># John William (Bud) Waugh — son of W. Henderson; great-grandfather of focal person</span></span>
+<span>  <span class="st">"0 @I7@ INDI"</span>,</span>
+<span>  <span class="st">"1 NAME John William /Waugh/"</span>,</span>
+<span>  <span class="st">"1 SEX M"</span>,</span>
+<span>  <span class="st">"1 BIRT"</span>,</span>
+<span>  <span class="st">"2 DATE ABT JUN 1880"</span>,</span>
+<span>  <span class="st">"2 PLAC North Carolina, USA"</span>,</span>
+<span>  <span class="st">"1 FAMC @F3@"</span>,</span>
+<span></span>
+<span>  <span class="co"># James Monroe Waugh — son of William Pitt Jr.; Y-DNA candidate branch</span></span>
+<span>  <span class="st">"0 @I8@ INDI"</span>,</span>
+<span>  <span class="st">"1 NAME James Monroe /Waugh/"</span>,</span>
+<span>  <span class="st">"1 SEX M"</span>,</span>
+<span>  <span class="st">"1 BIRT"</span>,</span>
+<span>  <span class="st">"2 DATE 10 NOV 1867"</span>,</span>
+<span>  <span class="st">"1 DEAT"</span>,</span>
+<span>  <span class="st">"2 DATE 23 JUL 1937"</span>,</span>
+<span>  <span class="st">"1 FAMC @F4@"</span>,</span>
+<span></span>
+<span>  <span class="co"># Family 1: William Pitt Sr. + Matilda Grinton -&gt; W. Henderson Waugh</span></span>
+<span>  <span class="st">"0 @F1@ FAM"</span>,</span>
+<span>  <span class="st">"1 HUSB @I1@"</span>,</span>
+<span>  <span class="st">"1 WIFE @I2@"</span>,</span>
+<span>  <span class="st">"1 CHIL @I3@"</span>,</span>
+<span></span>
+<span>  <span class="co"># Family 2: William Pitt Sr. + Martha Segraves -&gt; William Pitt Jr.</span></span>
+<span>  <span class="co"># _SREL friend marks this as a non-marital relationship in Ancestry exports</span></span>
+<span>  <span class="st">"0 @F2@ FAM"</span>,</span>
+<span>  <span class="st">"1 HUSB @I1@"</span>,</span>
+<span>  <span class="st">"1 WIFE @I4@"</span>,</span>
+<span>  <span class="st">"1 CHIL @I5@"</span>,</span>
+<span>  <span class="st">"1 _SREL friend"</span>,</span>
+<span></span>
+<span>  <span class="co"># Family 3: W. Henderson Waugh + Laura Watkins</span></span>
+<span>  <span class="st">"0 @F3@ FAM"</span>,</span>
+<span>  <span class="st">"1 HUSB @I3@"</span>,</span>
+<span>  <span class="st">"1 WIFE @I6@"</span>,</span>
+<span>  <span class="st">"1 CHIL @I7@"</span>,</span>
+<span>  <span class="st">"1 MARR"</span>,</span>
+<span>  <span class="st">"2 DATE 24 JUN 1877"</span>,</span>
+<span>  <span class="st">"2 PLAC Wilkes County, North Carolina, USA"</span>,</span>
+<span></span>
+<span>  <span class="co"># Family 4: William Pitt Jr. + wife</span></span>
+<span>  <span class="st">"0 @F4@ FAM"</span>,</span>
+<span>  <span class="st">"1 HUSB @I5@"</span>,</span>
+<span>  <span class="st">"1 CHIL @I8@"</span>,</span>
+<span>  <span class="st">"0 TRLR"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tmp_ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".ged"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines</a></span><span class="op">(</span><span class="va">sample_ged</span>, <span class="va">tmp_ged</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="reading-individual-records-readgedcom">Reading individual records: <code>readGedcom()</code><a class="anchor" aria-label="anchor" href="#reading-individual-records-readgedcom"></a>
@@ -232,7 +258,7 @@ writeLines(sample_ged, tmp_ged)</code></pre>
 returns one row per person. It infers <code>momID</code> and
 <code>dadID</code> automatically by tracing <code>FAMC</code> →
 <code>FAMS</code> links — no manual ID mapping required.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcom.html">readGedcom</a></span><span class="op">(</span><span class="va">tmp_ged</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">ped</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"personID"</span>, <span class="st">"name"</span>, <span class="st">"sex"</span>, <span class="st">"birth_date"</span>, <span class="st">"death_date"</span>, <span class="st">"momID"</span>, <span class="st">"dadID"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;   personID                    name sex   birth_date  death_date momID dadID</span></span>
@@ -250,7 +276,7 @@ half-sibling relationship in the parsed data.</p>
 <div class="section level3">
 <h3 id="gedcom-version">GEDCOM version<a class="anchor" aria-label="anchor" href="#gedcom-version"></a>
 </h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ped</span>, <span class="st">"gedcom_version"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "5.5.1"</span></span></code></pre></div>
 </div>
@@ -258,7 +284,7 @@ half-sibling relationship in the parsed data.</p>
 <div class="section level2">
 <h2 id="quick-overview-summarizegedcom">Quick overview: <code>summarizeGedcom()</code><a class="anchor" aria-label="anchor" href="#quick-overview-summarizegedcom"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/summarizeGedcom.html">summarizeGedcom</a></span><span class="op">(</span><span class="va">ped</span><span class="op">)</span></span>
 <span><span class="co">#&gt; GEDCOM Summary  (version: 5.5.1 )</span></span>
 <span><span class="co">#&gt;   Individuals: 8 </span></span>
@@ -291,7 +317,7 @@ records that were never systematically kept.</p>
 <code>birth_date</code> and <code>death_date</code> to proper
 <code>Date</code> objects. Qualifiers and escapes are stripped
 first:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ped_dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcom.html">readGedcom</a></span><span class="op">(</span><span class="va">tmp_ged</span>, parse_dates <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">ped_dates</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"birth_date"</span>, <span class="st">"death_date"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;                      name birth_date death_date</span></span>
@@ -311,7 +337,7 @@ first:</p>
 <code>"ABT 1835"</code> or <code>"OCT 1814"</code> have no day
 component. <code><a href="../reference/extractGedcomYear.html">extractGedcomYear()</a></code> handles all forms and
 returns an integer year:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dates_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"28 APR 1775"</span>, <span class="st">"14 AUG 1852"</span>, <span class="st">"ABT 1835"</span>, <span class="st">"OCT 1814"</span>,</span>
 <span>  <span class="st">"1844"</span>, <span class="st">"ABT JUN 1880"</span>, <span class="cn">NA</span></span>
@@ -320,7 +346,7 @@ returns an integer year:</p>
 <span><span class="co">#&gt; [1] 1775 1852 1835 1814 1844 1880   NA</span></span></code></pre></div>
 <p>A typical use: add a <code>birth_year</code> column robust to
 approximate dates, then flag individuals who may still be living:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ped</span><span class="op">$</span><span class="va">birth_year</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractGedcomYear.html">extractGedcomYear</a></span><span class="op">(</span><span class="va">ped</span><span class="op">$</span><span class="va">birth_date</span><span class="op">)</span></span>
 <span><span class="va">ped</span><span class="op">$</span><span class="va">death_year</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractGedcomYear.html">extractGedcomYear</a></span><span class="op">(</span><span class="va">ped</span><span class="op">$</span><span class="va">death_date</span><span class="op">)</span></span>
 <span><span class="va">ped</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"birth_year"</span>, <span class="st">"death_year"</span><span class="op">)</span><span class="op">]</span></span>
@@ -341,7 +367,7 @@ approximate dates, then flag individuals who may still be living:</p>
 <p>Marriage and relationship data live in <code>FAM</code> blocks.
 <code><a href="../reference/readGedcomFamilies.html">readGedcomFamilies()</a></code> parses them into a separate data
 frame:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fam</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcomFamilies.html">readGedcomFamilies</a></span><span class="op">(</span><span class="va">tmp_ged</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">fam</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"famID"</span>, <span class="st">"husbID"</span>, <span class="st">"wifeID"</span>, <span class="st">"marr_date"</span>, <span class="st">"marr_place"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;   famID husbID wifeID   marr_date                         marr_place</span></span>
@@ -356,7 +382,7 @@ This is a known limitation when working with Ancestry.com exports that
 use non-standard tags.</p>
 <p>Join back to the individuals table to annotate both families with
 spouse names:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span></span>
 <span>  <span class="va">fam</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"famID"</span>, <span class="st">"husbID"</span>, <span class="st">"wifeID"</span>, <span class="st">"marr_date"</span>, <span class="st">"marr_place"</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>  <span class="va">ped</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"personID"</span>, <span class="st">"name"</span><span class="op">)</span><span class="op">]</span>,</span>
@@ -386,7 +412,7 @@ spouse names:</p>
 <code><a href="../reference/convertGedcomCoords.html">convertGedcomCoords()</a></code> converts all
 <code>_lat</code>/<code>_long</code> columns to signed decimal degrees
 in one call:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">coord_ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"0 HEAD"</span>, <span class="st">"1 GEDC"</span>, <span class="st">"2 VERS 5.5.1"</span>, <span class="st">"1 CHAR UTF-8"</span>,</span>
 <span>  <span class="st">"0 @I1@ INDI"</span>,</span>
@@ -412,7 +438,7 @@ in one call:</p>
 <span><span class="co">#&gt; 1 William Pitt Waugh    36.1548    -81.1845</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tmp_coord</span><span class="op">)</span></span></code></pre></div>
 <p>You can also call the underlying converters directly:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/gedcomLat2Numeric.html">gedcomLat2Numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"N36.1548"</span>, <span class="st">"S33.8688"</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1]  36.1548 -33.8688       NA</span></span>
 <span><span class="fu"><a href="../reference/gedcomLon2Numeric.html">gedcomLon2Numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"W81.1845"</span>, <span class="st">"E151.2093"</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
@@ -425,7 +451,7 @@ in one call:</p>
 package provides the next layer of analysis: computing pairwise
 relatedness, tracing paternal lineages, and identifying Y-chromosome
 carriers.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-Computing-Lab/BGmisc/" class="external-link">BGmisc</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'BGmisc'</span></span>
@@ -453,7 +479,7 @@ tree as a case study.</p>
 <p>You can also visualize the family tree with the
 <code>ggpedigree</code> package. The <code>config</code> argument allows
 you to customize the plot with a wide range of options.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-Computing-Lab/BGmisc/" class="external-link">BGmisc</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-Computing-Lab/ggpedigree/" class="external-link">ggpedigree</a></span><span class="op">)</span></span>
 <span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcom.html">readGedcom</a></span><span class="op">(</span><span class="va">tmp_ged</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -483,13 +509,13 @@ you to customize the plot with a wide range of options.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; REPAIR IN EARLY ALPHA</span></span></code></pre></div>
 <p><img src="getting-started_files/figure-html/ggped-1.png" class="r-plt" alt="" width="700"></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">## Cleaning up</span></span></code></pre></div>
 <p>Please see the vignettes from the <code>ggpedigree</code> package for
 more on customizing pedigree diagrams with
 <code><a href="https://r-computing-lab.github.io/ggpedigree/reference/ggPedigree.html" class="external-link">ggpedigree()</a></code>.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tmp_ged</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
