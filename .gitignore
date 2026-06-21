@@ -19,3 +19,4 @@ vignettes/articles/paper.log
 *.tmp.*
 vignettes/getting-started.xmd2
 vignettes/getting-started.xmd
+.Rproj.user
