@@ -38,7 +38,9 @@ splitIndividuals <- function(lines, verbose = FALSE) {
     end <- if (length(next_record) > 0) next_record[1] - 1 else length(lines)
     blocks[[i]] <- lines[start:end]
   }
-  if (verbose == TRUE) message("Found ", length(blocks), " individual blocks")
+  if (verbose == TRUE) {
+    message("Found ", length(blocks), " individual blocks")
+    }
   blocks
 }
 
@@ -137,7 +139,10 @@ make_relationship_mappings <- function() {
 #' @return A named list representing the parsed record for the individual, or NULL if no ID is found.
 #' @keywords internal
 #' @importFrom stringr str_extract str_squish str_replace
-parseIndividualBlock <- function(block, pattern_rows, all_var_names, mappings, verbose = FALSE) {
+parseIndividualBlock <- function(block,
+                                 pattern_rows,
+                                 all_var_names,
+                                 mappings, verbose = FALSE) {
   record <- initializeRecord(all_var_names)
   n_lines <- length(block)
 
