@@ -1,6 +1,7 @@
 Package: tidygedcom
 Type: Package
-Title: Tidy Gedcom Files
+Title: Tidy Gedcom
+Date: 2026
 Version: 0.1.0
 Authors@R: c(
     person("S. Mason", "Garrison", , "garrissm@wfu.edu", role = c("aut", "cre"),

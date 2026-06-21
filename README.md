@@ -17,8 +17,6 @@ checks](https://badges.cranchecks.info/worst/tidygedcom.svg)](https://cran.r-pro
 [![Package
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/tidygedcom)](https://cran.r-project.org/package=tidygedcom)</br>
 [![R-CMD-check](https://github.com/R-Computing-Lab/tidygedcom/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/R-Computing-Lab/tidygedcom/actions/workflows/R-CMD-check.yaml)
-[![Dev Main
-branch](https://github.com/R-Computing-Lab/tidygedcom/actions/workflows/R-CMD-dev_maincheck.yaml/badge.svg)](https://github.com/R-Computing-Lab/tidygedcom/actions/workflows/R-CMD-dev_maincheck.yaml)
 [![CodeFactor](https://www.codefactor.io/repository/github/r-computing-lab/tidygedcom/badge)](https://www.codefactor.io/repository/github/r-computing-lab/tidygedcom)
 [![Codecov test
 coverage](https://codecov.io/gh/R-Computing-Lab/tidygedcom/graph/badge.svg?token=2IARK2XSA6)](https://app.codecov.io/gh/R-Computing-Lab/tidygedcom)
@@ -57,15 +55,15 @@ cite the following paper:
     Warning in citation(package = "tidygedcom"): could not determine year for
     'tidygedcom' from package DESCRIPTION file
 
-Garrison S (????). *tidygedcom: Tidy Gedcom Files*. R package version
-0.1.0, <https://github.com/R-Computing-Lab/tidygedcom/>.
+Garrison S (????). *tidygedcom: Tidy Gedcom*. R package version 0.1.0,
+<https://github.com/R-Computing-Lab/tidygedcom/>.
 
 A BibTeX entry for LaTeX users is
 
     Warning in citation(package = "tidygedcom"): could not determine year for
     'tidygedcom' from package DESCRIPTION file
     @Manual{,
-      title = {tidygedcom: Tidy Gedcom Files},
+      title = {tidygedcom: Tidy Gedcom},
       author = {S. Mason Garrison},
       note = {R package version 0.1.0},
       url = {https://github.com/R-Computing-Lab/tidygedcom/},
