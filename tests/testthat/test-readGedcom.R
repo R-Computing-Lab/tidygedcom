@@ -480,7 +480,7 @@ test_that("detectGedcomVersion returns unknown when GEDC is present but VERS is 
     "1 NAME Test /Person/",
     "1 SEX M"
   )
-  expect_equal(BGmisc:::detectGedcomVersion(lines), "unknown")
+  expect_equal(tidygedcom:::detectGedcomVersion(lines), "unknown")
 })
 
 test_that("readGedcom attaches gedcom_version attribute with post_process = FALSE", {
