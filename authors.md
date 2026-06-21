@@ -10,11 +10,11 @@
 Source:
 [`DESCRIPTION`](https://github.com/R-Computing-Lab/tidygedcom/blob/main/DESCRIPTION)
 
-Garrison S (2026). *tidygedcom: Tidy Gedcom Files*. R package version
-0.1.0, <https://github.com/R-Computing-Lab/tidygedcom/>.
+Garrison S (2026). *tidygedcom: Tidy Gedcom*. R package version 0.1.0,
+<https://github.com/R-Computing-Lab/tidygedcom/>.
 
     @Manual{,
-      title = {tidygedcom: Tidy Gedcom Files},
+      title = {tidygedcom: Tidy Gedcom},
       author = {S. Mason Garrison},
       year = {2026},
       note = {R package version 0.1.0},
