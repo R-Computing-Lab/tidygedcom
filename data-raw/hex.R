@@ -1,6 +1,7 @@
 library(hexSticker)
 library(stringr)
 library(rsvg)
+library(ggpedigree)
 ## read in file
 file <- "data-raw/catlogo.svg"
 # Render with rsvg into png
@@ -96,10 +97,7 @@ three_cats <- image_composite(three_cats, cat_left,   operator = "over", offset 
 three_cats <- image_composite(three_cats, cat_center, operator = "over", offset = "+230+0")
 three_cats <- image_composite(three_cats, cat_right,  operator = "over", offset = "+520+0")
 
-# trim extra transparent space
-#three_cats <- image_trim(three_cats)
 
-# optionally re-extend to a balanced canvas so sticker positioning is stable
 
 
 image_write(three_cats, path = "data-raw/threecats.png", format = "png")
@@ -116,4 +114,63 @@ sticker(
   p_color = "white",
   filename = "man/figures/hex.png"
 )
+
+#
+## Step 2: Generate the background graph
+library(BGmisc)
+library(ggplot2)
+data(potter)
+p <- ggpedigree(potter,
+                config =
+                  list(
+                    label_include = FALSE,
+                    point_size = 10,
+                    segment_linewidth = 2,
+                    sex_color_include=FALSE,
+                    focal_fill_include = TRUE,
+                    focal_fill_personID = 7,
+                    focal_fill_high_color = "white",
+                    focal_fill_mid_color =  "#0fa1e0",
+                    focal_fill_low_color = "#333333",
+                    focal_fill_na_color = "#333333",
+                    segment_lineage_include = TRUE,
+                    segment_lineage_focal_personID = 7,
+                    segment_lineage_method = "gradient",
+              #      segment_lineage_palette = "viridis",
+                    segment_lineage_legend_show = FALSE
+                  )
+) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(fill = "transparent", color = NA),
+    plot.background = element_rect(fill = "transparent", color = NA)
+  ) + ggplot2::guides(
+    shape = "none",
+    color = "none",
+    fill = "none"
+  )
+
+ggsave("data-raw/bgplot.png", p, width = 8, height = 3.75, bg = "transparent", dpi = 300)
+
+
+
+## Step 3: Combine background and logo
+graph_img <- image_read("data-raw/bgplot.png")
+
+# Match sizes
+graph_img <- image_resize(graph_img, geometry_size_pixels(width = 860, height = 380, preserve_aspect = FALSE))
+
+
+combined_img <- image_composite(graph_img, three_cats, operator = "Over", gravity = "South", offset = "+10-20")
+
+# Save combined image
+image_write(combined_img, path = "data-raw/combined.png", format = "png")
+
+
+sticker("data-raw/combined.png",
+        package = "tidygedcom",
+        p_size = 20, s_x = 1 - .05, s_y = .900, s_width = .6,
+        h_fill = "#0fa1e0", h_color = "#333333",
+        p_color = "white", filename = "man/figures/hex2.png")
+
 
