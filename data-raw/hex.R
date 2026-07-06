@@ -137,7 +137,8 @@ p <- ggpedigree(potter,
                     segment_lineage_focal_personID = 7,
                     segment_lineage_method = "gradient",
               #      segment_lineage_palette = "viridis",
-                    segment_lineage_legend_show = FALSE
+                    segment_lineage_legend_show = FALSE,
+              segment_lineage_na_color = "white"
                   )
 ) +
   theme_void() +
