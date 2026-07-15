@@ -1,0 +1,56 @@
+# Slice a Pedigree Down to the Rows Referencing an ID
+
+Given a pedigree data frame, returns every row in which any of the
+supplied IDs appears as the individual themselves, a parent, or a
+spouse. This is a diagnostic aid for inspecting a person's full
+household before and after manually repairing links in GEDCOM-derived
+pedigrees. The result is a subset of \`ped\` with the same columns, so
+it parallels \[BGmisc::sliceFamilies()\], which slices a pedigree down
+to families meeting a criterion.
+
+## Usage
+
+``` r
+sliceByID(ped, ID, sort = TRUE)
+```
+
+## Arguments
+
+- ped:
+
+  A pedigree data frame.
+
+- ID:
+
+  A vector of one or more IDs to slice on.
+
+- sort:
+
+  Logical. If \`TRUE\` (default), sort the result by father ID then
+  individual ID.
+
+## Value
+
+A data frame: the subset of \`ped\` rows in which any of \`ID\` appears
+in a linking column, with the original columns and names preserved.
+
+## Details
+
+Incoming column names are normalised with BGmisc's internal column
+standardiser, so the common variants (\`ID\`/\`personID\`,
+\`dadID\`/\`pid_fath\`, \`momID\`/\`pid_moth\`,
+\`spID\`/\`pid_spouse1\`, ...) are all recognised without the caller
+naming them. Because BGmisc's canonical schema is single-spouse but
+GEDCOM-derived pedigrees often record remarriages in extra columns, any
+additional spouse-like columns (matching \`spID2\`, \`pid_spouse2\`,
+...) are detected and searched too. The returned rows keep the caller's
+original column names.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+# Inspect a couple's full household before repairing a link
+sliceByID(ped, ID = c(348700, 348701))
+} # }
+```

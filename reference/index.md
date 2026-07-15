@@ -10,6 +10,8 @@
   : Count GEDCOM Pattern Rows
 - [`extractGedcomYear()`](https://r-computing-lab.github.io/tidygedcom/reference/extractGedcomYear.md)
   : Extract Year from a GEDCOM Date String
+- [`findIDs()`](https://r-computing-lab.github.io/tidygedcom/reference/findIDs.md)
+  : Find Where One or More IDs Occur Across a List of Data Frames
 - [`gedcomLat2Numeric()`](https://r-computing-lab.github.io/tidygedcom/reference/gedcomLat2Numeric.md)
   : Convert GEDCOM Latitude String to Numeric
 - [`gedcomLon2Numeric()`](https://r-computing-lab.github.io/tidygedcom/reference/gedcomLon2Numeric.md)
@@ -28,9 +30,16 @@
   : Read Family Records from a GEDCOM File
 - [`readWikifamilytree()`](https://r-computing-lab.github.io/tidygedcom/reference/readWikifamilytree.md)
   : Read Wiki Family Tree
+- [`repairManually()`](https://r-computing-lab.github.io/tidygedcom/reference/repairManually.md)
+  : Apply a List of Hand-Verified Fixes to a Pedigree
 - [`royal92`](https://r-computing-lab.github.io/tidygedcom/reference/royal92.md)
   : Royal pedigree data from 1992
+- [`sliceByID()`](https://r-computing-lab.github.io/tidygedcom/reference/sliceByID.md)
+  : Slice a Pedigree Down to the Rows Referencing an ID
 - [`summarizeGedcom()`](https://r-computing-lab.github.io/tidygedcom/reference/summarizeGedcom.md)
   : Summarise a Parsed GEDCOM Data Frame
+- [`summarizeIDs()`](https://r-computing-lab.github.io/tidygedcom/reference/summarizeIDs.md)
+  [`summariseIDs()`](https://r-computing-lab.github.io/tidygedcom/reference/summarizeIDs.md)
+  : Summarize Where One or More IDs Occur Across a List of Data Frames
 - [`traceTreePaths()`](https://r-computing-lab.github.io/tidygedcom/reference/traceTreePaths.md)
   : Trace paths between individuals in a family tree grid

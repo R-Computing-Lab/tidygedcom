@@ -26,6 +26,7 @@
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/extractInfo.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/extractInfoFromLines.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/extractMemberTable.html</loc></url>
+<url><loc>https://r-computing-lab.github.io/tidygedcom/reference/findIDs.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/gedcomLat2Numeric.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/gedcomLon2Numeric.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/getGridNeighbors.html</loc></url>
@@ -50,10 +51,13 @@
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/readGedcom.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/readGedcomFamilies.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/readWikifamilytree.html</loc></url>
+<url><loc>https://r-computing-lab.github.io/tidygedcom/reference/repairManually.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/royal92.html</loc></url>
+<url><loc>https://r-computing-lab.github.io/tidygedcom/reference/sliceByID.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/splitFamilies.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/splitIndividuals.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/summarizeGedcom.html</loc></url>
+<url><loc>https://r-computing-lab.github.io/tidygedcom/reference/summarizeIDs.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/traceTreePaths.html</loc></url>
 </urlset>
 
