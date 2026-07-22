@@ -4,12 +4,11 @@
 #' IDs appears as the individual themselves, a parent, or a spouse. This is a
 #' diagnostic aid for inspecting a person's full household before and after
 #' manually repairing links in GEDCOM-derived pedigrees. The result is a subset
-#' of `ped` with the same columns, so it parallels [BGmisc::sliceFamilies()],
-#' which slices a pedigree down to families meeting a criterion.
+#' of `ped` with the same columns..
 #'
 #' Incoming column names are normalised with BGmisc's internal column
 #' standardiser, so the common variants (`ID`/`personID`, `dadID`/`pid_fath`,
-#' `momID`/`pid_moth`, `spID`/`pid_spouse1`, ...) are all recognised without the
+#' `momID`/`pid_moth`, `spID`/`pid_spouse1`, ...) are all recognized without the
 #' caller naming them. Because BGmisc's canonical schema is single-spouse but
 #' GEDCOM-derived pedigrees often record remarriages in extra columns, any
 #' additional spouse-like columns (matching `spID2`, `pid_spouse2`, ...) are
@@ -70,7 +69,7 @@ sliceByID <- function(ped, ID, sort = TRUE) {
 #' This is the detective step of link repair: locating every place an ID lives
 #' before deciding how to fix it.
 #'
-#' Unlike [sliceByID()], this does *not* standardise column names, because its
+#' Unlike [sliceByID()], this does *not* standardize column names, because its
 #' whole purpose is to catch IDs wherever they hide, including in non-canonical
 #' columns.
 #'
