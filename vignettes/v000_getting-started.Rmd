@@ -17,13 +17,15 @@ library(tidygedcom)
 
 ## What is a GEDCOM file?
 
-GEDCOM (Genealogical Data Communication) is a plain-text file format used by virtually every genealogy platform — Ancestry, FamilySearch, MyHeritage, Gramps, and others. A typical workflow looks like this:
+GEDCOM (Genealogical Data Communication) is a plain-text file format used by virtually every genealogy platform — Ancestry, FamilySearch, MyHeritage, Gramps, and others.
+A typical workflow looks like this:
 
-1. Build or find a family tree on Ancestry.com (or similar).
-2. Export it as a `.ged` file from the tree settings page.
-3. Load it into R with `readGedcom()`.
+1.  Build or find a family tree on Ancestry.com (or similar).
+2.  Export it as a `.ged` file from the tree settings page.
+3.  Load it into R with `readGedcom()`.
 
-The file itself is a structured text file. Here is a small slice:
+The file itself is a structured text file.
+Here is a small slice:
 
 ```{verbatim, eval = FALSE}
 0 @I1@ INDI
@@ -49,20 +51,23 @@ The file itself is a structured text file. Here is a small slice:
 1 CHIL @I5@
 ```
 
-Individual records (`INDI`) hold person-level facts; family records (`FAM`) link spouses and children and carry marriage or divorce events. 
-
-
+Individual records (`INDI`) hold person-level facts; family records (`FAM`) link spouses and children and carry marriage or divorce events.
 
 ## Why use R for genealogy?
 
-The tidygedcom package provides tools for parsing and tidying GEDCOM files, making it easier to work with genealogical data in R. R's powerful data manipulation capabilities allow researchers to clean, analyze, and visualize genealogical data in ways that may not be possible with traditional genealogy software. Additionally, R's extensive ecosystem of packages for statistical analysis and machine learning can be applied to genealogical data to uncover patterns and insights that may not be immediately apparent.
+The tidygedcom package provides tools for parsing and tidying GEDCOM files, making it easier to work with genealogical data in R.
+R's powerful data manipulation capabilities allow researchers to clean, analyze, and visualize genealogical data in ways that may not be possible with traditional genealogy software.
+Additionally, R's extensive ecosystem of packages for statistical analysis and machine learning can be applied to genealogical data to uncover patterns and insights that may not be immediately apparent.
 
-This vignette uses a real family tree as its running example: the W. Henderson Waugh Family Tree. We'll discuss more about our running example in another vignette. (But briefly, the Waugh family tree is a genetic genealogy collaboration between two Wake Forest psychology faculty -- SMG and CEW. See https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832 for more on the historical context of the Waugh family tree.) The tidygedcom package provides the tools for parsing and tidying GEDCOM files, and the Waugh family tree provides a real-world test case for these tools.
-
+This vignette uses a real family tree as its running example: the W.
+Henderson Waugh Family Tree.
+We'll discuss more about our running example in another vignette.
+(But briefly, the Waugh family tree is a genetic genealogy collaboration between two Wake Forest psychology faculty -- SMG and CEW. See <https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832> for more on the historical context of the Waugh family tree.) The tidygedcom package provides the tools for parsing and tidying GEDCOM files, and the Waugh family tree provides a real-world test case for these tools.
 
 ## A minimal example
 
-We construct a small GEDCOM in memory that captures the key relationships described above. This allows all code examples below to run without an external file.
+We construct a small GEDCOM in memory that captures the key relationships described above.
+This allows all code examples below to run without an external file.
 
 ```{r build-sample}
 sample_ged <- c(
@@ -185,25 +190,24 @@ tmp_ged <- tempfile(fileext = ".ged")
 writeLines(sample_ged, tmp_ged)
 ```
 
-
 ## Reading individual records: `readGedcom()`
 
-`readGedcom()` parses all `INDI` blocks and returns one row per person. It infers `momID` and `dadID` automatically by tracing `FAMC` → `FAMS` links — no manual ID mapping required.
+`readGedcom()` parses all `INDI` blocks and returns one row per person.
+It infers `momID` and `dadID` automatically by tracing `FAMC` → `FAMS` links — no manual ID mapping required.
 
 ```{r read-individuals}
 ped <- readGedcom(tmp_ged, verbose = FALSE)
 ped[, c("personID", "name", "sex", "birth_date", "death_date", "momID", "dadID")]
 ```
 
-Notice that W. Henderson Waugh and William Pitt Waugh Jr. share the same `dadID` — William Pitt Waugh Sr. — reflecting the half-sibling relationship in the parsed data.
+Notice that W.
+Henderson Waugh and William Pitt Waugh Jr. share the same `dadID` — William Pitt Waugh Sr. — reflecting the half-sibling relationship in the parsed data.
 
 ### GEDCOM version
 
 ```{r gedcom-version}
 attr(ped, "gedcom_version")
 ```
-
-
 
 ## Quick overview: `summarizeGedcom()`
 
@@ -213,15 +217,15 @@ summarizeGedcom(ped)
 
 For a large real-world file (the full W. Henderson Waugh tree has several hundred individuals), this is the first thing to call after loading — it shows at a glance how much birth, death, and parentage data is present before any cleaning.
 
-
-
 ## Working with dates
 
-GEDCOM dates are raw strings that often carry qualifiers (`ABT`, `BEF`, `AFT`) or calendar escape codes (`@#DGREGORIAN@`). Historical genealogy — especially for antebellum American records — is full of approximate dates: birth years reconstructed from census age questions, death years inferred from probate filings, and marriage dates from county clerk records that were never systematically kept.
+GEDCOM dates are raw strings that often carry qualifiers (`ABT`, `BEF`, `AFT`) or calendar escape codes (`@#DGREGORIAN@`).
+Historical genealogy — especially for antebellum American records — is full of approximate dates: birth years reconstructed from census age questions, death years inferred from probate filings, and marriage dates from county clerk records that were never systematically kept.
 
 ### Parse to `Date` objects
 
-Pass `parse_dates = TRUE` to convert `birth_date` and `death_date` to proper `Date` objects. Qualifiers and escapes are stripped first:
+Pass `parse_dates = TRUE` to convert `birth_date` and `death_date` to proper `Date` objects.
+Qualifiers and escapes are stripped first:
 
 ```{r parse-dates}
 ped_dates <- readGedcom(tmp_ged, parse_dates = TRUE, verbose = FALSE)
@@ -230,7 +234,8 @@ ped_dates[, c("name", "birth_date", "death_date")]
 
 ### Extract a year from any GEDCOM date string
 
-Not all dates parse cleanly to `Date` objects — `"ABT 1835"` or `"OCT 1814"` have no day component. `extractGedcomYear()` handles all forms and returns an integer year:
+Not all dates parse cleanly to `Date` objects — `"ABT 1835"` or `"OCT 1814"` have no day component.
+`extractGedcomYear()` handles all forms and returns an integer year:
 
 ```{r extract-year}
 dates_raw <- c(
@@ -248,18 +253,18 @@ ped$death_year <- extractGedcomYear(ped$death_date)
 ped[, c("name", "birth_year", "death_year")]
 ```
 
-
-
 ## Reading family records: `readGedcomFamilies()`
 
-Marriage and relationship data live in `FAM` blocks. `readGedcomFamilies()` parses them into a separate data frame:
+Marriage and relationship data live in `FAM` blocks.
+`readGedcomFamilies()` parses them into a separate data frame:
 
 ```{r read-families}
 fam <- readGedcomFamilies(tmp_ged, verbose = FALSE)
 fam[, c("famID", "husbID", "wifeID", "marr_date", "marr_place")]
 ```
 
-The `_SREL friend` tag on Family 2 — the non-marital relationship between William Pitt Waugh Sr. and Martha Law Segraves — is preserved in the raw GEDCOM but not yet parsed as a structured column. This is a known limitation when working with Ancestry.com exports that use non-standard tags.
+The `_SREL friend` tag on Family 2 — the non-marital relationship between William Pitt Waugh Sr. and Martha Law Segraves — is preserved in the raw GEDCOM but not yet parsed as a structured column.
+This is a known limitation when working with Ancestry.com exports that use non-standard tags.
 
 Join back to the individuals table to annotate both families with spouse names:
 
@@ -276,10 +281,10 @@ merge(
   )
 ```
 
-
 ## Working with coordinates
 
-GEDCOM stores coordinates in compass-prefix notation (`N36.1234`, `W81.5678`). `convertGedcomCoords()` converts all `_lat`/`_long` columns to signed decimal degrees in one call:
+GEDCOM stores coordinates in compass-prefix notation (`N36.1234`, `W81.5678`).
+`convertGedcomCoords()` converts all `_lat`/`_long` columns to signed decimal degrees in one call:
 
 ```{r coords}
 coord_ged <- c(
@@ -313,8 +318,7 @@ gedcomLon2Numeric(c("W81.1845", "E151.2093", NA))
 
 ## From GEDCOM to pedigree analysis
 
-Once the data is in a tidy data frame, the `BGmisc` package provides the next layer of analysis: computing pairwise relatedness, tracing paternal lineages, and identifying Y-chromosome carriers. 
-
+Once the data is in a tidy data frame, the `BGmisc` package provides the next layer of analysis: computing pairwise relatedness, tracing paternal lineages, and identifying Y-chromosome carriers.
 
 ```{r bgmisc, eval = requireNamespace("BGmisc", quietly = TRUE) }
 library(BGmisc)
@@ -329,13 +333,13 @@ checks <- checkPedigreeNetwork(ped,
 checks$is_acyclic
 ```
 
-
-Please see the vignette "From GEDCOM to pedigree analysis" for a longer walkthrough of these steps using the W. Henderson Waugh family tree as a case study.
-
+Please see the vignette "From GEDCOM to pedigree analysis" for a longer walkthrough of these steps using the W.
+Henderson Waugh family tree as a case study.
 
 ## From GEDCOM to pedigree diagrams
 
-You can also visualize the family tree with the `ggpedigree` package. The `config` argument allows you to customize the plot with a wide range of options. 
+You can also visualize the family tree with the `ggpedigree` package.
+The `config` argument allows you to customize the plot with a wide range of options.
 
 ```{r ggped, eval = requireNamespace("BGmisc", quietly = TRUE) && requireNamespace("ggpedigree", quietly = TRUE), warning = FALSE, message = FALSE }
 library(BGmisc)
@@ -369,21 +373,19 @@ ggpedigree(
 ## Cleaning up
 ```
 
-Please see the vignettes from the `ggpedigree` package for more on customizing pedigree diagrams with `ggpedigree()`. 
+Please see the vignettes from the `ggpedigree` package for more on customizing pedigree diagrams with `ggpedigree()`.
 
 ```{r cleanup}
 unlink(tmp_ged)
 ```
 
-
 ## Summary of functions
 
 | Function | Purpose |
-|||
-| `readGedcom(file)` | Parse `INDI` blocks → one row per person |
-| `readGedcomFamilies(file)` | Parse `FAM` blocks → one row per family |
-| `summarizeGedcom(df)` | Coverage counts and percentages |
-| `extractGedcomYear(x)` | Year from any GEDCOM date string |
-| `convertGedcomCoords(df)` | Convert `_lat`/`_long` columns to decimal degrees |
-| `gedcomLat2Numeric(x)` | Convert a latitude string vector |
+|------|------|
+|   `readGedcom(file)`    | Parse `INDI` blocks → one row per person |      |
+|   `readGedcomFamilies(file)`   | Parse `FAM` blocks → one row per family |  
+|   `summarizeGedcom(df)`   |   Coverage counts and percentages     | 
+|  `extractGedcomYear(x)` | Year from any GEDCOM date string |
+| `convertGedcomCoords(df)` | Convert `_lat`/`_long` columns to decimal degrees | |`gedcomLat2Numeric(x)` | Convert a latitude string vector |
 | `gedcomLon2Numeric(x)` | Convert a longitude string vector |
