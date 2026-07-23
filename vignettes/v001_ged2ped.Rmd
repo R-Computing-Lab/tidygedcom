@@ -19,8 +19,7 @@ library(tidygedcom)
 
 This genetic genealogy project is a collaboration between two Wake Forest psychology faculty -- SMG and CEW. SMG is a behavioral geneticist with expertise in pedigree analysis and statistical genetics. CEW is a social psychologist with expertise in the self-regulation of emotion. CEW is a direct descendant of W. Henderson Waugh, the focal individual in the family tree, and is interested in understanding his paternal ancestry. SMG is interested in applying her expertise in pedigree analysis to a real-world case study, and developing tools that can be used by other researchers in the field of genetic genealogy. The project is motivated by a desire to understand the historical context of the Waugh family tree, as well as to explore the potential for genetic genealogy to shed light on questions of ancestry and relatedness. The project is also motivated by a desire to contribute to the development of tools and methods for working with genealogical data,
 
-We encourage readers to explore some of the history of the Waugh family tree as recounted [https://thewilkesrecord.com/the-legacy-of-%E2%80%9Cbud%E2%80%9D-mitchell-p2771-149.htm] as well as through the book
-https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832
+We encourage readers to explore some of the history of the Waugh family tree as recounted [https://thewilkesrecord.com/the-legacy-of-%E2%80%9Cbud%E2%80%9D-mitchell-p2771-149.htm] as well as through the (book)[https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832]
 
 
 
@@ -278,7 +277,7 @@ This isolates individuals descended from William Pitt Waugh Sr. but **not** thro
 ## Summary of functions
 
 | Function | Purpose |
-|||
+|------|------|
 | `readGedcom(file)` | Parse `INDI` blocks → one row per person |
 | `readGedcomFamilies(file)` | Parse `FAM` blocks → one row per family |
 | `summarizeGedcom(df)` | Coverage counts and percentages |
