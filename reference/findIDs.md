@@ -58,7 +58,7 @@ frame if nothing matches.
 
 ## Details
 
-Unlike \[sliceByID()\], this does \*not\* standardise column names,
+Unlike \[sliceByID()\], this does \*not\* standardize column names,
 because its whole purpose is to catch IDs wherever they hide, including
 in non-canonical columns.
 

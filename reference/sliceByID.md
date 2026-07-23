@@ -4,9 +4,7 @@ Given a pedigree data frame, returns every row in which any of the
 supplied IDs appears as the individual themselves, a parent, or a
 spouse. This is a diagnostic aid for inspecting a person's full
 household before and after manually repairing links in GEDCOM-derived
-pedigrees. The result is a subset of \`ped\` with the same columns, so
-it parallels \[BGmisc::sliceFamilies()\], which slices a pedigree down
-to families meeting a criterion.
+pedigrees. The result is a subset of \`ped\` with the same columns..
 
 ## Usage
 
@@ -39,7 +37,7 @@ in a linking column, with the original columns and names preserved.
 Incoming column names are normalised with BGmisc's internal column
 standardiser, so the common variants (\`ID\`/\`personID\`,
 \`dadID\`/\`pid_fath\`, \`momID\`/\`pid_moth\`,
-\`spID\`/\`pid_spouse1\`, ...) are all recognised without the caller
+\`spID\`/\`pid_spouse1\`, ...) are all recognized without the caller
 naming them. Because BGmisc's canonical schema is single-spouse but
 GEDCOM-derived pedigrees often record remarriages in extra columns, any
 additional spouse-like columns (matching \`spID2\`, \`pid_spouse2\`,
