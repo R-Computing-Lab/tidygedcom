@@ -98,8 +98,6 @@ three_cats <- image_composite(three_cats, cat_center, operator = "over", offset 
 three_cats <- image_composite(three_cats, cat_right,  operator = "over", offset = "+520+0")
 
 
-
-
 image_write(three_cats, path = "data-raw/threecats.png", format = "png")
 
 sticker(
@@ -112,7 +110,7 @@ sticker(
   h_fill = "#0fa1e0",
   h_color = "#333333",
   p_color = "white",
-  filename = "man/figures/hex.png"
+  filename = "man/figures/hex2.png"
 )
 
 #
@@ -133,12 +131,16 @@ p <- ggpedigree(potter,
                     focal_fill_mid_color =  "#0fa1e0",
                     focal_fill_low_color = "#333333",
                     focal_fill_na_color = "#333333",
+                    outline_include = TRUE,
+                    outline_color_include = TRUE,
+                    outline_additional_size = 0.15,
+                    outline_color = "#333333",
                     segment_lineage_include = TRUE,
                     segment_lineage_focal_personID = 7,
                     segment_lineage_method = "gradient",
               #      segment_lineage_palette = "viridis",
                     segment_lineage_legend_show = FALSE,
-              segment_lineage_na_color = "white"
+                     segment_lineage_na_color = "white"
                   )
 ) +
   theme_void() +
@@ -151,27 +153,33 @@ p <- ggpedigree(potter,
     fill = "none"
   )
 
-ggsave("data-raw/bgplot.png", p, width = 8, height = 3.75, bg = "transparent", dpi = 300)
+
+
+ggsave("data-raw/bgplot.png", p, width = 8, height = 3.75, bg = "transparent", dpi = 400)
 
 
 
 ## Step 3: Combine background and logo
-graph_img <- image_read("data-raw/bgplot.png")
+graph_img <- magick::image_read(normalizePath("data-raw/bgplot.png"))
 
 # Match sizes
-graph_img <- image_resize(graph_img, geometry_size_pixels(width = 860, height = 380, preserve_aspect = FALSE))
+graph_img <- image_resize(graph_img, geometry_size_pixels(width = 860, height = 390, preserve_aspect = T))
 
 
 combined_img <- image_composite(graph_img, three_cats, operator = "Over", gravity = "South", offset = "+10-20")
 
+
+
 # Save combined image
-image_write(combined_img, path = "data-raw/combined.png", format = "png")
+image_write(combined_img, path = normalizePath("data-raw/combined.png"), format = "png")
+
+combined_img <- magick::image_read(normalizePath("data-raw/combined.png"))
 
 
-sticker("data-raw/combined.png",
+sticker(combined_img,
         package = "tidygedcom",
-        p_size = 20, s_x = 1 - .05, s_y = .900, s_width = .6,
+        p_size = 20, s_x = 1 - .05, s_y = .900, s_width = 1.6,
         h_fill = "#0fa1e0", h_color = "#333333",
-        p_color = "white", filename = "man/figures/hex2.png")
+        p_color = "white", filename = "man/figures/hex.png")
 
 
