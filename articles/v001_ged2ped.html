@@ -85,7 +85,7 @@ project is also motivated by a desire to contribute to the development
 of tools and methods for working with genealogical data,</p>
 <p>We encourage readers to explore some of the history of the Waugh
 family tree as recounted [<a href="https://thewilkesrecord.com/the-legacy-of-%E2%80%9Cbud%E2%80%9D-mitchell-p2771-149.htm" class="external-link uri">https://thewilkesrecord.com/the-legacy-of-%E2%80%9Cbud%E2%80%9D-mitchell-p2771-149.htm</a>]
-as well as through the book <a href="https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832" class="external-link uri">https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832</a></p>
+as well as through the (book)[<a href="https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832" class="external-link uri">https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832</a>]</p>
 </div>
 <div class="section level2">
 <h2 id="history">History<a class="anchor" aria-label="anchor" href="#history"></a>
@@ -384,17 +384,47 @@ edges highlighted by patriline membership.</p>
 <div class="section level3">
 <h3 id="summary-of-functions">Summary of functions<a class="anchor" aria-label="anchor" href="#summary-of-functions"></a>
 </h3>
-<div class="line-block">Function | Purpose |</div>
-<p>||| | <code>readGedcom(file)</code> | Parse <code>INDI</code> blocks
-→ one row per person | | <code>readGedcomFamilies(file)</code> | Parse
-<code>FAM</code> blocks → one row per family | |
-<code>summarizeGedcom(df)</code> | Coverage counts and percentages | |
-<code>extractGedcomYear(x)</code> | Year from any GEDCOM date string | |
-<code>convertGedcomCoords(df)</code> | Convert
-<code>_lat</code>/<code>_long</code> columns to decimal degrees | |
-<code>gedcomLatToNumeric(x)</code> | Convert a latitude string vector |
-| <code>gedcomLonToNumeric(x)</code> | Convert a longitude string vector
-|</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th>Function</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>readGedcom(file)</code></td>
+<td>Parse <code>INDI</code> blocks → one row per person</td>
+</tr>
+<tr class="even">
+<td><code>readGedcomFamilies(file)</code></td>
+<td>Parse <code>FAM</code> blocks → one row per family</td>
+</tr>
+<tr class="odd">
+<td><code>summarizeGedcom(df)</code></td>
+<td>Coverage counts and percentages</td>
+</tr>
+<tr class="even">
+<td><code>extractGedcomYear(x)</code></td>
+<td>Year from any GEDCOM date string</td>
+</tr>
+<tr class="odd">
+<td><code>convertGedcomCoords(df)</code></td>
+<td>Convert <code>_lat</code>/<code>_long</code> columns to decimal
+degrees</td>
+</tr>
+<tr class="even">
+<td><code>gedcomLatToNumeric(x)</code></td>
+<td>Convert a latitude string vector</td>
+</tr>
+<tr class="odd">
+<td><code>gedcomLonToNumeric(x)</code></td>
+<td>Convert a longitude string vector</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

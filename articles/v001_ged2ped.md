@@ -20,8 +20,8 @@ of tools and methods for working with genealogical data,
 We encourage readers to explore some of the history of the Waugh family
 tree as recounted
 \[<https://thewilkesrecord.com/the-legacy-of-%E2%80%9Cbud%E2%80%9D-mitchell-p2771-149.htm>\]
-as well as through the book
-<https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832>
+as well as through the
+(book)\[<https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832>\]
 
 ## History
 
@@ -330,13 +330,12 @@ to the focal individual and edges highlighted by patriline membership.
 
 ### Summary of functions
 
-Function \| Purpose \|
-
-\|\|\| \| `readGedcom(file)` \| Parse `INDI` blocks → one row per person
-\| \| `readGedcomFamilies(file)` \| Parse `FAM` blocks → one row per
-family \| \| `summarizeGedcom(df)` \| Coverage counts and percentages \|
-\| `extractGedcomYear(x)` \| Year from any GEDCOM date string \| \|
-`convertGedcomCoords(df)` \| Convert `_lat`/`_long` columns to decimal
-degrees \| \| `gedcomLatToNumeric(x)` \| Convert a latitude string
-vector \| \| `gedcomLonToNumeric(x)` \| Convert a longitude string
-vector \|
+| Function | Purpose |
+|----|----|
+| `readGedcom(file)` | Parse `INDI` blocks → one row per person |
+| `readGedcomFamilies(file)` | Parse `FAM` blocks → one row per family |
+| `summarizeGedcom(df)` | Coverage counts and percentages |
+| `extractGedcomYear(x)` | Year from any GEDCOM date string |
+| `convertGedcomCoords(df)` | Convert `_lat`/`_long` columns to decimal degrees |
+| `gedcomLatToNumeric(x)` | Convert a latitude string vector |
+| `gedcomLonToNumeric(x)` | Convert a longitude string vector |
