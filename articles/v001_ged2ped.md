@@ -1,7 +1,5 @@
 # GEDCOM to Pedigree Analysis
 
-### Positioning statement
-
 This genetic genealogy project is a collaboration between two Wake
 Forest psychology faculty – SMG and CEW. SMG is a behavioral geneticist
 with expertise in pedigree analysis and statistical genetics. CEW is a
@@ -56,14 +54,14 @@ shared Y chromosome can be confirmed through genetic genealogy.
 
 The paternal chain from the focal individual back through history is:
 
-Generation \| Individual \| Birth \|
-
-\|\|\|\| \| Self \| Christian Emil WAUGH \| 29 Apr 1978, Monterey County
-CA \| \| Father \| Gregory Emil Waugh \| Jun 1958 \| \| Grandfather \|
-Warner F Waugh \| abt 1933, NC \| \| Great-grandfather \| John William
-“Bud” Waugh \| abt Jun 1880, NC \| \| 2nd great-grandfather \| **W.
-Henderson Waugh** \| abt 1835, NC \| \| 3rd great-grandfather \|
-**William Pitt Waugh Sr.** \| 28 Apr 1775, Adams County PA \|
+| Generation | Individual | Birth |
+|----|----|----|
+| Self | Christian Emil WAUGH | 29 Apr 1978, Monterey County CA |
+| Father | Gregory Emil Waugh | Jun 1958 |
+| Grandfather | Warner F Waugh | abt 1933, NC |
+| Great-grandfather | John William “Bud” Waugh | abt Jun 1880, NC |
+| 2nd great-grandfather | **W. Henderson Waugh** | abt 1835, NC |
+| 3rd great-grandfather | **William Pitt Waugh Sr.** | 28 Apr 1775, Adams County PA |
 
 Because W. Henderson Waugh’s paternity rests on historical record rather
 than DNA, a Y-chromosome match with a living male descendant of William
