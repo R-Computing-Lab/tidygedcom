@@ -494,12 +494,11 @@ unlink(tmp_ged)
 
 ## Summary of functions
 
-Function \| Purpose \|
-
-\|\|\| \| `readGedcom(file)` \| Parse `INDI` blocks → one row per person
-\| \| `readGedcomFamilies(file)` \| Parse `FAM` blocks → one row per
-family \| \| `summarizeGedcom(df)` \| Coverage counts and percentages \|
-\| `extractGedcomYear(x)` \| Year from any GEDCOM date string \| \|
-`convertGedcomCoords(df)` \| Convert `_lat`/`_long` columns to decimal
-degrees \| \| `gedcomLat2Numeric(x)` \| Convert a latitude string vector
-\| \| `gedcomLon2Numeric(x)` \| Convert a longitude string vector \|
+| Function | Purpose |
+|----|----|
+| `readGedcom(file)` | Parse `INDI` blocks → one row per person |
+| `readGedcomFamilies(file)` | Parse `FAM` blocks → one row per family |
+| `summarizeGedcom(df)` | Coverage counts and percentages |
+| `extractGedcomYear(x)` | Year from any GEDCOM date string |
+| `convertGedcomCoords(df)` | Convert `_lat`/`_long` columns to decimal degrees |
+| `gedcomLon2Numeric(x)` | Convert a longitude string vector |
