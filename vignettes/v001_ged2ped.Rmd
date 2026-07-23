@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 library(tidygedcom)
 ```
 
-## Positioning statement
+
 
 This genetic genealogy project is a collaboration between two Wake Forest psychology faculty -- SMG and CEW. SMG is a behavioral geneticist with expertise in pedigree analysis and statistical genetics. CEW is a social psychologist with expertise in the self-regulation of emotion. CEW is a direct descendant of W. Henderson Waugh, the focal individual in the family tree, and is interested in understanding his paternal ancestry. SMG is interested in applying her expertise in pedigree analysis to a real-world case study, and developing tools that can be used by other researchers in the field of genetic genealogy. The project is motivated by a desire to understand the historical context of the Waugh family tree, as well as to explore the potential for genetic genealogy to shed light on questions of ancestry and relatedness. The project is also motivated by a desire to contribute to the development of tools and methods for working with genealogical data,
 
@@ -24,6 +24,7 @@ We encourage readers to explore some of the history of the Waugh family tree as 
 
 
 # History
+
 The core research question is one of paternity. William Pitt Waugh (b. 28 April 1775, Adams County, Pennsylvania; d. 14 August 1852, Wilkes County, North Carolina) was a bachelor slaveholder. Historical records show he placed a "Runaway/Fugitive Enslaved Person" notice in the *Alexandria Gazette* on 21 March 1820. His last will and testament, filed in Wilkes County, names no lawful wife.
 
 Evidence in the tree points to two sons born to two different women of color — both outside of marriage:
@@ -36,7 +37,7 @@ W. Henderson Waugh and William Pitt Waugh Jr. are, if the documentary evidence i
 The paternal chain from the focal individual back through history is:
 
 | Generation | Individual | Birth |
-||||
+|--|--|--|
 | Self | Christian Emil WAUGH | 29 Apr 1978, Monterey County CA |
 | Father | Gregory Emil Waugh | Jun 1958 |
 | Grandfather | Warner F Waugh | abt 1933, NC |
