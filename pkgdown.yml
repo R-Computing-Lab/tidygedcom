@@ -2,9 +2,9 @@ pandoc: 3.8.3
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
-  00_getting-started: 00_getting-started.html
-  01_ged2ped: 01_ged2ped.html
-last_built: 2026-07-23T13:28Z
+  000getting-started: 000getting-started.html
+  001ged2ped: 001ged2ped.html
+last_built: 2026-07-23T13:35Z
 urls:
   reference: https://r-computing-lab.github.io/tidygedcom/reference
   article: https://r-computing-lab.github.io/tidygedcom/articles
