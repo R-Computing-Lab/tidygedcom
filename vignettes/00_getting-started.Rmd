@@ -60,7 +60,6 @@ The tidygedcom package provides tools for parsing and tidying GEDCOM files, maki
 This vignette uses a real family tree as its running example: the W. Henderson Waugh Family Tree. We'll discuss more about our running example in another vignette. (But briefly, the Waugh family tree is a genetic genealogy collaboration between two Wake Forest psychology faculty -- SMG and CEW. See https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832 for more on the historical context of the Waugh family tree.) The tidygedcom package provides the tools for parsing and tidying GEDCOM files, and the Waugh family tree provides a real-world test case for these tools.
 
 
-
 ## A minimal example
 
 We construct a small GEDCOM in memory that captures the key relationships described above. This allows all code examples below to run without an external file.

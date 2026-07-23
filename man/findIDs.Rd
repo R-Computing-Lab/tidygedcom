@@ -45,7 +45,7 @@ This is the detective step of link repair: locating every place an ID lives
 before deciding how to fix it.
 }
 \details{
-Unlike [sliceByID()], this does *not* standardise column names, because its
+Unlike [sliceByID()], this does *not* standardize column names, because its
 whole purpose is to catch IDs wherever they hide, including in non-canonical
 columns.
 }
