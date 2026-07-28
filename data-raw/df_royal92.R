@@ -141,8 +141,54 @@ royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = NA_integer_,
     dadID = NA_integer_,
     overwrite = TRUE
+  ) %>%
+  # Add twinID, momID, dadID, and sex corrections based on historical records and data cleaning needs
+  mutate(
+    momID = as.numeric(momID),
+    dadID = as.numeric(dadID),
+    personID = as.numeric(personID),
+    twinID = case_when(
+      personID == 223 ~ 222,
+      personID == 222 ~ 223,
+      personID == 1116 ~ 1117,
+      personID == 1117 ~ 1116,
+      personID == 1155 ~ 1156,
+      personID == 1156 ~ 1155,
+      TRUE ~ NA_real_
+    ),
+    momID = case_when(
+      personID == 1282 ~ 1884,
+      personID == 1988 ~ 2579, # judith of flanders
+      TRUE ~ momID
+    ),
+    dadID = case_when(
+      personID == 2538 ~ 1051,
+      personID == 1868 ~ 2300, # William IX of Aquitaine is the father of William X of Aquitaine
+       personID == 1988 ~ 1970,
+      TRUE ~ dadID
+    ),
+        sex = case_when(
+      personID %in% c(
+        235,
+        1098,
+        1753,
+        1755,
+        1756,
+        1803,
+        2033,
+        2509,
+        2990,
+        2991,
+        2993
+      ) ~ "M",
+      personID %in% c(
+        932,
+        1149,
+        2992
+      ) ~ "F",
+      TRUE ~ sex
+    )
   )
-
 
 #----
 # Create overrides for dates and names based on historical records and data cleaning needs
@@ -1449,7 +1495,7 @@ date_overrides <- tribble(
   1966, "795", "13 JAN 858", # Æthelwulf of Wessex
   1968, "825", "852", # Æthelstan of Kent
   1969, "834", "20 DEC 860", # Æthelbald of Wessex
-  1970, "843", "870", # Judith of Flanders
+  1970, "830", "879", # duplicate Judith of Flanders, # probably 830s
   1971, "835", "865", # Æthelberht of Wessex
   1972, "847", "APR 871", # Æthelred I of Wessex
   1973, "771", "839", # Egbert of Wessex
@@ -1871,7 +1917,7 @@ date_overrides <- tribble(
   2517, "2 AUG 1674", "2 DEC 1723", # Philippe II, Duke of Orléans / Regent
   2518, "17 JAN 1342", "27 APR 1404", # Philip the Bold, Duke of Burgundy
   2519, "20 MAY 1315", "11 SEP 1349", # Bonne of Luxembourg
-  2520, "1294", "7 MAR 1342", # Joan of Valois, Countess of Hainaut
+  2520, "1304", "1363 ", # Joan of Valois, Countess of Beaumont
   2521, "1287", "16 AUG 1342", # Robert III of Artois; row title says Duke of Richmond
   2524, "1459", "1 JAN 1496", # Charles of Valois, Count of Angoulême
   2525, "26 JUN 1399", "30 APR 1467", # John of Valois, Count of Angoulême
@@ -2553,7 +2599,7 @@ name_overrides <- tribble(
   1966, "Æthelwulf of Wessex",
   1968, "Æthelstan of Kent",
   1969, "Æthelbald of Wessex",
-  1970, "Judith of Flanders",
+  1970, "Baldwin I of Flanders", #duplicate judith of flanders
   1971, "Æthelberht of Wessex",
   1972, "Æthelred I of Wessex",
   1973, "Egbert of Wessex",
@@ -3332,7 +3378,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2474 ~ "Countess of Boulogne and Toulouse",
       personID == 2512 ~ "Queen of Sweden",
       personID == 2517 ~ "Duke of Orléans; Regent",
-      personID == 2520 ~ "Countess of Hainaut",
+      personID == 2520 ~ "Countess of Beaumont",
       personID %in%
         c(2524, 2525) ~ "Count of Angoulême",
       personID == 2541 ~ "Dauphine of France",
@@ -3386,47 +3432,9 @@ royal92_cleaned <- royal92 %>%
       personID == 3009 ~ NA_character_, # Blanking
       TRUE ~ attribute_title
     ),
-    twinID = case_when(
-      personID == 223 ~ 222,
-      personID == 222 ~ 223,
-      personID == 1116 ~ 1117,
-      personID == 1117 ~ 1116,
-      personID == 1155 ~ 1156,
-      personID == 1156 ~ 1155,
-      TRUE ~ NA_real_
-    ),
-    momID = case_when(
-      personID == 1282 ~ 1884,
-      TRUE ~ momID
-    ),
-    dadID = case_when(
-      personID == 2538 ~ 1051, # This is a correction for a missing dadID
-      personID == 1868 ~ 2300, # William IX of Aquitaine is the father of William X of Aquitaine
-      TRUE ~ dadID
-    ),
     attribute_title = str_replace_all(attribute_title, text_cleanup_regex) %>%
       str_squish(),
-    sex = case_when(
-      personID %in% c(
-        235,
-        1098,
-        1753,
-        1755,
-        1756,
-        1803,
-        2033,
-        2509,
-        2990,
-        2991,
-        2993
-      ) ~ "M",
-      personID %in% c(
-        932,
-        1149,
-        2992
-      ) ~ "F",
-      TRUE ~ sex
-    ),
+
     name = str_replace_all(
       name,
       text_cleanup_regex
@@ -3504,3 +3512,6 @@ royal92 %>%
     last_name = str_extract(name, "[^ ]+$"),
   ) %>%
   arrange(last_name, personID)
+
+
+# todo, continue linking judith of flanders to the wessex line
