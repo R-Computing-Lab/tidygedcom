@@ -175,6 +175,8 @@ graph_img <- magick::image_read(normalizePath("data-raw/hex/bgplot.png"))
 # Match sizes
 graph_img <- image_resize(graph_img, geometry_size_pixels(width = 860*1.25, height = 390*1.25, preserve_aspect = T))
 
+# fade color
+graph_img <- image_fx(graph_img, expression = "pow(p, 0.8)")
 
 combined_img <- image_composite(graph_img, three_cats, operator = "Over", gravity = "South", offset = "+10-40")
 
