@@ -3,7 +3,7 @@ citHeader("To cite tidygedcom in publications, please use:")
 bibentry(
   bibtype = "Manual",
   title   = "tidygedcom: Read and Tidy 'GEDCOM' Genealogy Files",
-  author  = person("S. Mason", "Garrison"),
+  author  = c(person("S. Mason", "Garrison"), person("Christian", "Waugh")),
   year    = "2026",
   note    = "R package version 0.1.0",
   url     = "https://github.com/R-Computing-Lab/tidygedcom/"
