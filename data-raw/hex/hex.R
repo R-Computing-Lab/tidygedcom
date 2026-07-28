@@ -3,7 +3,7 @@ library(stringr)
 library(rsvg)
 library(ggpedigree)
 ## read in file
-file <- "data-raw/catlogo.svg"
+file <- "data-raw/hex/catlogo.svg"
 # Render with rsvg into png
 svgdata <- readLines(file)
 svg_string <- paste(svgdata, collapse = "\n")
@@ -67,14 +67,14 @@ color_replacements <- setNames(new_colors, old_colors)
 modified_svg_string <- str_replace_all(svg_string, color_replacements)
 writeLines(modified_svg_string, "data-raw/recoloredcat.svg")
 
-rsvg::rsvg_png("data-raw/recoloredcat.svg",
-  "data-raw/recoloredcat.png",
+rsvg::rsvg_png("data-raw/hex/recoloredcat.svg",
+  "data-raw/hex/recoloredcat.png",
   width = 800
 )
 
-cat("recoloredcat.png exists: ", file.exists("data-raw/recoloredcat.png"), "\n")
-cat("recoloredcat.png path:   ", normalizePath("data-raw/recoloredcat.png"), "\n")
-cat("recoloredcat.png time:   ", file.info("data-raw/recoloredcat.png")$mtime, "\n")
+cat("recoloredcat.png exists: ", file.exists("data-raw/hex/recoloredcat.png"), "\n")
+cat("recoloredcat.png path:   ", normalizePath("data-raw/hex/recoloredcat.png"), "\n")
+cat("recoloredcat.png time:   ", file.info("data-raw/hex/recoloredcat.png")$mtime, "\n")
 
 if (file.exists("man/figures/hex.png")) {
   file.remove("man/figures/hex.png")
@@ -82,7 +82,7 @@ if (file.exists("man/figures/hex.png")) {
 library(magick)
 
 
-cat_img <- magick::image_read(normalizePath("data-raw/recoloredcat.png"))
+cat_img <- magick::image_read(normalizePath("data-raw/hex/recoloredcat.png"))
 
 # make the three cats
 cat_left   <- image_scale(cat_img, "300x300")
@@ -98,7 +98,7 @@ three_cats <- image_composite(three_cats, cat_center, operator = "over", offset 
 three_cats <- image_composite(three_cats, cat_right,  operator = "over", offset = "+520+0")
 
 
-image_write(three_cats, path = "data-raw/threecats.png", format = "png")
+image_write(three_cats, path = "data-raw/hex/threecats.png", format = "png")
 
 sticker(
   subplot = three_cats,
@@ -165,12 +165,12 @@ p <- ggpedigree(potter,
 
 
 
-ggsave("data-raw/bgplot.png", p, width = 8, height = 3.75, bg = "transparent", dpi = 400)
+ggsave("data-raw/hex/bgplot.png", p, width = 8, height = 3.75, bg = "transparent", dpi = 400)
 
 
 
 ## Step 3: Combine background and logo
-graph_img <- magick::image_read(normalizePath("data-raw/bgplot.png"))
+graph_img <- magick::image_read(normalizePath("data-raw/hex/bgplot.png"))
 
 # Match sizes
 graph_img <- image_resize(graph_img, geometry_size_pixels(width = 860*1.25, height = 390*1.25, preserve_aspect = T))
@@ -181,9 +181,9 @@ combined_img <- image_composite(graph_img, three_cats, operator = "Over", gravit
 
 
 # Save combined image
-image_write(combined_img, path = normalizePath("data-raw/combined.png"), format = "png")
+image_write(combined_img, path = normalizePath("data-raw/hex/combined.png"), format = "png")
 
-combined_img <- magick::image_read(normalizePath("data-raw/combined.png"))
+combined_img <- magick::image_read(normalizePath("data-raw/hex/combined.png"))
 
 
 sticker(combined_img,
