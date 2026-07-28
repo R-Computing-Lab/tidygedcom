@@ -34,23 +34,17 @@
   spouse record has no `SEX` line. Individuals with unknown sex are
   skipped during parent mapping rather than compared.
 
-#### Documentation
+#### Documentation and examples
 
 - The “Getting Started” vignette now walks through exporting a GEDCOM
   file from a genealogy service, including the instability of person IDs
   across exports and a note on the privacy implications of sharing an
   export containing living people.
-- Both vignettes now carry a real bibliography
-  (`vignettes/references.bib`) rendered through pandoc’s citation
-  processor, replacing the previous bare and partly malformed inline
-  links. `BGmisc` and `ggpedigree` are now cited to their Journal of
-  Open Source Software papers.
-
-#### Example data
 
 - Added two example GEDCOM files, installed under `inst/extdata`, drawn
   from the W. Henderson Waugh Family Tree and covering eight individuals
   (all deceased) across four families:
+
   - `waugh.ged` — a clean excerpt for documentation examples.
   - `waugh_messy.ged` — the same individuals retaining source-export
     defects (conflicting duplicate `BIRT` blocks, competing `PLAC`
