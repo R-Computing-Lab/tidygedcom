@@ -37,7 +37,7 @@
 - [`sliceByID()`](https://r-computing-lab.github.io/tidygedcom/reference/sliceByID.md)
   : Slice a Pedigree Down to the Rows Referencing an ID
 - [`summarizeGedcom()`](https://r-computing-lab.github.io/tidygedcom/reference/summarizeGedcom.md)
-  : Summarise a Parsed GEDCOM Data Frame
+  : Summarize a Parsed GEDCOM Data Frame
 - [`summarizeIDs()`](https://r-computing-lab.github.io/tidygedcom/reference/summarizeIDs.md)
   [`summariseIDs()`](https://r-computing-lab.github.io/tidygedcom/reference/summarizeIDs.md)
   : Summarize Where One or More IDs Occur Across a List of Data Frames

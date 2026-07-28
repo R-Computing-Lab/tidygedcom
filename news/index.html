@@ -43,9 +43,8 @@
 </ul><div class="section level4">
 <h4 id="date-handling-0-1-0">Date handling<a class="anchor" aria-label="anchor" href="#date-handling-0-1-0"></a></h4>
 <ul><li>
-<code>readGedcom(parse_dates = TRUE)</code> now retains dates that are precise only to the month or the year. Previously these became <code>NA</code>, which discarded most of the dates in a typical historical pedigree. Partial dates are completed with the midpoint of the known interval (the 15th of a known month, 15 June for a known year); set the new <code>impute_partial_dates = FALSE</code> to restore the stricter behaviour and keep only dates that specify a day.</li>
+<code>readGedcom(parse_dates = TRUE)</code> now retains dates that are precise only to the month or the year. Previously these became <code>NA</code>, which discarded most of the dates in a typical historical pedigree. Partial dates are completed with the midpoint of the known interval (the 15th of a known month, 15 June for a known year); set the new <code>impute_partial_dates = FALSE</code> to restore the stricter behavior and keep only dates that specify a day.</li>
 <li>Date qualifiers written with a trailing period (<code>Abt.</code>, <code>Aft.</code>), as Ancestry.com exports them, are now stripped. Previously only the specification’s unpunctuated forms (<code>ABT</code>, <code>AFT</code>) were recognized, so <code>"Aft. Oct 1896"</code> failed to parse.</li>
-<li>Extracted <code><a href="../reference/stripDateQualifiers.html">stripDateQualifiers()</a></code> and <code><a href="../reference/imputePartialDates.html">imputePartialDates()</a></code> as documented internal helpers.</li>
 </ul></div>
 <div class="section level4">
 <h4 id="bug-fixes-0-1-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-0"></a></h4>
@@ -76,9 +75,9 @@
 </ul></div>
 <div class="section level4">
 <h4 id="earlier-development-changes-0-1-0">Earlier development changes<a class="anchor" aria-label="anchor" href="#earlier-development-changes-0-1-0"></a></h4>
-<ul><li>Optimized gedcom reader for speed and memory usage, with a focus on large pedigrees.</li>
-<li>Fixed bug in gedcom reader that resulted in document records being added to the final person in the pedigree.</li>
-<li>Added more unit tests for gedcom reader and data parser.</li>
+<ul><li>Optimized GEDCOM reader for speed and memory usage, with a focus on large pedigrees.</li>
+<li>Fixed bug in GEDCOM reader that resulted in document records being added to the final person in the pedigree.</li>
+<li>Added more unit tests for GEDCOM reader and data parser.</li>
 <li>Several improvements to GEDCOM parsing, focusing on more robust and flexible event parsing, better support for different GEDCOM versions, and enhanced usability.</li>
 </ul></div>
 <div class="section level4">

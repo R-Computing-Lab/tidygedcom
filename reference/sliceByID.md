@@ -34,8 +34,8 @@ in a linking column, with the original columns and names preserved.
 
 ## Details
 
-Incoming column names are normalised with BGmisc's internal column
-standardiser, so the common variants (\`ID\`/\`personID\`,
+Incoming column names are normalized with BGmisc's internal column
+standardizer, so the common variants (\`ID\`/\`personID\`,
 \`dadID\`/\`pid_fath\`, \`momID\`/\`pid_moth\`,
 \`spID\`/\`pid_spouse1\`, ...) are all recognized without the caller
 naming them. Because BGmisc's canonical schema is single-spouse but

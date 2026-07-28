@@ -608,15 +608,11 @@ ggpedigree(
 
 ![](v000_getting-started_files/figure-html/ggped-1.png)
 
-``` r
-
-
-## Cleaning up
-```
-
 Please see the vignettes from the `ggpedigree` package for more on
 customizing pedigree diagrams with
 [`ggpedigree()`](https://r-computing-lab.github.io/ggpedigree/reference/ggPedigree.html).
+
+## Cleaning up
 
 ``` r
 

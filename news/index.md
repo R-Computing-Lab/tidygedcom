@@ -11,17 +11,12 @@
   discarded most of the dates in a typical historical pedigree. Partial
   dates are completed with the midpoint of the known interval (the 15th
   of a known month, 15 June for a known year); set the new
-  `impute_partial_dates = FALSE` to restore the stricter behaviour and
+  `impute_partial_dates = FALSE` to restore the stricter behavior and
   keep only dates that specify a day.
 - Date qualifiers written with a trailing period (`Abt.`, `Aft.`), as
   Ancestry.com exports them, are now stripped. Previously only the
   specification’s unpunctuated forms (`ABT`, `AFT`) were recognized, so
   `"Aft. Oct 1896"` failed to parse.
-- Extracted
-  [`stripDateQualifiers()`](https://r-computing-lab.github.io/tidygedcom/reference/stripDateQualifiers.md)
-  and
-  [`imputePartialDates()`](https://r-computing-lab.github.io/tidygedcom/reference/imputePartialDates.md)
-  as documented internal helpers.
 
 #### Bug fixes
 
@@ -83,11 +78,11 @@
 
 #### Earlier development changes
 
-- Optimized gedcom reader for speed and memory usage, with a focus on
+- Optimized GEDCOM reader for speed and memory usage, with a focus on
   large pedigrees.
-- Fixed bug in gedcom reader that resulted in document records being
+- Fixed bug in GEDCOM reader that resulted in document records being
   added to the final person in the pedigree.
-- Added more unit tests for gedcom reader and data parser.
+- Added more unit tests for GEDCOM reader and data parser.
 - Several improvements to GEDCOM parsing, focusing on more robust and
   flexible event parsing, better support for different GEDCOM versions,
   and enhanced usability.

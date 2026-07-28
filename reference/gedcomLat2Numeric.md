@@ -2,7 +2,7 @@
 
 Converts GEDCOM-style latitude strings like \`"N51.5074"\` or
 \`"S33.8688"\` to signed decimal degrees. Returns \`NA\` for \`NA\` or
-unrecognised-prefix input.
+unrecognized-prefix input.
 
 ## Usage
 
