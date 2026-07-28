@@ -5,7 +5,7 @@
 - **S. Mason Garrison**. Author, maintainer, copyright holder.
   [](https://orcid.org/0000-0002-4804-6003)
 
-- **Christian Waugh**. Contributor, data contributor.
+- **Christian Waugh**. Author, contributor, data contributor.
   [](https://orcid.org/0000-0002-7871-5845)
 
 ## Citation
