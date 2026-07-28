@@ -4,10 +4,14 @@
 \alias{imputePartialDates}
 \title{Impute a Day (and Month) for Partial GEDCOM Dates}
 \usage{
-imputePartialDates(x)
+imputePartialDates(x, default_day = "15", default_month = "JUN")
 }
 \arguments{
 \item{x}{Character vector of GEDCOM date strings.}
+
+\item{default_day}{Character string of the day to impute for month-precision
+dates (default `"15"`).
+@param default_month Character string of the month to impute for year-precision}
 }
 \value{
 A character vector of the same length, with month- and

@@ -125,16 +125,21 @@ stripDateQualifiers <- function(x) {
 #' before calling this function.
 #'
 #' @param x Character vector of GEDCOM date strings.
+#' @param default_day Character string of the day to impute for month-precision
+#'  dates (default `"15"`).
+#'  @param default_month Character string of the month to impute for year-precision
 #' @return A character vector of the same length, with month- and
 #'   year-precision entries expanded to a full `"%d %b %Y"` date string.
 #' @examples
 #' tidygedcom:::imputePartialDates(c("Oct 1814", "1844", "28 Apr 1775", NA))
 #' @keywords internal
-imputePartialDates <- function(x) {
+imputePartialDates <- function(x,
+                               default_day = "15",
+                               default_month = "JUN") {
   # "Oct 1814" -> "15 Oct 1814"
-  x <- ifelse(grepl("^[A-Za-z]+ \\d{4}$", x), paste("15", x), x)
+  x <- ifelse(grepl("^[A-Za-z]+ \\d{4}$", x), paste(default_day, x), x)
   # "1844" -> "15 Jun 1844"
-  x <- ifelse(grepl("^\\d{4}$", x), paste("15 Jun", x), x)
+  x <- ifelse(grepl("^\\d{4}$", x), paste(default_day, default_month, x), x)
   x
 }
 
