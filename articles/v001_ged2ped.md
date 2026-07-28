@@ -132,6 +132,10 @@ The strategy for the Waugh paternity question is:
     confirm that W. Henderson Waugh and William Pitt Waugh Jr. share the
     same father.
 
+Alas, that analysis is beyond the scope of this vignette, but the
+following code demonstrates how to structure the pedigree and flag
+Y-line membership.
+
 ``` r
 
 library(BGmisc)

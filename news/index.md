@@ -40,6 +40,11 @@
   file from a genealogy service, including the instability of person IDs
   across exports and a note on the privacy implications of sharing an
   export containing living people.
+- Both vignettes now carry a real bibliography
+  (`vignettes/references.bib`) rendered through pandoc’s citation
+  processor, replacing the previous bare and partly malformed inline
+  links. `BGmisc` and `ggpedigree` are now cited to their Journal of
+  Open Source Software papers.
 
 #### Example data
 
