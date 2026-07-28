@@ -85,3 +85,18 @@ A data frame with one row per \`FAM\` record and the following columns:
   Divorce place (\`DIV/PLAC\`).
 
 Returns \`NULL\` with a warning if no family records are found.
+
+## Examples
+
+``` r
+fam <- readGedcomFamilies(
+  system.file("extdata", "waugh.ged", package = "tidygedcom"),
+  verbose = FALSE
+)
+fam
+#>   famID husbID wifeID children   marr_date                  marr_place
+#> 1     1      1      2        3        <NA>                        <NA>
+#> 2     2      1      4        5        <NA>                        <NA>
+#> 3     3      3      6        7 24 Jun 1877 Wilkes, North Carolina, USA
+#> 4     4      5   <NA>        8        <NA>                        <NA>
+```

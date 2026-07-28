@@ -47,8 +47,27 @@ original column names.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-# Inspect a couple's full household before repairing a link
-sliceByID(ped, ID = c(348700, 348701))
-} # }
+ped <- readGedcom(
+  system.file("extdata", "waugh.ged", package = "tidygedcom"),
+  verbose = FALSE
+)
+
+# Inspect William Pitt Waugh Sr. and everyone linked to him
+sliceByID(ped, ID = 1)
+#>   personID momID dadID                  name   name_given name_surn name_nsfx
+#> 3        3     2     1    W. Henderson Waugh W. Henderson     Waugh      <NA>
+#> 5        5     4     1 William Pitt Waugh Jr William Pitt     Waugh        Jr
+#> 1        1  <NA>  <NA>    William Pitt Waugh William Pitt     Waugh      <NA>
+#>   sex    birth_date                        birth_place    death_date
+#> 3   M      abt 1835                North Carolina, USA Aft. Oct 1896
+#> 5   M          1844 Wilkes County, North Carolina, USA      Feb 1880
+#> 1   M 28 April 1775    Adams County, Pennsylvania, USA   14 Aug 1852
+#>                          death_place                            burial_place
+#> 3 Wilkes County, North Carolina, USA                                    <NA>
+#> 5   Henderson County, Tennessee, USA                                    <NA>
+#> 1 Wilkes County, North Carolina, USA Wilkesboro, Wilkes, North Carolina, USA
+#>   FAMC FAMS
+#> 3    1    3
+#> 5    2    4
+#> 1 <NA> 1, 2
 ```

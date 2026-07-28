@@ -19,6 +19,7 @@ readGedcom(
   combine_cols = TRUE,
   skinny = FALSE,
   parse_dates = FALSE,
+  impute_partial_dates = TRUE,
   clean_names = TRUE,
   update_rate = 1000,
   ...
@@ -33,6 +34,7 @@ readGed(
   combine_cols = TRUE,
   skinny = FALSE,
   parse_dates = FALSE,
+  impute_partial_dates = TRUE,
   clean_names = TRUE,
   update_rate = 1000,
   ...
@@ -47,6 +49,7 @@ readgedcom(
   combine_cols = TRUE,
   skinny = FALSE,
   parse_dates = FALSE,
+  impute_partial_dates = TRUE,
   clean_names = TRUE,
   update_rate = 1000,
   ...
@@ -96,6 +99,17 @@ readgedcom(
   Logical. If \`TRUE\`, attempt to parse date columns (e.g.,
   \`birth_date\`, \`death_date\`) into Date objects, after removing
   common GEDCOM date qualifiers like "ABT", "BEF", and "AFT".
+
+- impute_partial_dates:
+
+  Logical. Only used when \`parse_dates = TRUE\`. If \`TRUE\` (default),
+  dates known only to the month or the year are completed with the
+  midpoint of that interval (the 15th of a known month, or 15 June for a
+  known year) so that they survive conversion to \`Date\`. Historical
+  records are often this imprecise, and without imputation such dates
+  become \`NA\`. Set to \`FALSE\` to keep only dates that specify a day.
+  The unmodified strings are always available by reading the file with
+  \`parse_dates = FALSE\`.
 
 - clean_names:
 
@@ -334,3 +348,26 @@ steps controlled by \`add_parents\`, \`combine_cols\`,
 \`remove_empty_cols\`, and \`skinny\`. These steps can infer parent IDs,
 collapse redundant name fields, remove columns that are entirely
 missing, and drop raw family relationship columns for a slimmer output.
+
+## Examples
+
+``` r
+# A small excerpt of the W. Henderson Waugh family tree
+ged_file <- system.file("extdata", "waugh.ged", package = "tidygedcom")
+ped <- readGedcom(ged_file, verbose = FALSE)
+ped[, c("personID", "name", "sex", "birth_date", "momID", "dadID")]
+#>   personID                     name sex    birth_date momID dadID
+#> 1        1       William Pitt Waugh   M 28 April 1775  <NA>  <NA>
+#> 2        2          Matilda Grinton   F      abt 1797  <NA>  <NA>
+#> 3        3       W. Henderson Waugh   M      abt 1835     2     1
+#> 4        4      Martha Law Segraves   F      Oct 1814  <NA>  <NA>
+#> 5        5    William Pitt Waugh Jr   M          1844     4     1
+#> 6        6            Laura Watkins   F      abt 1846  <NA>  <NA>
+#> 7        7 John William "Bud" Waugh   M   13 Dec 1879     6     3
+#> 8        8       James Monroe Waugh   M   10 Nov 1867  <NA>     5
+
+# Keep every parsed column rather than the default slimmed output
+full <- readGedcom(ged_file, verbose = FALSE, remove_empty_cols = FALSE)
+ncol(full)
+#> [1] 41
+```

@@ -15,6 +15,7 @@ postProcessGedcom(
   combine_cols = TRUE,
   add_parents = TRUE,
   parse_dates = FALSE,
+  impute_partial_dates = TRUE,
   clean_names = TRUE,
   skinny = TRUE,
   verbose = FALSE
@@ -49,6 +50,17 @@ postProcessGedcom(
   Logical. If \`TRUE\`, attempt to parse date columns (e.g.,
   \`birth_date\`, \`death_date\`) into Date objects, after removing
   common GEDCOM date qualifiers like "ABT", "BEF", and "AFT".
+
+- impute_partial_dates:
+
+  Logical. Only used when \`parse_dates = TRUE\`. If \`TRUE\` (default),
+  dates known only to the month or the year are completed with the
+  midpoint of that interval (the 15th of a known month, or 15 June for a
+  known year) so that they survive conversion to \`Date\`. Historical
+  records are often this imprecise, and without imputation such dates
+  become \`NA\`. Set to \`FALSE\` to keep only dates that specify a day.
+  The unmodified strings are always available by reading the file with
+  \`parse_dates = FALSE\`.
 
 - clean_names:
 

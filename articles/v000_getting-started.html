@@ -71,14 +71,16 @@
 </h2>
 <p>GEDCOM (Genealogical Data Communication) is a plain-text file format
 used by virtually every genealogy platform — Ancestry, FamilySearch,
-MyHeritage, Gramps, and others. A typical workflow looks like this:</p>
+MyHeritage, Gramps, and others.</p>
+<p>A typical workflow looks like this:</p>
 <ol style="list-style-type: decimal">
 <li>Build or find a family tree on Ancestry.com (or similar).</li>
 <li>Export it as a <code>.ged</code> file from the tree settings
 page.</li>
 <li>Load it into R with <code><a href="../reference/readGedcom.html">readGedcom()</a></code>.</li>
 </ol>
-<p>The file itself is a structured text file. Here is a small slice:</p>
+<p>The file itself is a structured text file.</p>
+<p>Here is a small slice:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>0 @I1@ INDI</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>1 NAME William Pitt /Waugh/</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>1 SEX M</span>
@@ -100,7 +102,7 @@ page.</li>
 <span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>1 HUSB @I1@</span>
 <span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>1 WIFE @I4@</span>
 <span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>1 CHIL @I5@</span></code></pre></div>
-<p>Individual records (<code>INDI</code>) hold person-level facts;
+<p>Individual records (<code>INDI</code>) hold person-level information;
 family records (<code>FAM</code>) link spouses and children and carry
 marriage or divorce events.</p>
 </div>
@@ -115,6 +117,73 @@ possible with traditional genealogy software. Additionally, R’s
 extensive ecosystem of packages for statistical analysis and machine
 learning can be applied to genealogical data to uncover patterns and
 insights that may not be immediately apparent.</p>
+</div>
+<div class="section level2">
+<h2 id="exporting-your-own-gedcom-file">Exporting your own GEDCOM file<a class="anchor" aria-label="anchor" href="#exporting-your-own-gedcom-file"></a>
+</h2>
+<p>Before you can analyze a tree, you need to get it out of whatever
+platform you built it on. The details differ by service, but the shape
+of the process is the same everywhere: find the tree’s settings page,
+request an export, wait for the file to be generated, and download it.
+Below is the process on Ancestry.com, which is where the example tree
+used throughout these vignettes came from.</p>
+<p>Start from your tree’s settings page. Each tree has its own URL of
+the form
+<code>https://www.ancestry.com/family-tree/tree/&lt;TREE_ID&gt;/settings/info</code>,
+reachable from the tree page itself.</p>
+<div class="float">
+<img src="screenshots/tree_settings_screenshot.png" width="500" alt="The tree settings page"><div class="figcaption">The tree settings page</div>
+</div>
+<p>Scroll down and you will find the export option.</p>
+<div class="float">
+<img src="screenshots/preexport.png" width="220" alt="The export button"><div class="figcaption">The export button</div>
+</div>
+<p>Selecting it opens a confirmation dialog.</p>
+<div class="float">
+<img src="screenshots/exportpopup.png" width="500" alt="The export confirmation dialog"><div class="figcaption">The export confirmation dialog</div>
+</div>
+<p>Once confirmed, the service builds a GEDCOM file from the current
+state of your tree. A small tree finishes in a few seconds; trees with
+several thousand people can take noticeably longer. When it is ready,
+you can download it as a zip archive.</p>
+<p>Two things are worth knowing before you write any analysis code
+against the result.</p>
+<p><strong>Person IDs are not stable across exports.</strong> The file
+is generated fresh each time, and the identifiers assigned to
+individuals may differ between two exports of the same tree. Never
+hard-code an ID. Locate people by name, by birth date, or by some other
+durable attribute:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Fragile -- the ID may change with the next export</span></span>
+<span><span class="va">henderson_id</span> <span class="op">&lt;-</span> <span class="fl">242766628698</span></span>
+<span></span>
+<span><span class="co"># Durable -- locate the person by a fact about them</span></span>
+<span><span class="va">henderson_id</span> <span class="op">&lt;-</span> <span class="va">ped</span><span class="op">$</span><span class="va">personID</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"W. Henderson Waugh"</span>, <span class="va">ped</span><span class="op">$</span><span class="va">name</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<p><strong>The export arrives zipped.</strong> You can unzip it by hand,
+or from R, which keeps the whole pipeline reproducible:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="st">"My Family Tree.zip"</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcom.html">readGedcom</a></span><span class="op">(</span><span class="st">"My Family Tree.ged"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>It is worth peeking at the raw text before parsing, both to confirm
+the file is what you expect and to get a feel for how your particular
+platform writes its records:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">raw_ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="st">"My Family Tree.ged"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">raw_ged</span>, <span class="fl">15</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Jump to a specific person to see how their facts are recorded</span></span>
+<span><span class="va">line_num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"1 NAME W. Henderson /Waugh/"</span>, <span class="va">raw_ged</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">raw_ged</span><span class="op">[</span><span class="va">line_num</span><span class="op">:</span><span class="op">(</span><span class="va">line_num</span> <span class="op">+</span> <span class="fl">20</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<p>A word on privacy: an export of a living person’s tree contains birth
+dates, places, and relationships for living people. Think carefully
+before committing a <code>.ged</code> file to a public repository or
+sharing it alongside a publication. The example files shipped with this
+package deliberately contain only individuals who died before 1965.</p>
+</div>
+<div class="section level2">
+<h2 id="a-minimal-example">A minimal example<a class="anchor" aria-label="anchor" href="#a-minimal-example"></a>
+</h2>
 <p>This vignette uses a real family tree as its running example: the W.
 Henderson Waugh Family Tree. We’ll discuss more about our running
 example in another vignette. (But briefly, the Waugh family tree is a
@@ -124,14 +193,11 @@ for more on the historical context of the Waugh family tree.) The
 tidygedcom package provides the tools for parsing and tidying GEDCOM
 files, and the Waugh family tree provides a real-world test case for
 these tools.</p>
-</div>
-<div class="section level2">
-<h2 id="a-minimal-example">A minimal example<a class="anchor" aria-label="anchor" href="#a-minimal-example"></a>
-</h2>
 <p>We construct a small GEDCOM in memory that captures the key
-relationships described above. This allows all code examples below to
-run without an external file.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+relationships described above.</p>
+<p>This allows all code examples below to run without an external
+file.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sample_ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"0 HEAD"</span>,</span>
 <span>  <span class="st">"1 GEDC"</span>,</span>
@@ -258,25 +324,25 @@ run without an external file.</p>
 returns one row per person. It infers <code>momID</code> and
 <code>dadID</code> automatically by tracing <code>FAMC</code> →
 <code>FAMS</code> links — no manual ID mapping required.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcom.html">readGedcom</a></span><span class="op">(</span><span class="va">tmp_ged</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">ped</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"personID"</span>, <span class="st">"name"</span>, <span class="st">"sex"</span>, <span class="st">"birth_date"</span>, <span class="st">"death_date"</span>, <span class="st">"momID"</span>, <span class="st">"dadID"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;   personID                    name sex   birth_date  death_date momID dadID</span></span>
-<span><span class="co">#&gt; 1        1      William Pitt Waugh   M  28 APR 1775 14 AUG 1852  &lt;NA&gt;  &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2        2         Matilda Grinton   F     ABT 1797        &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3        3      W. Henderson Waugh   M     ABT 1835        &lt;NA&gt;     2     1</span></span>
-<span><span class="co">#&gt; 4        4     Martha Law Segraves   F     OCT 1814        &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5        5 William Pitt Waugh/ Jr.   M         1844    FEB 1880     4     1</span></span>
-<span><span class="co">#&gt; 6        6           Laura Watkins   F     ABT 1846        &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 7        7      John William Waugh   M ABT JUN 1880        &lt;NA&gt;     6     3</span></span>
-<span><span class="co">#&gt; 8        8      James Monroe Waugh   M  10 NOV 1867 23 JUL 1937  &lt;NA&gt;     5</span></span></code></pre></div>
+<span><span class="co">#&gt;   personID                   name sex   birth_date  death_date momID dadID</span></span>
+<span><span class="co">#&gt; 1        1     William Pitt Waugh   M  28 APR 1775 14 AUG 1852  &lt;NA&gt;  &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2        2        Matilda Grinton   F     ABT 1797        &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3        3     W. Henderson Waugh   M     ABT 1835        &lt;NA&gt;     2     1</span></span>
+<span><span class="co">#&gt; 4        4    Martha Law Segraves   F     OCT 1814        &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5        5 William Pitt Waugh Jr.   M         1844    FEB 1880     4     1</span></span>
+<span><span class="co">#&gt; 6        6          Laura Watkins   F     ABT 1846        &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 7        7     John William Waugh   M ABT JUN 1880        &lt;NA&gt;     6     3</span></span>
+<span><span class="co">#&gt; 8        8     James Monroe Waugh   M  10 NOV 1867 23 JUL 1937  &lt;NA&gt;     5</span></span></code></pre></div>
 <p>Notice that W. Henderson Waugh and William Pitt Waugh Jr. share the
 same <code>dadID</code> — William Pitt Waugh Sr. — reflecting the
 half-sibling relationship in the parsed data.</p>
 <div class="section level3">
 <h3 id="gedcom-version">GEDCOM version<a class="anchor" aria-label="anchor" href="#gedcom-version"></a>
 </h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">ped</span>, <span class="st">"gedcom_version"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "5.5.1"</span></span></code></pre></div>
 </div>
@@ -284,7 +350,7 @@ half-sibling relationship in the parsed data.</p>
 <div class="section level2">
 <h2 id="quick-overview-summarizegedcom">Quick overview: <code>summarizeGedcom()</code><a class="anchor" aria-label="anchor" href="#quick-overview-summarizegedcom"></a>
 </h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/summarizeGedcom.html">summarizeGedcom</a></span><span class="op">(</span><span class="va">ped</span><span class="op">)</span></span>
 <span><span class="co">#&gt; GEDCOM Summary  (version: 5.5.1 )</span></span>
 <span><span class="co">#&gt;   Individuals: 8 </span></span>
@@ -315,20 +381,59 @@ records that were never systematically kept.</p>
 </h3>
 <p>Pass <code>parse_dates = TRUE</code> to convert
 <code>birth_date</code> and <code>death_date</code> to proper
-<code>Date</code> objects. Qualifiers and escapes are stripped
-first:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code>Date</code> objects. Qualifiers (<code>ABT</code>,
+<code>AFT</code>, <code>BEF</code>, <code>BET</code>, in both the
+specification’s <code>ABT</code> form and Ancestry’s <code>Abt.</code>
+form) and calendar escapes are stripped first:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ped_dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcom.html">readGedcom</a></span><span class="op">(</span><span class="va">tmp_ged</span>, parse_dates <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">ped_dates</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"birth_date"</span>, <span class="st">"death_date"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;                      name birth_date death_date</span></span>
-<span><span class="co">#&gt; 1      William Pitt Waugh 1775-04-28 1852-08-14</span></span>
-<span><span class="co">#&gt; 2         Matilda Grinton       &lt;NA&gt;       &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3      W. Henderson Waugh       &lt;NA&gt;       &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4     Martha Law Segraves       &lt;NA&gt;       &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5 William Pitt Waugh/ Jr.       &lt;NA&gt;       &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 6           Laura Watkins       &lt;NA&gt;       &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 7      John William Waugh       &lt;NA&gt;       &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 8      James Monroe Waugh 1867-11-10 1937-07-23</span></span></code></pre></div>
+<span><span class="co">#&gt;                     name birth_date death_date</span></span>
+<span><span class="co">#&gt; 1     William Pitt Waugh 1775-04-28 1852-08-14</span></span>
+<span><span class="co">#&gt; 2        Matilda Grinton 1797-06-15       &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3     W. Henderson Waugh 1835-06-15       &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4    Martha Law Segraves 1814-10-15       &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5 William Pitt Waugh Jr. 1844-06-15 1880-02-15</span></span>
+<span><span class="co">#&gt; 6          Laura Watkins 1846-06-15       &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 7     John William Waugh 1880-06-15       &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 8     James Monroe Waugh 1867-11-10 1937-07-23</span></span></code></pre></div>
+<p>A <code>Date</code> needs a day, but historical records frequently
+supply only a month or only a year. Rather than discard those dates,
+<code><a href="../reference/readGedcom.html">readGedcom()</a></code> completes them with the midpoint of the
+interval that <em>is</em> known: the 15th of a known month, and 15 June
+for a known year. <code>"Oct 1814"</code> becomes
+<code>1814-10-15</code>, and <code>"abt 1835"</code> becomes
+<code>1835-06-15</code>. Midpoints are used because they minimize the
+expected distance from the true date.</p>
+<p>This matters more than it might sound. In this small sample, five of
+the eight birth dates carry no day component — for antebellum records
+reconstructed from census age questions, partial dates are the norm
+rather than the exception, and dropping them would discard most of the
+data.</p>
+<p>The imputed precision is not real, though, and you should not present
+it as if it were. When you need to know which dates were exact, set
+<code>impute_partial_dates = FALSE</code> to keep only dates that
+specify a day, or read the file twice and compare:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">exact</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcom.html">readGedcom</a></span><span class="op">(</span><span class="va">tmp_ged</span>,</span>
+<span>  parse_dates <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  impute_partial_dates <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="va">ped_dates</span><span class="op">$</span><span class="va">name</span>,</span>
+<span>  birth <span class="op">=</span> <span class="va">ped_dates</span><span class="op">$</span><span class="va">birth_date</span>,</span>
+<span>  was_exact <span class="op">=</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">exact</span><span class="op">$</span><span class="va">birth_date</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt;                     name      birth was_exact</span></span>
+<span><span class="co">#&gt; 1     William Pitt Waugh 1775-04-28      TRUE</span></span>
+<span><span class="co">#&gt; 2        Matilda Grinton 1797-06-15     FALSE</span></span>
+<span><span class="co">#&gt; 3     W. Henderson Waugh 1835-06-15     FALSE</span></span>
+<span><span class="co">#&gt; 4    Martha Law Segraves 1814-10-15     FALSE</span></span>
+<span><span class="co">#&gt; 5 William Pitt Waugh Jr. 1844-06-15     FALSE</span></span>
+<span><span class="co">#&gt; 6          Laura Watkins 1846-06-15     FALSE</span></span>
+<span><span class="co">#&gt; 7     John William Waugh 1880-06-15     FALSE</span></span>
+<span><span class="co">#&gt; 8     James Monroe Waugh 1867-11-10      TRUE</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="extract-a-year-from-any-gedcom-date-string">Extract a year from any GEDCOM date string<a class="anchor" aria-label="anchor" href="#extract-a-year-from-any-gedcom-date-string"></a>
@@ -337,7 +442,7 @@ first:</p>
 <code>"ABT 1835"</code> or <code>"OCT 1814"</code> have no day
 component. <code><a href="../reference/extractGedcomYear.html">extractGedcomYear()</a></code> handles all forms and
 returns an integer year:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dates_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"28 APR 1775"</span>, <span class="st">"14 AUG 1852"</span>, <span class="st">"ABT 1835"</span>, <span class="st">"OCT 1814"</span>,</span>
 <span>  <span class="st">"1844"</span>, <span class="st">"ABT JUN 1880"</span>, <span class="cn">NA</span></span>
@@ -346,19 +451,19 @@ returns an integer year:</p>
 <span><span class="co">#&gt; [1] 1775 1852 1835 1814 1844 1880   NA</span></span></code></pre></div>
 <p>A typical use: add a <code>birth_year</code> column robust to
 approximate dates, then flag individuals who may still be living:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ped</span><span class="op">$</span><span class="va">birth_year</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractGedcomYear.html">extractGedcomYear</a></span><span class="op">(</span><span class="va">ped</span><span class="op">$</span><span class="va">birth_date</span><span class="op">)</span></span>
 <span><span class="va">ped</span><span class="op">$</span><span class="va">death_year</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractGedcomYear.html">extractGedcomYear</a></span><span class="op">(</span><span class="va">ped</span><span class="op">$</span><span class="va">death_date</span><span class="op">)</span></span>
 <span><span class="va">ped</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"birth_year"</span>, <span class="st">"death_year"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;                      name birth_year death_year</span></span>
-<span><span class="co">#&gt; 1      William Pitt Waugh       1775       1852</span></span>
-<span><span class="co">#&gt; 2         Matilda Grinton       1797         NA</span></span>
-<span><span class="co">#&gt; 3      W. Henderson Waugh       1835         NA</span></span>
-<span><span class="co">#&gt; 4     Martha Law Segraves       1814         NA</span></span>
-<span><span class="co">#&gt; 5 William Pitt Waugh/ Jr.       1844       1880</span></span>
-<span><span class="co">#&gt; 6           Laura Watkins       1846         NA</span></span>
-<span><span class="co">#&gt; 7      John William Waugh       1880         NA</span></span>
-<span><span class="co">#&gt; 8      James Monroe Waugh       1867       1937</span></span></code></pre></div>
+<span><span class="co">#&gt;                     name birth_year death_year</span></span>
+<span><span class="co">#&gt; 1     William Pitt Waugh       1775       1852</span></span>
+<span><span class="co">#&gt; 2        Matilda Grinton       1797         NA</span></span>
+<span><span class="co">#&gt; 3     W. Henderson Waugh       1835         NA</span></span>
+<span><span class="co">#&gt; 4    Martha Law Segraves       1814         NA</span></span>
+<span><span class="co">#&gt; 5 William Pitt Waugh Jr.       1844       1880</span></span>
+<span><span class="co">#&gt; 6          Laura Watkins       1846         NA</span></span>
+<span><span class="co">#&gt; 7     John William Waugh       1880         NA</span></span>
+<span><span class="co">#&gt; 8     James Monroe Waugh       1867       1937</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -367,7 +472,7 @@ approximate dates, then flag individuals who may still be living:</p>
 <p>Marriage and relationship data live in <code>FAM</code> blocks.
 <code><a href="../reference/readGedcomFamilies.html">readGedcomFamilies()</a></code> parses them into a separate data
 frame:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fam</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcomFamilies.html">readGedcomFamilies</a></span><span class="op">(</span><span class="va">tmp_ged</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">fam</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"famID"</span>, <span class="st">"husbID"</span>, <span class="st">"wifeID"</span>, <span class="st">"marr_date"</span>, <span class="st">"marr_place"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;   famID husbID wifeID   marr_date                         marr_place</span></span>
@@ -382,7 +487,7 @@ This is a known limitation when working with Ancestry.com exports that
 use non-standard tags.</p>
 <p>Join back to the individuals table to annotate both families with
 spouse names:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span></span>
 <span>  <span class="va">fam</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"famID"</span>, <span class="st">"husbID"</span>, <span class="st">"wifeID"</span>, <span class="st">"marr_date"</span>, <span class="st">"marr_place"</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>  <span class="va">ped</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"personID"</span>, <span class="st">"name"</span><span class="op">)</span><span class="op">]</span>,</span>
@@ -398,11 +503,11 @@ spouse names:</p>
 <span><span class="co">#&gt; 2      4      1     2        &lt;NA&gt;                               &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 3      6      3     3 24 JUN 1877 Wilkes County, North Carolina, USA</span></span>
 <span><span class="co">#&gt; 4   &lt;NA&gt;      5     4        &lt;NA&gt;                               &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;                 name_husb           name_wife</span></span>
-<span><span class="co">#&gt; 1      William Pitt Waugh     Matilda Grinton</span></span>
-<span><span class="co">#&gt; 2      William Pitt Waugh Martha Law Segraves</span></span>
-<span><span class="co">#&gt; 3      W. Henderson Waugh       Laura Watkins</span></span>
-<span><span class="co">#&gt; 4 William Pitt Waugh/ Jr.                &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt;                name_husb           name_wife</span></span>
+<span><span class="co">#&gt; 1     William Pitt Waugh     Matilda Grinton</span></span>
+<span><span class="co">#&gt; 2     William Pitt Waugh Martha Law Segraves</span></span>
+<span><span class="co">#&gt; 3     W. Henderson Waugh       Laura Watkins</span></span>
+<span><span class="co">#&gt; 4 William Pitt Waugh Jr.                &lt;NA&gt;</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="working-with-coordinates">Working with coordinates<a class="anchor" aria-label="anchor" href="#working-with-coordinates"></a>
@@ -412,7 +517,7 @@ spouse names:</p>
 <code><a href="../reference/convertGedcomCoords.html">convertGedcomCoords()</a></code> converts all
 <code>_lat</code>/<code>_long</code> columns to signed decimal degrees
 in one call:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">coord_ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"0 HEAD"</span>, <span class="st">"1 GEDC"</span>, <span class="st">"2 VERS 5.5.1"</span>, <span class="st">"1 CHAR UTF-8"</span>,</span>
 <span>  <span class="st">"0 @I1@ INDI"</span>,</span>
@@ -438,7 +543,7 @@ in one call:</p>
 <span><span class="co">#&gt; 1 William Pitt Waugh    36.1548    -81.1845</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tmp_coord</span><span class="op">)</span></span></code></pre></div>
 <p>You can also call the underlying converters directly:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/gedcomLat2Numeric.html">gedcomLat2Numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"N36.1548"</span>, <span class="st">"S33.8688"</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1]  36.1548 -33.8688       NA</span></span>
 <span><span class="fu"><a href="../reference/gedcomLon2Numeric.html">gedcomLon2Numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"W81.1845"</span>, <span class="st">"E151.2093"</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
@@ -451,7 +556,7 @@ in one call:</p>
 package provides the next layer of analysis: computing pairwise
 relatedness, tracing paternal lineages, and identifying Y-chromosome
 carriers.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-Computing-Lab/BGmisc/" class="external-link">BGmisc</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'BGmisc'</span></span>
@@ -479,7 +584,7 @@ tree as a case study.</p>
 <p>You can also visualize the family tree with the
 <code>ggpedigree</code> package. The <code>config</code> argument allows
 you to customize the plot with a wide range of options.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-Computing-Lab/BGmisc/" class="external-link">BGmisc</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-Computing-Lab/ggpedigree/" class="external-link">ggpedigree</a></span><span class="op">)</span></span>
 <span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readGedcom.html">readGedcom</a></span><span class="op">(</span><span class="va">tmp_ged</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -509,13 +614,13 @@ you to customize the plot with a wide range of options.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; REPAIR IN EARLY ALPHA</span></span></code></pre></div>
 <p><img src="v000_getting-started_files/figure-html/ggped-1.png" class="r-plt" alt="" width="700"></p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">## Cleaning up</span></span></code></pre></div>
 <p>Please see the vignettes from the <code>ggpedigree</code> package for
 more on customizing pedigree diagrams with
 <code><a href="https://r-computing-lab.github.io/ggpedigree/reference/ggPedigree.html" class="external-link">ggpedigree()</a></code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tmp_ged</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">

@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Tidy Gedcom • tidygedcom</title>
+<title>Read and Tidy GEDCOM Genealogy Files • tidygedcom</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Tidy Gedcom">
-<meta name="description" content="Tidygedcom reads gedcom files and converts them into tidy datasets.">
-<meta property="og:description" content="Tidygedcom reads gedcom files and converts them into tidy datasets.">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Read and Tidy GEDCOM Genealogy Files">
+<meta name="description" content="Reads and parses GEDCOM (Genealogical Data Communication) files, the standard interchange format exported by genealogical software, and converts them into tidy data frames. Individuals, families, life events, and parent-child links are extracted into rectangular structures suitable for pedigree and kinship analysis. Additional helpers summarize file contents, convert place coordinates, and repair malformed records. Wikipedia family tree templates can be parsed into the same tidy structure.">
+<meta property="og:description" content="Reads and parses GEDCOM (Genealogical Data Communication) files, the standard interchange format exported by genealogical software, and converts them into tidy data frames. Individuals, families, life events, and parent-child links are extracted into rectangular structures suitable for pedigree and kinship analysis. Additional helpers summarize file contents, convert place coordinates, and repair malformed records. Wikipedia family tree templates can be parsed into the same tidy structure.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -59,15 +59,39 @@
 <!-- badges: start -->
 
 <p><a href="https://www.repostatus.org/#active" class="external-link"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed."></a> <a href="https://cran.r-project.org/package=tidygedcom" class="external-link"><img src="https://www.r-pkg.org/badges/version/tidygedcom" alt="R package version"></a> <a href="https://cran.r-project.org/web/checks/check_results_tidygedcom.html" class="external-link"><img src="https://badges.cranchecks.info/worst/tidygedcom.svg" alt="CRAN checks"></a> <a href="https://cran.r-project.org/package=tidygedcom" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/tidygedcom" alt="Package downloads"></a> <a href="https://github.com/R-Computing-Lab/tidygedcom/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/R-Computing-Lab/tidygedcom/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://www.codefactor.io/repository/github/r-computing-lab/tidygedcom" class="external-link"><img src="https://www.codefactor.io/repository/github/r-computing-lab/tidygedcom/badge" alt="CodeFactor"></a> <a href="https://app.codecov.io/gh/R-Computing-Lab/tidygedcom" class="external-link"><img src="https://codecov.io/gh/R-Computing-Lab/tidygedcom/graph/badge.svg?token=2IARK2XSA6" alt="Codecov test coverage"></a> <img src="https://img.shields.io/badge/License-GPL_v3-blue.svg" alt="License"><!-- badges: end --></p>
-<p>The tidygedcom R package offers a comprehensive suite of functions tailored for extended behavior genetics analysis, including model identification, calculating relatedness, pedigree conversion, pedigree simulation, and more.</p>
+<p>tidygedcom reads GEDCOM (Genealogical Data Communication) files – the standard format exported by genealogical software such as Ancestry.com, MyHeritage, and Gramps – and converts them into tidy data frames. Individuals, families, life events, and parent-child links are extracted into rectangular structures ready for pedigree and kinship analysis. The package also summarizes file contents, converts place coordinates, repairs malformed records, and parses Wikipedia family tree templates into the same structure.</p>
+<p>tidygedcom is a companion to <a href="https://cran.r-project.org/package=BGmisc" class="external-link">BGmisc</a>, which handles pedigree modeling and relatedness calculation, and <a href="https://cran.r-project.org/package=ggpedigree" class="external-link">ggpedigree</a>, which handles plotting. tidygedcom focuses solely on getting genealogical data <em>into</em> R in a usable shape.</p>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-Computing-Lab/tidygedcom/" class="external-link">tidygedcom</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/readGedcom.html">readGedcom</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"waugh.ged"</span>, package <span class="op">=</span> <span class="st">"tidygedcom"</span><span class="op">)</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ged</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"personID"</span>, <span class="st">"name"</span>, <span class="st">"sex"</span>, <span class="st">"birth_date"</span>, <span class="st">"momID"</span>, <span class="st">"dadID"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;   personID                     name sex    birth_date momID dadID</span></span>
+<span><span class="co">#&gt; 1        1       William Pitt Waugh   M 28 April 1775  &lt;NA&gt;  &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2        2          Matilda Grinton   F      abt 1797  &lt;NA&gt;  &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3        3       W. Henderson Waugh   M      abt 1835     2     1</span></span>
+<span><span class="co">#&gt; 4        4      Martha Law Segraves   F      Oct 1814  &lt;NA&gt;  &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5        5    William Pitt Waugh Jr   M          1844     4     1</span></span>
+<span><span class="co">#&gt; 6        6            Laura Watkins   F      abt 1846  &lt;NA&gt;  &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 7        7 John William "Bud" Waugh   M   13 Dec 1879     6     3</span></span>
+<span><span class="co">#&gt; 8        8       James Monroe Waugh   M   10 Nov 1867  &lt;NA&gt;     5</span></span></code></pre></div>
+<p>The package ships two example files drawn from the W. Henderson Waugh Family Tree: <code>waugh.ged</code> is a clean excerpt, and <code>waugh_messy.ged</code> retains the defects typical of a real export (conflicting duplicate birth records, missing sex values, uncertain surnames) for testing how your code handles imperfect input.</p>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the released version of tidygedcom from <a href="https://cran.r-project.org/" class="external-link">CRAN</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidygedcom"</span><span class="op">)</span></span></code></pre></div>
 <p>To install the development version of tidygedcom from <a href="https://github.com/" class="external-link">GitHub</a> use:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"R-Computing-Lab/tidygedcom"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -75,20 +99,16 @@
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
 <p>If you use tidygedcom in your research or wish to refer to it, please cite the following paper:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">citation</span>(<span class="at">package =</span> <span class="st">"tidygedcom"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>Warning <span class="cf">in</span> <span class="fu">citation</span>(<span class="at">package =</span> <span class="st">"tidygedcom"</span>)<span class="sc">:</span> could not determine year <span class="cf">for</span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="st">'tidygedcom'</span> from package DESCRIPTION file</span></code></pre></div>
-<p>Garrison S (????). <em>tidygedcom: Tidy Gedcom</em>. R package version 0.1.0, <a href="https://github.com/R-Computing-Lab/tidygedcom/" class="external-link uri">https://github.com/R-Computing-Lab/tidygedcom/</a>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">citation</span>(<span class="at">package =</span> <span class="st">"tidygedcom"</span>)</span></code></pre></div>
+<p>Garrison S (2026). <em>tidygedcom: Read and Tidy ‘GEDCOM’ Genealogy Files</em>. R package version 0.1.0, <a href="https://github.com/R-Computing-Lab/tidygedcom/" class="external-link uri">https://github.com/R-Computing-Lab/tidygedcom/</a>.</p>
 <p>A BibTeX entry for LaTeX users is</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>Warning <span class="cf">in</span> <span class="fu">citation</span>(<span class="at">package =</span> <span class="st">"tidygedcom"</span>)<span class="sc">:</span> could not determine year <span class="cf">for</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="st">'tidygedcom'</span> from package DESCRIPTION file</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="sc">@</span>Manual{,</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  title <span class="ot">=</span> {tidygedcom<span class="sc">:</span> Tidy Gedcom},</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  author <span class="ot">=</span> {S. Mason Garrison},</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  note <span class="ot">=</span> {R package version <span class="dv">0</span>.<span class="fl">1.0</span>},</span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  url <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>R<span class="sc">-</span>Computing<span class="sc">-</span>Lab<span class="sc">/</span>tidygedcom<span class="sc">/</span>},</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="sc">@</span>Manual{,</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  title <span class="ot">=</span> {tidygedcom<span class="sc">:</span> Read and Tidy <span class="st">'GEDCOM'</span> Genealogy Files},</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  author <span class="ot">=</span> {S. Mason Garrison},</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  year <span class="ot">=</span> {<span class="dv">2026</span>},</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  note <span class="ot">=</span> {R package version <span class="dv">0</span>.<span class="fl">1.0</span>},</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  url <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>R<span class="sc">-</span>Computing<span class="sc">-</span>Lab<span class="sc">/</span>tidygedcom<span class="sc">/</span>},</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
@@ -155,7 +175,8 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>S. Mason Garrison <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-4804-6003" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>S. Mason Garrison <br><small class="roles"> Author, maintainer, copyright holder </small> <a href="https://orcid.org/0000-0002-4804-6003" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 

@@ -15,10 +15,50 @@ downloads](https://cranlogs.r-pkg.org/badges/grand-total/tidygedcom)](https://cr
 coverage](https://codecov.io/gh/R-Computing-Lab/tidygedcom/graph/badge.svg?token=2IARK2XSA6)](https://app.codecov.io/gh/R-Computing-Lab/tidygedcom)
 ![License](https://img.shields.io/badge/License-GPL_v3-blue.svg)
 
-The tidygedcom R package offers a comprehensive suite of functions
-tailored for extended behavior genetics analysis, including model
-identification, calculating relatedness, pedigree conversion, pedigree
-simulation, and more.
+tidygedcom reads GEDCOM (Genealogical Data Communication) files – the
+standard format exported by genealogical software such as Ancestry.com,
+MyHeritage, and Gramps – and converts them into tidy data frames.
+Individuals, families, life events, and parent-child links are extracted
+into rectangular structures ready for pedigree and kinship analysis. The
+package also summarizes file contents, converts place coordinates,
+repairs malformed records, and parses Wikipedia family tree templates
+into the same structure.
+
+tidygedcom is a companion to
+[BGmisc](https://cran.r-project.org/package=BGmisc), which handles
+pedigree modeling and relatedness calculation, and
+[ggpedigree](https://cran.r-project.org/package=ggpedigree), which
+handles plotting. tidygedcom focuses solely on getting genealogical data
+*into* R in a usable shape.
+
+## Example
+
+``` r
+
+library(tidygedcom)
+
+ged <- readGedcom(
+  system.file("extdata", "waugh.ged", package = "tidygedcom"),
+  verbose = FALSE
+)
+
+ged[, c("personID", "name", "sex", "birth_date", "momID", "dadID")]
+#>   personID                     name sex    birth_date momID dadID
+#> 1        1       William Pitt Waugh   M 28 April 1775  <NA>  <NA>
+#> 2        2          Matilda Grinton   F      abt 1797  <NA>  <NA>
+#> 3        3       W. Henderson Waugh   M      abt 1835     2     1
+#> 4        4      Martha Law Segraves   F      Oct 1814  <NA>  <NA>
+#> 5        5    William Pitt Waugh Jr   M          1844     4     1
+#> 6        6            Laura Watkins   F      abt 1846  <NA>  <NA>
+#> 7        7 John William "Bud" Waugh   M   13 Dec 1879     6     3
+#> 8        8       James Monroe Waugh   M   10 Nov 1867  <NA>     5
+```
+
+The package ships two example files drawn from the W. Henderson Waugh
+Family Tree: `waugh.ged` is a clean excerpt, and `waugh_messy.ged`
+retains the defects typical of a real export (conflicting duplicate
+birth records, missing sex values, uncertain surnames) for testing how
+your code handles imperfect input.
 
 ## Installation
 
@@ -46,22 +86,19 @@ cite the following paper:
 
 ``` R
 citation(package = "tidygedcom")
-
-Warning in citation(package = "tidygedcom"): could not determine year for
-'tidygedcom' from package DESCRIPTION file
 ```
 
-Garrison S (????). *tidygedcom: Tidy Gedcom*. R package version 0.1.0,
+Garrison S (2026). *tidygedcom: Read and Tidy ‘GEDCOM’ Genealogy Files*.
+R package version 0.1.0,
 <https://github.com/R-Computing-Lab/tidygedcom/>.
 
 A BibTeX entry for LaTeX users is
 
 ``` R
-Warning in citation(package = "tidygedcom"): could not determine year for
-'tidygedcom' from package DESCRIPTION file
 @Manual{,
-  title = {tidygedcom: Tidy Gedcom},
+  title = {tidygedcom: Read and Tidy 'GEDCOM' Genealogy Files},
   author = {S. Mason Garrison},
+  year = {2026},
   note = {R package version 0.1.0},
   url = {https://github.com/R-Computing-Lab/tidygedcom/},
 }

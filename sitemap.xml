@@ -31,6 +31,7 @@
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/gedcomLon2Numeric.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/getGridNeighbors.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/getWikiTreeSummary.html</loc></url>
+<url><loc>https://r-computing-lab.github.io/tidygedcom/reference/imputePartialDates.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/index.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/initializeRecord.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/make_attribute_mappings.html</loc></url>
@@ -56,6 +57,7 @@
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/sliceByID.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/splitFamilies.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/splitIndividuals.html</loc></url>
+<url><loc>https://r-computing-lab.github.io/tidygedcom/reference/stripDateQualifiers.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/summarizeGedcom.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/summarizeIDs.html</loc></url>
 <url><loc>https://r-computing-lab.github.io/tidygedcom/reference/traceTreePaths.html</loc></url>

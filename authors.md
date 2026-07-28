@@ -2,19 +2,23 @@
 
 ## Authors
 
-- **S. Mason Garrison**. Author, maintainer.
+- **S. Mason Garrison**. Author, maintainer, copyright holder.
   [](https://orcid.org/0000-0002-4804-6003)
+
+- **Christian Waugh**. Contributor, data contributor.
+  [](https://orcid.org/0000-0002-7871-5845)
 
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/R-Computing-Lab/tidygedcom/blob/main/DESCRIPTION)
+[`inst/CITATION`](https://github.com/R-Computing-Lab/tidygedcom/blob/main/inst/CITATION)
 
-Garrison S (2026). *tidygedcom: Tidy Gedcom*. R package version 0.1.0,
+Garrison S (2026). *tidygedcom: Read and Tidy 'GEDCOM' Genealogy Files*.
+R package version 0.1.0,
 <https://github.com/R-Computing-Lab/tidygedcom/>.
 
     @Manual{,
-      title = {tidygedcom: Tidy Gedcom},
+      title = {tidygedcom: Read and Tidy 'GEDCOM' Genealogy Files},
       author = {S. Mason Garrison},
       year = {2026},
       note = {R package version 0.1.0},

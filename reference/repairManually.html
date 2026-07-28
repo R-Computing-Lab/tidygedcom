@@ -98,16 +98,26 @@ names label each fix and are stored in `manual_fix`.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># The messy example file omits Laura Watkins's SEX line, so she cannot be</span></span></span>
+<span class="r-in"><span><span class="co"># resolved as a mother during parsing.</span></span></span>
+<span class="r-in"><span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="readGedcom.html">readGedcom</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"waugh_messy.ged"</span>, package <span class="op">=</span> <span class="st">"tidygedcom"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ped</span><span class="op">$</span><span class="va">sex</span><span class="op">[</span><span class="va">ped</span><span class="op">$</span><span class="va">personID</span> <span class="op">==</span> <span class="fl">6</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">fixes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  swap_parents <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    rows <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">quo</a></span><span class="op">(</span><span class="va">ID</span> <span class="op">==</span> <span class="fl">348700</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    changes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>momID <span class="op">=</span> <span class="fl">348701</span>, dadID <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    comment <span class="op">=</span> <span class="st">"Verified against parish record."</span></span></span>
+<span class="r-in"><span>  laura_sex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    rows <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">quo</a></span><span class="op">(</span><span class="va">personID</span> <span class="op">==</span> <span class="fl">6</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    changes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sex <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    comment <span class="op">=</span> <span class="st">"Sex absent from source export; confirmed by 1880 census."</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu">repairManually</span><span class="op">(</span><span class="va">ped</span>, <span class="va">fixes</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="va">ped</span><span class="op">[</span><span class="va">ped</span><span class="op">$</span><span class="va">personID</span> <span class="op">==</span> <span class="fl">6</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"personID"</span>, <span class="st">"name"</span>, <span class="st">"sex"</span>, <span class="st">"manual_fix"</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   personID          name sex manual_fix</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        6 Laura Watkins   F  laura_sex</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

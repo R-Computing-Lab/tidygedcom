@@ -65,7 +65,22 @@ in non-canonical columns.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-findIDs(list(clean = clean_df, raw = raw_df), ID = 389785)
-} # }
+clean <- readGedcom(
+  system.file("extdata", "waugh.ged", package = "tidygedcom"),
+  verbose = FALSE
+)
+messy <- readGedcom(
+  system.file("extdata", "waugh_messy.ged", package = "tidygedcom"),
+  verbose = FALSE
+)
+
+# Locate every reference to W. Henderson Waugh across both parses
+findIDs(list(clean = clean, messy = messy), ID = 3)
+#> # A tibble: 4 × 7
+#>   matched_id dataset row_index sex   name           matched_column matched_value
+#>   <chr>      <chr>   <chr>     <chr> <chr>          <chr>          <chr>        
+#> 1 3          clean   7         M     "John William… dadID          3            
+#> 2 3          clean   3         M     "W. Henderson… personID       3            
+#> 3 3          messy   7         M     "John William… dadID          3            
+#> 4 3          messy   3         M     "W. Henderson… personID       3            
 ```

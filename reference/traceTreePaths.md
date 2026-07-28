@@ -22,3 +22,19 @@ traceTreePaths(tree_long, deduplicate = TRUE)
 
 A data.frame with columns: from_id, to_id, direction, path_length,
 intermediates
+
+## Examples
+
+``` r
+# Two individuals joined by a horizontal connector
+tree_long <- data.frame(
+  Row = rep(1, 3),
+  Column = 1:3,
+  Value = c("A", "+", "B"),
+  id = c("A", NA, "B")
+)
+
+traceTreePaths(tree_long)
+#>   from_id to_id path_length intermediates intermediate_values
+#> 1       A     B           2           1_2                   +
+```

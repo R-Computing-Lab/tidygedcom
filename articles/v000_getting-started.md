@@ -4,14 +4,18 @@
 
 GEDCOM (Genealogical Data Communication) is a plain-text file format
 used by virtually every genealogy platform — Ancestry, FamilySearch,
-MyHeritage, Gramps, and others. A typical workflow looks like this:
+MyHeritage, Gramps, and others.
+
+A typical workflow looks like this:
 
 1.  Build or find a family tree on Ancestry.com (or similar).
 2.  Export it as a `.ged` file from the tree settings page.
 3.  Load it into R with
     [`readGedcom()`](https://r-computing-lab.github.io/tidygedcom/reference/readGedcom.md).
 
-The file itself is a structured text file. Here is a small slice:
+The file itself is a structured text file.
+
+Here is a small slice:
 
 ``` default
 0 @I1@ INDI
@@ -37,8 +41,9 @@ The file itself is a structured text file. Here is a small slice:
 1 CHIL @I5@
 ```
 
-Individual records (`INDI`) hold person-level facts; family records
-(`FAM`) link spouses and children and carry marriage or divorce events.
+Individual records (`INDI`) hold person-level information; family
+records (`FAM`) link spouses and children and carry marriage or divorce
+events.
 
 ## Why use R for genealogy?
 
@@ -51,6 +56,90 @@ extensive ecosystem of packages for statistical analysis and machine
 learning can be applied to genealogical data to uncover patterns and
 insights that may not be immediately apparent.
 
+## Exporting your own GEDCOM file
+
+Before you can analyze a tree, you need to get it out of whatever
+platform you built it on. The details differ by service, but the shape
+of the process is the same everywhere: find the tree’s settings page,
+request an export, wait for the file to be generated, and download it.
+Below is the process on Ancestry.com, which is where the example tree
+used throughout these vignettes came from.
+
+Start from your tree’s settings page. Each tree has its own URL of the
+form
+`https://www.ancestry.com/family-tree/tree/<TREE_ID>/settings/info`,
+reachable from the tree page itself.
+
+![The tree settings page](screenshots/tree_settings_screenshot.png)
+
+The tree settings page
+
+Scroll down and you will find the export option.
+
+![The export button](screenshots/preexport.png)
+
+The export button
+
+Selecting it opens a confirmation dialog.
+
+![The export confirmation dialog](screenshots/exportpopup.png)
+
+The export confirmation dialog
+
+Once confirmed, the service builds a GEDCOM file from the current state
+of your tree. A small tree finishes in a few seconds; trees with several
+thousand people can take noticeably longer. When it is ready, you can
+download it as a zip archive.
+
+Two things are worth knowing before you write any analysis code against
+the result.
+
+**Person IDs are not stable across exports.** The file is generated
+fresh each time, and the identifiers assigned to individuals may differ
+between two exports of the same tree. Never hard-code an ID. Locate
+people by name, by birth date, or by some other durable attribute:
+
+``` r
+
+# Fragile -- the ID may change with the next export
+henderson_id <- 242766628698
+
+# Durable -- locate the person by a fact about them
+henderson_id <- ped$personID[grepl("W. Henderson Waugh", ped$name)]
+```
+
+**The export arrives zipped.** You can unzip it by hand, or from R,
+which keeps the whole pipeline reproducible:
+
+``` r
+
+unzip("My Family Tree.zip", overwrite = TRUE)
+
+ped <- readGedcom("My Family Tree.ged", verbose = FALSE)
+```
+
+It is worth peeking at the raw text before parsing, both to confirm the
+file is what you expect and to get a feel for how your particular
+platform writes its records:
+
+``` r
+
+raw_ged <- readLines("My Family Tree.ged")
+head(raw_ged, 15)
+
+# Jump to a specific person to see how their facts are recorded
+line_num <- which(grepl("1 NAME W. Henderson /Waugh/", raw_ged, fixed = TRUE))
+raw_ged[line_num:(line_num + 20)]
+```
+
+A word on privacy: an export of a living person’s tree contains birth
+dates, places, and relationships for living people. Think carefully
+before committing a `.ged` file to a public repository or sharing it
+alongside a publication. The example files shipped with this package
+deliberately contain only individuals who died before 1965.
+
+## A minimal example
+
 This vignette uses a real family tree as its running example: the W.
 Henderson Waugh Family Tree. We’ll discuss more about our running
 example in another vignette. (But briefly, the Waugh family tree is a
@@ -62,11 +151,10 @@ tidygedcom package provides the tools for parsing and tidying GEDCOM
 files, and the Waugh family tree provides a real-world test case for
 these tools.
 
-## A minimal example
-
 We construct a small GEDCOM in memory that captures the key
-relationships described above. This allows all code examples below to
-run without an external file.
+relationships described above.
+
+This allows all code examples below to run without an external file.
 
 ``` r
 
@@ -201,15 +289,15 @@ manual ID mapping required.
 
 ped <- readGedcom(tmp_ged, verbose = FALSE)
 ped[, c("personID", "name", "sex", "birth_date", "death_date", "momID", "dadID")]
-#>   personID                    name sex   birth_date  death_date momID dadID
-#> 1        1      William Pitt Waugh   M  28 APR 1775 14 AUG 1852  <NA>  <NA>
-#> 2        2         Matilda Grinton   F     ABT 1797        <NA>  <NA>  <NA>
-#> 3        3      W. Henderson Waugh   M     ABT 1835        <NA>     2     1
-#> 4        4     Martha Law Segraves   F     OCT 1814        <NA>  <NA>  <NA>
-#> 5        5 William Pitt Waugh/ Jr.   M         1844    FEB 1880     4     1
-#> 6        6           Laura Watkins   F     ABT 1846        <NA>  <NA>  <NA>
-#> 7        7      John William Waugh   M ABT JUN 1880        <NA>     6     3
-#> 8        8      James Monroe Waugh   M  10 NOV 1867 23 JUL 1937  <NA>     5
+#>   personID                   name sex   birth_date  death_date momID dadID
+#> 1        1     William Pitt Waugh   M  28 APR 1775 14 AUG 1852  <NA>  <NA>
+#> 2        2        Matilda Grinton   F     ABT 1797        <NA>  <NA>  <NA>
+#> 3        3     W. Henderson Waugh   M     ABT 1835        <NA>     2     1
+#> 4        4    Martha Law Segraves   F     OCT 1814        <NA>  <NA>  <NA>
+#> 5        5 William Pitt Waugh Jr.   M         1844    FEB 1880     4     1
+#> 6        6          Laura Watkins   F     ABT 1846        <NA>  <NA>  <NA>
+#> 7        7     John William Waugh   M ABT JUN 1880        <NA>     6     3
+#> 8        8     James Monroe Waugh   M  10 NOV 1867 23 JUL 1937  <NA>     5
 ```
 
 Notice that W. Henderson Waugh and William Pitt Waugh Jr. share the same
@@ -257,21 +345,65 @@ records that were never systematically kept.
 ### Parse to `Date` objects
 
 Pass `parse_dates = TRUE` to convert `birth_date` and `death_date` to
-proper `Date` objects. Qualifiers and escapes are stripped first:
+proper `Date` objects. Qualifiers (`ABT`, `AFT`, `BEF`, `BET`, in both
+the specification’s `ABT` form and Ancestry’s `Abt.` form) and calendar
+escapes are stripped first:
 
 ``` r
 
 ped_dates <- readGedcom(tmp_ged, parse_dates = TRUE, verbose = FALSE)
 ped_dates[, c("name", "birth_date", "death_date")]
-#>                      name birth_date death_date
-#> 1      William Pitt Waugh 1775-04-28 1852-08-14
-#> 2         Matilda Grinton       <NA>       <NA>
-#> 3      W. Henderson Waugh       <NA>       <NA>
-#> 4     Martha Law Segraves       <NA>       <NA>
-#> 5 William Pitt Waugh/ Jr.       <NA>       <NA>
-#> 6           Laura Watkins       <NA>       <NA>
-#> 7      John William Waugh       <NA>       <NA>
-#> 8      James Monroe Waugh 1867-11-10 1937-07-23
+#>                     name birth_date death_date
+#> 1     William Pitt Waugh 1775-04-28 1852-08-14
+#> 2        Matilda Grinton 1797-06-15       <NA>
+#> 3     W. Henderson Waugh 1835-06-15       <NA>
+#> 4    Martha Law Segraves 1814-10-15       <NA>
+#> 5 William Pitt Waugh Jr. 1844-06-15 1880-02-15
+#> 6          Laura Watkins 1846-06-15       <NA>
+#> 7     John William Waugh 1880-06-15       <NA>
+#> 8     James Monroe Waugh 1867-11-10 1937-07-23
+```
+
+A `Date` needs a day, but historical records frequently supply only a
+month or only a year. Rather than discard those dates,
+[`readGedcom()`](https://r-computing-lab.github.io/tidygedcom/reference/readGedcom.md)
+completes them with the midpoint of the interval that *is* known: the
+15th of a known month, and 15 June for a known year. `"Oct 1814"`
+becomes `1814-10-15`, and `"abt 1835"` becomes `1835-06-15`. Midpoints
+are used because they minimize the expected distance from the true date.
+
+This matters more than it might sound. In this small sample, five of the
+eight birth dates carry no day component — for antebellum records
+reconstructed from census age questions, partial dates are the norm
+rather than the exception, and dropping them would discard most of the
+data.
+
+The imputed precision is not real, though, and you should not present it
+as if it were. When you need to know which dates were exact, set
+`impute_partial_dates = FALSE` to keep only dates that specify a day, or
+read the file twice and compare:
+
+``` r
+
+exact <- readGedcom(tmp_ged,
+  parse_dates = TRUE,
+  impute_partial_dates = FALSE, verbose = FALSE
+)
+
+data.frame(
+  name = ped_dates$name,
+  birth = ped_dates$birth_date,
+  was_exact = !is.na(exact$birth_date)
+)
+#>                     name      birth was_exact
+#> 1     William Pitt Waugh 1775-04-28      TRUE
+#> 2        Matilda Grinton 1797-06-15     FALSE
+#> 3     W. Henderson Waugh 1835-06-15     FALSE
+#> 4    Martha Law Segraves 1814-10-15     FALSE
+#> 5 William Pitt Waugh Jr. 1844-06-15     FALSE
+#> 6          Laura Watkins 1846-06-15     FALSE
+#> 7     John William Waugh 1880-06-15     FALSE
+#> 8     James Monroe Waugh 1867-11-10      TRUE
 ```
 
 ### Extract a year from any GEDCOM date string
@@ -299,15 +431,15 @@ then flag individuals who may still be living:
 ped$birth_year <- extractGedcomYear(ped$birth_date)
 ped$death_year <- extractGedcomYear(ped$death_date)
 ped[, c("name", "birth_year", "death_year")]
-#>                      name birth_year death_year
-#> 1      William Pitt Waugh       1775       1852
-#> 2         Matilda Grinton       1797         NA
-#> 3      W. Henderson Waugh       1835         NA
-#> 4     Martha Law Segraves       1814         NA
-#> 5 William Pitt Waugh/ Jr.       1844       1880
-#> 6           Laura Watkins       1846         NA
-#> 7      John William Waugh       1880         NA
-#> 8      James Monroe Waugh       1867       1937
+#>                     name birth_year death_year
+#> 1     William Pitt Waugh       1775       1852
+#> 2        Matilda Grinton       1797         NA
+#> 3     W. Henderson Waugh       1835         NA
+#> 4    Martha Law Segraves       1814         NA
+#> 5 William Pitt Waugh Jr.       1844       1880
+#> 6          Laura Watkins       1846         NA
+#> 7     John William Waugh       1880         NA
+#> 8     James Monroe Waugh       1867       1937
 ```
 
 ## Reading family records: `readGedcomFamilies()`
@@ -353,11 +485,11 @@ merge(
 #> 2      4      1     2        <NA>                               <NA>
 #> 3      6      3     3 24 JUN 1877 Wilkes County, North Carolina, USA
 #> 4   <NA>      5     4        <NA>                               <NA>
-#>                 name_husb           name_wife
-#> 1      William Pitt Waugh     Matilda Grinton
-#> 2      William Pitt Waugh Martha Law Segraves
-#> 3      W. Henderson Waugh       Laura Watkins
-#> 4 William Pitt Waugh/ Jr.                <NA>
+#>                name_husb           name_wife
+#> 1     William Pitt Waugh     Matilda Grinton
+#> 2     William Pitt Waugh Martha Law Segraves
+#> 3     W. Henderson Waugh       Laura Watkins
+#> 4 William Pitt Waugh Jr.                <NA>
 ```
 
 ## Working with coordinates

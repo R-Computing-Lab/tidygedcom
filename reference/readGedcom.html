@@ -65,6 +65,7 @@ remove uninformative columns from the parsed output.</p>
 <span>  combine_cols <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  skinny <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  parse_dates <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  impute_partial_dates <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  clean_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  update_rate <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -79,6 +80,7 @@ remove uninformative columns from the parsed output.</p>
 <span>  combine_cols <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  skinny <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  parse_dates <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  impute_partial_dates <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  clean_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  update_rate <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -93,6 +95,7 @@ remove uninformative columns from the parsed output.</p>
 <span>  combine_cols <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  skinny <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  parse_dates <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  impute_partial_dates <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  clean_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  update_rate <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -138,6 +141,16 @@ as `name_given` with `name_given_pieces` and `name_surn` with
 
 <dt id="arg-parse-dates">parse_dates<a class="anchor" aria-label="anchor" href="#arg-parse-dates"></a></dt>
 <dd><p>Logical. If `TRUE`, attempt to parse date columns (e.g., `birth_date`, `death_date`) into Date objects, after removing common GEDCOM date qualifiers like "ABT", "BEF", and "AFT".</p></dd>
+
+
+<dt id="arg-impute-partial-dates">impute_partial_dates<a class="anchor" aria-label="anchor" href="#arg-impute-partial-dates"></a></dt>
+<dd><p>Logical. Only used when `parse_dates = TRUE`. If
+`TRUE` (default), dates known only to the month or the year are completed
+with the midpoint of that interval (the 15th of a known month, or 15 June
+for a known year) so that they survive conversion to `Date`. Historical
+records are often this imprecise, and without imputation such dates become
+`NA`. Set to `FALSE` to keep only dates that specify a day. The unmodified
+strings are always available by reading the file with `parse_dates = FALSE`.</p></dd>
 
 
 <dt id="arg-clean-names">clean_names<a class="anchor" aria-label="anchor" href="#arg-clean-names"></a></dt>
@@ -324,6 +337,28 @@ remove columns that are entirely missing, and drop raw family relationship
 columns for a slimmer output.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># A small excerpt of the W. Henderson Waugh family tree</span></span></span>
+<span class="r-in"><span><span class="va">ged_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"waugh.ged"</span>, package <span class="op">=</span> <span class="st">"tidygedcom"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ped</span> <span class="op">&lt;-</span> <span class="fu">readGedcom</span><span class="op">(</span><span class="va">ged_file</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ped</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"personID"</span>, <span class="st">"name"</span>, <span class="st">"sex"</span>, <span class="st">"birth_date"</span>, <span class="st">"momID"</span>, <span class="st">"dadID"</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   personID                     name sex    birth_date momID dadID</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1       William Pitt Waugh   M 28 April 1775  &lt;NA&gt;  &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        2          Matilda Grinton   F      abt 1797  &lt;NA&gt;  &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        3       W. Henderson Waugh   M      abt 1835     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        4      Martha Law Segraves   F      Oct 1814  &lt;NA&gt;  &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        5    William Pitt Waugh Jr   M          1844     4     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        6            Laura Watkins   F      abt 1846  &lt;NA&gt;  &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        7 John William "Bud" Waugh   M   13 Dec 1879     6     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        8       James Monroe Waugh   M   10 Nov 1867  &lt;NA&gt;     5</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Keep every parsed column rather than the default slimmed output</span></span></span>
+<span class="r-in"><span><span class="va">full</span> <span class="op">&lt;-</span> <span class="fu">readGedcom</span><span class="op">(</span><span class="va">ged_file</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>, remove_empty_cols <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">full</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 41</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

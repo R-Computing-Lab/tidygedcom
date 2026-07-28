@@ -18,3 +18,10 @@ getWikiTreeSummary(text)
 ## Value
 
 A character string containing the summary text.
+
+## Examples
+
+``` r
+getWikiTreeSummary("{{familytree/start |summary=A three-generation example.}}")
+#> [1] "A three-generation example."
+```

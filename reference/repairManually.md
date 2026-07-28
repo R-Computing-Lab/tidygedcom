@@ -50,14 +50,24 @@ Each element of \`fixes\` is itself a list with three parts:
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# The messy example file omits Laura Watkins's SEX line, so she cannot be
+# resolved as a mother during parsing.
+ped <- readGedcom(
+  system.file("extdata", "waugh_messy.ged", package = "tidygedcom"),
+  verbose = FALSE
+)
+ped$sex[ped$personID == 6]
+#> [1] NA
+
 fixes <- list(
-  swap_parents = list(
-    rows = rlang::quo(ID == 348700),
-    changes = list(momID = 348701, dadID = NA),
-    comment = "Verified against parish record."
+  laura_sex = list(
+    rows = rlang::quo(personID == 6),
+    changes = list(sex = "F"),
+    comment = "Sex absent from source export; confirmed by 1880 census."
   )
 )
 ped <- repairManually(ped, fixes)
-} # }
+ped[ped$personID == 6, c("personID", "name", "sex", "manual_fix")]
+#>   personID          name sex manual_fix
+#> 6        6 Laura Watkins   F  laura_sex
 ```
