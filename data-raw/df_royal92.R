@@ -136,10 +136,10 @@ royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
   ) %>%
   addPersonToPed(
     personID = 3009, # overwriting unnamed stillborn sibling of barbara cartland
-    name = "TODO",
-    sex = "U",
-    momID = NA_integer_,
-    dadID = NA_integer_,
+    name = "Arnulf I of Flanders",
+    sex = "M",
+    momID = 1987,
+    dadID = 1988,
     overwrite = TRUE
   ) %>%
   # Add twinID, momID, dadID, and sex corrections based on historical records and data cleaning needs
@@ -1495,7 +1495,7 @@ date_overrides <- tribble(
   1966, "795", "13 JAN 858", # Æthelwulf of Wessex
   1968, "825", "852", # Æthelstan of Kent
   1969, "834", "20 DEC 860", # Æthelbald of Wessex
-  1970, "830", "879", # duplicate Judith of Flanders, # probably 830s
+  1970, "830", "879", # probably 830s
   1971, "835", "865", # Æthelberht of Wessex
   1972, "847", "APR 871", # Æthelred I of Wessex
   1973, "771", "839", # Egbert of Wessex
@@ -2230,7 +2230,7 @@ date_overrides <- tribble(
   2996, "5 SEP 1877", "1976", # Mary Hamilton (Polly) Scobell
   2997, "3 JAN 1907", "30 MAY 1940", # Ronald Cartland
   2998, "4 JAN 1912", "29 MAY 1940", # Anthony Cartland
-  3009, NA_character_, NA_character_, # blanking the infant Cartland row for now
+  3009, "899", 	"27 MAY 964", # blanking the infant Cartland row replacing with Arnulf I of Flanders
   3010, "31 DEC 1939", NA_character_ # Glen McCorquodale
 )
 
@@ -3429,7 +3429,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2956 ~ "Earl of Albemarle",
       personID == 2964 ~ "Princess of Yugoslavia",
       personID == 2965 ~ "Prince of Yugoslavia",
-      personID == 3009 ~ NA_character_, # Blanking
+      personID == 3009 ~ "Count of Flanders",
       TRUE ~ attribute_title
     ),
     attribute_title = str_replace_all(attribute_title, text_cleanup_regex) %>%
