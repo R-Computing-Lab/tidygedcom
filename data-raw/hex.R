@@ -142,11 +142,18 @@ p <- ggpedigree(potter,
                     segment_lineage_legend_show = FALSE,
                      segment_lineage_na_color = "white"
                   )
-) +
+)  +
+  scale_x_continuous(
+    expand = expansion(mult = c(0.04, 0.04))
+  ) +
+  coord_cartesian(clip = "off") +
   theme_void() +
   theme(
     panel.background = element_rect(fill = "transparent", color = NA),
-    plot.background = element_rect(fill = "transparent", color = NA)
+    plot.background = element_rect(fill = "transparent", color = NA),
+    # need to add a little padding to the plot area to avoid clipping the edges of the pedigree
+    plot.margin = margin(0.15, 0.15, 0.15, 0.15, "cm"),
+
   ) + ggplot2::guides(
     shape = "none",
     color = "none",
