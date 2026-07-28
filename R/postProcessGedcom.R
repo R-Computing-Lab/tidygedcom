@@ -137,9 +137,9 @@ imputePartialDates <- function(x,
                                default_day = "15",
                                default_month = "JUN") {
   # "Oct 1814" -> "15 Oct 1814"
-  x <- ifelse(grepl("^[A-Za-z]+ \\d{4}$", x), paste(default_day, x), x)
+  x <- ifelse(grepl("^[A-Za-z]+ \\d{3,4}$", x), paste(default_day, x), x)
   # "1844" -> "15 Jun 1844"
-  x <- ifelse(grepl("^\\d{4}$", x), paste(default_day, default_month, x), x)
+  x <- ifelse(grepl("^\\d{3,4}$", x), paste(default_day, default_month, x), x)
   x
 }
 
