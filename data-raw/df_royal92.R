@@ -120,8 +120,8 @@ royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
   )%>%
   addPersonToPed(
     personID = 2300, # overwriting duplicated John Neville
-    name = "TODO",
-    sex = "U",
+    name = "William IX of Aquitaine",
+    sex = "M",
     momID = NA_integer_,
     dadID = NA_integer_,
     overwrite = TRUE
@@ -1684,7 +1684,7 @@ date_overrides <- tribble(
   2296, "1367", "17 JUL 1431", # Philippa de Mohun; identity inferred from York/Exeter context
   2298, "1350", "18 NOV 1442", # John Golafre
   2299, "25 MAR 1414", "22 MAY 1455", # Thomas Clifford, Lord Clifford
-  2300, NA_character_, NA_character_, # Blanking duplicate
+  2300, "22 OCT 1071", "10 FEB 1126", # William IX of Aquitaine
   2301, "29 APR 1759", "11 SEP 1801", # Hugh Seymour / Vice-Admiral Lord Hugh Seymour
   2302, "8 NOV 1762", "12 JUN 1801", # Anne Horatia Waldegrave
   2303, "5 JUL 1718", "14 JUN 1794", # Francis Seymour-Conway, 1st Marquess of Hertford
@@ -3275,7 +3275,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2292 ~ "Duke of Exeter",
       personID == 2293 ~ "Lord Fanhope",
       personID == 2299 ~ "Lord Clifford",
-      personID == 2300 ~ NA_character_,
+      personID == 2300 ~ "Duke of Aquitaine",
       personID == 2303 ~ "Marquess of Hertford",
       personID %in%
         c(2305, 2307) ~ "Duke of Grafton",
@@ -3401,6 +3401,7 @@ royal92_cleaned <- royal92 %>%
     ),
     dadID = case_when(
       personID == 2538 ~ 1051, # This is a correction for a missing dadID
+      personID == 1868 ~ 2300, # William IX of Aquitaine is the father of William X of Aquitaine
       TRUE ~ dadID
     ),
     attribute_title = str_replace_all(attribute_title, text_cleanup_regex) %>%
