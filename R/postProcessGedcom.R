@@ -13,6 +13,7 @@ postProcessGedcom <- function(df_temp,
                               combine_cols = TRUE,
                               add_parents = TRUE,
                               parse_dates = FALSE,
+                              impute_partial_dates = TRUE,
                               clean_names = TRUE,
                               skinny = TRUE,
                               verbose = FALSE) {
@@ -29,21 +30,9 @@ postProcessGedcom <- function(df_temp,
   }
   if (parse_dates == TRUE) {
     date_cols <- c("birth_date", "death_date")
-    calendar_escape_regex <- "@#D[A-Z ]+@\\s*"
-    date_qualifier_regex <- "\\b(?:[aA][bBfF][tT]|[bB][eE][tTfF])\\.?\\b\\s*"
 
     if (isTRUE(verbose)) {
       message("Parsing date columns: ", paste(date_cols[date_cols %in% colnames(df_temp)], collapse = ", "))
-    }
-
-    if (isTRUE(verbose) && any(date_cols %in% colnames(df_temp))) {
-      has_qualifiers <- any(sapply(
-        df_temp[date_cols[date_cols %in% colnames(df_temp)]],
-        function(col) any(grepl(date_qualifier_regex, col, perl = TRUE))
-      ))
-      if (has_qualifiers == TRUE) {
-        message("Found date qualifiers in date columns. They will be removed before parsing.")
-      }
     }
 
     # only parse date columns that are present in the data frame
@@ -51,9 +40,14 @@ postProcessGedcom <- function(df_temp,
     if (length(present_date_cols) > 0) {
       df_temp[present_date_cols] <- lapply(df_temp[present_date_cols], function(x) {
         if (is.character(x)) {
-          x <- stringr::str_replace_all(x, calendar_escape_regex, "")
-          x <- stringr::str_replace_all(x, date_qualifier_regex, "")
-          as.Date(stringr::str_trim(x), format = "%d %b %Y")
+          stripped <- stripDateQualifiers(x)
+          if (isTRUE(verbose) && !identical(stripped, stringr::str_trim(x))) {
+            message("Found date qualifiers in date columns. They will be removed before parsing.")
+          }
+          if (isTRUE(impute_partial_dates)) {
+            stripped <- imputePartialDates(stripped)
+          }
+          as.Date(stripped, format = "%d %b %Y")
         } else {
           x
         }
@@ -81,6 +75,67 @@ postProcessGedcom <- function(df_temp,
     df_temp$FAMS <- NULL
   }
   df_temp
+}
+
+#' Strip Calendar Escapes and Approximation Qualifiers from GEDCOM Dates
+#'
+#' @description
+#' Removes calendar escape codes (e.g. `@#DGREGORIAN@`) and the approximation
+#' qualifiers `ABT`, `AFT`, `BEF`, and `BET` from GEDCOM date strings, leaving
+#' the bare date behind.
+#'
+#' The qualifier may be followed either by a period or by a word boundary,
+#' because Ancestry.com exports write `"Abt. Jun 1880"` while the GEDCOM
+#' specification uses `"ABT JUN 1880"`. Requiring one or the other is what
+#' keeps the pattern from biting into ordinary words that merely begin with
+#' those letters, such as "before".
+#'
+#' @param x Character vector of GEDCOM date strings.
+#' @return A character vector of the same length, trimmed, with escapes and
+#'   qualifiers removed.
+#' @examples
+#' tidygedcom:::stripDateQualifiers(c("ABT 1835", "Aft. Oct 1896"))
+#' @keywords internal
+#' @importFrom stringr str_replace_all str_trim
+stripDateQualifiers <- function(x) {
+  calendar_escape_regex <- "@#D[A-Z ]+@\\s*"
+  # A qualifier must be closed by a period or a word boundary, so that
+  # "before" is not mistaken for the "bef" qualifier.
+  date_qualifier_regex <- "\\b(?:[aA][bBfF][tT]|[bB][eE][tTfF])(?:\\.|\\b)\\s*"
+
+  x <- stringr::str_replace_all(x, calendar_escape_regex, "")
+  x <- stringr::str_replace_all(x, date_qualifier_regex, "")
+  stringr::str_trim(x)
+}
+
+#' Impute a Day (and Month) for Partial GEDCOM Dates
+#'
+#' @description
+#' Historical genealogical records are frequently precise only to the month or
+#' the year: a birth year reconstructed from a census age question, or a death
+#' month taken from a probate filing. `as.Date()` requires a day component, so
+#' such dates would otherwise be dropped entirely.
+#'
+#' This helper fills in the missing components with the midpoint of the known
+#' interval -- the 15th for a known month, and 15 June for a known year only --
+#' which minimises the expected error of the imputed value. Values that already
+#' carry a day, and values that match neither pattern, are returned unchanged.
+#'
+#' Callers should strip calendar escapes and qualifiers (`ABT`, `BEF`, `AFT`)
+#' before calling this function.
+#'
+#' @param x Character vector of GEDCOM date strings.
+#' @return A character vector of the same length, with month- and
+#'   year-precision entries expanded to a full `"%d %b %Y"` date string.
+#' @examples
+#' tidygedcom:::imputePartialDates(c("Oct 1814", "1844", "28 Apr 1775", NA))
+#' @keywords internal
+imputePartialDates <- function(x) {
+  # "Oct 1814" -> "15 Oct 1814"
+  x <- ifelse(grepl("^[A-Za-z]+ \\d{4}$", x), paste("15", x), x)
+  # "1844" -> "15 Jun 1844"
+  x <- ifelse(grepl("^\\d{4}$", x), paste("15 Jun", x), x)
+  x
 }
 
 #' collapse Names

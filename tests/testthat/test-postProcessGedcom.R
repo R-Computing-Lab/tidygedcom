@@ -1,3 +1,102 @@
+test_that("parse_dates imputes a day for month-precision dates", {
+  ged <- c(
+    "0 @I1@ INDI",
+    "1 NAME Martha Law /Segraves/",
+    "1 SEX F",
+    "1 BIRT",
+    "2 DATE Oct 1814"
+  )
+  temp_file <- tempfile(fileext = ".ged")
+  writeLines(ged, temp_file)
+  on.exit(unlink(temp_file), add = TRUE)
+
+  df <- readGedcom(temp_file, parse_dates = TRUE, verbose = FALSE)
+
+  # Mid-month is the minimum-expected-error choice for an unknown day.
+  expect_equal(df$birth_date[1], as.Date("1814-10-15"))
+})
+
+test_that("parse_dates imputes month and day for year-precision dates", {
+  ged <- c(
+    "0 @I1@ INDI",
+    "1 NAME William Pitt /Waugh/ Jr",
+    "1 SEX M",
+    "1 BIRT",
+    "2 DATE 1844",
+    "0 @I2@ INDI",
+    "1 NAME W. Henderson /Waugh/",
+    "1 SEX M",
+    "1 BIRT",
+    "2 DATE abt 1835"
+  )
+  temp_file <- tempfile(fileext = ".ged")
+  writeLines(ged, temp_file)
+  on.exit(unlink(temp_file), add = TRUE)
+
+  df <- readGedcom(temp_file, parse_dates = TRUE, verbose = FALSE)
+
+  expect_equal(df$birth_date[1], as.Date("1844-06-15"))
+  # Qualifiers are stripped before the year is read.
+  expect_equal(df$birth_date[2], as.Date("1835-06-15"))
+})
+
+test_that("parse_dates strips qualifiers written with a trailing period", {
+  # Ancestry.com exports write these as "Abt." and "Aft.", not "ABT"/"AFT".
+  ged <- c(
+    "0 @I1@ INDI",
+    "1 NAME W. Henderson /Waugh/",
+    "1 SEX M",
+    "1 BIRT",
+    "2 DATE Abt. Jun 1880",
+    "1 DEAT",
+    "2 DATE Aft. Oct 1896"
+  )
+  temp_file <- tempfile(fileext = ".ged")
+  writeLines(ged, temp_file)
+  on.exit(unlink(temp_file), add = TRUE)
+
+  df <- readGedcom(temp_file, parse_dates = TRUE, verbose = FALSE)
+
+  expect_equal(df$birth_date[1], as.Date("1880-06-15"))
+  expect_equal(df$death_date[1], as.Date("1896-10-15"))
+})
+
+test_that("qualifier stripping does not truncate ordinary words", {
+  expect_equal(
+    stripDateQualifiers(c("before the war", "Abt. 1850", "bet 1840")),
+    c("before the war", "1850", "1840")
+  )
+})
+
+test_that("parse_dates leaves full dates untouched and can skip imputation", {
+  ged <- c(
+    "0 @I1@ INDI",
+    "1 NAME William Pitt /Waugh/",
+    "1 SEX M",
+    "1 BIRT",
+    "2 DATE 28 April 1775",
+    "0 @I2@ INDI",
+    "1 NAME Matilda /Grinton/",
+    "1 SEX F",
+    "1 BIRT",
+    "2 DATE abt 1797"
+  )
+  temp_file <- tempfile(fileext = ".ged")
+  writeLines(ged, temp_file)
+  on.exit(unlink(temp_file), add = TRUE)
+
+  full <- readGedcom(temp_file, parse_dates = TRUE, verbose = FALSE)
+  expect_equal(full$birth_date[1], as.Date("1775-04-28"))
+
+  # Opting out restores the stricter behaviour: partial dates become NA.
+  strict <- readGedcom(temp_file,
+    parse_dates = TRUE,
+    impute_partial_dates = FALSE, verbose = FALSE
+  )
+  expect_equal(strict$birth_date[1], as.Date("1775-04-28"))
+  expect_true(is.na(strict$birth_date[2]))
+})
+
 test_that("mapFAMS2parents tolerates a spouse with missing sex", {
   # A GEDCOM record with no `1 SEX` line yields NA, which must be skipped
   # rather than compared, since `if (NA == "M")` is a hard error.
