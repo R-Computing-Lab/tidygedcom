@@ -146,6 +146,9 @@ p <- ggpedigree(potter,
   scale_x_continuous(
     expand = expansion(mult = c(0.04, 0.04))
   ) +
+#  scale_y_continuous(
+#    expand = expansion(mult = c(0.12, 0.12))
+ # ) +
   coord_cartesian(clip = "off") +
   theme_void() +
   theme(
@@ -170,10 +173,10 @@ ggsave("data-raw/bgplot.png", p, width = 8, height = 3.75, bg = "transparent", d
 graph_img <- magick::image_read(normalizePath("data-raw/bgplot.png"))
 
 # Match sizes
-graph_img <- image_resize(graph_img, geometry_size_pixels(width = 860, height = 390, preserve_aspect = T))
+graph_img <- image_resize(graph_img, geometry_size_pixels(width = 860*1.25, height = 390*1.25, preserve_aspect = T))
 
 
-combined_img <- image_composite(graph_img, three_cats, operator = "Over", gravity = "South", offset = "+10-20")
+combined_img <- image_composite(graph_img, three_cats, operator = "Over", gravity = "South", offset = "+10-40")
 
 
 
@@ -185,7 +188,7 @@ combined_img <- magick::image_read(normalizePath("data-raw/combined.png"))
 
 sticker(combined_img,
         package = "tidygedcom",
-        p_size = 20, s_x = 1 - .05, s_y = .900, s_width = 1.6,
+        p_size = 20, s_x = 1 - .05, s_y = .925, s_width = 1.9,s_height = 1.3,
         h_fill = "#0fa1e0", h_color = "#333333",
         p_color = "white", filename = "man/figures/hex.png")
 
