@@ -1,6 +1,8 @@
 ---
 title: "GEDCOM to Pedigree Analysis"
 output: rmarkdown::html_vignette
+bibliography: references.bib
+link-citations: true
 vignette: >
   %\VignetteIndexEntry{GEDCOM to Pedigree Analysis}
   %\VignetteEngine{knitr::rmarkdown}
@@ -17,9 +19,9 @@ library(tidygedcom)
 
 
 
-This genetic genealogy project is a collaboration between two Wake Forest psychology faculty -- SMG and CEW. SMG is a behavioral geneticist with expertise in pedigree analysis and statistical genetics. CEW is a social psychologist with expertise in the self-regulation of emotion. CEW is a direct descendant of W. Henderson Waugh, the focal individual in the family tree, and is interested in understanding his paternal ancestry. SMG is interested in applying her expertise in pedigree analysis to a real-world case study, and developing tools that can be used by other researchers in the field of genetic genealogy. The project is motivated by a desire to understand the historical context of the Waugh family tree, as well as to explore the potential for genetic genealogy to shed light on questions of ancestry and relatedness. The project is also motivated by a desire to contribute to the development of tools and methods for working with genealogical data,
+This genetic genealogy project is a collaboration between two Wake Forest psychology faculty -- SMG and CEW. SMG is a behavioral geneticist with expertise in pedigree analysis and statistical genetics. CEW is a social psychologist with expertise in the self-regulation of emotion. CEW is a direct descendant of W. Henderson Waugh, the focal individual in the family tree, and is interested in understanding his paternal ancestry. SMG is interested in applying her expertise in pedigree analysis to a real-world case study, and developing tools that can be used by other researchers in the field of genetic genealogy. The project is motivated by a desire to understand the historical context of the Waugh family tree, as well as to explore the potential for genetic genealogy to shed light on questions of ancestry and relatedness. The project is also motivated by a desire to contribute to the development of tools and methods for working with genealogical data.
 
-We encourage readers to explore some of the history of the Waugh family tree as recounted [https://thewilkesrecord.com/the-legacy-of-%E2%80%9Cbud%E2%80%9D-mitchell-p2771-149.htm] as well as through the (book)[https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832]
+Readers who want the historical context behind this pedigree should start with @griffin2017, a county-level history of slavery in Wilkes County, North Carolina, which is the setting for every event described below. For a portrait of one of the family's twentieth-century descendants, see the retrospective of the artist Wilton Waugh "Bud" Mitchell (b. 1934) in *The Wilkes Record* [@wilkesrecord-mitchell].
 
 
 
@@ -39,8 +41,8 @@ The paternal chain from the focal individual back through history is:
 | Generation | Individual | Birth |
 |--|--|--|
 | Self | Christian Emil WAUGH | 29 Apr 1978, Monterey County CA |
-| Father | Gregory Emil Waugh | Jun 1958 |
-| Grandfather | Warner F Waugh | abt 1933, NC |
+| Father | REDACTED| 1950s |
+| Grandfather |REDACTED | 1930s |
 | Great-grandfather | John William "Bud" Waugh | abt Jun 1880, NC |
 | 2nd great-grandfather | **W. Henderson Waugh** | abt 1835, NC |
 | 3rd great-grandfather | **William Pitt Waugh Sr.** | 28 Apr 1775, Adams County PA |
@@ -82,7 +84,8 @@ fam <- readGedcomFamilies("W. Henderson Waugh Family Tree.ged", verbose = FALSE)
 Note that Ancestry.com regenerates person IDs each time you export, so ID values will differ between exports. Always locate individuals by name or birth date rather than by a hardcoded ID.
 
 ## Analyzing the pedigree with BGmisc
-Once the data is in a tidy data frame, the `BGmisc` package provides the next layer of analysis: computing pairwise relatedness, tracing paternal lineages, and identifying Y-chromosome carriers.
+
+Once the data is in a tidy data frame, the `BGmisc` package [@bgmisc] provides the next layer of analysis: computing pairwise relatedness, tracing paternal lineages, and identifying Y-chromosome carriers.
 
 The strategy for the Waugh paternity question is:
 
@@ -91,7 +94,7 @@ The strategy for the Waugh paternity question is:
 3. Among those, find living males: they carry the same Y chromosome as William Pitt Waugh Sr. and are potential DNA match candidates.
 4. A Y-chromosome match between a living Segraves-line male and the focal individual (or his close Y-line relatives) would strongly confirm that W. Henderson Waugh and William Pitt Waugh Jr. share the same father.
 
-```{r bgmisc-workflow, eval = requireNamespace("BGmisc", quietly = TRUE) && requireNamespace("ggpedigree", quietly = TRUE), eval = FALSE}
+```{r bgmisc-workflow, eval = requireNamespace("BGmisc", quietly = TRUE) && requireNamespace("ggpedigree", quietly = TRUE)}
 library(BGmisc)
 library(ggpedigree)
 sample_ged <- c(
@@ -233,7 +236,7 @@ y_line_ID <- ged_ped$patID[ged_ped$personID == focal_ID]
 ged_ped$y_line <- ifelse(ged_ped$patID == y_line_ID, "Y Line", "Other Lines")
 ```
 
-```{r pedigree-plot, eval = requireNamespace("BGmisc", quietly = TRUE) && requireNamespace("ggpedigree", quietly = TRUE), fig.width = 7, fig.height = 4, fig.alt = "Pedigree plot of the Waugh family sample showing William Pitt Waugh Sr. at top with two branches: the focal person's Y line through W. Henderson Waugh on the left, and the Segraves Y-DNA candidate branch through William Pitt Waugh Jr. on the right.", eval = FALSE}
+```{r pedigree-plot, eval = requireNamespace("BGmisc", quietly = TRUE) && requireNamespace("ggpedigree", quietly = TRUE), fig.width = 7, fig.height = 4, fig.alt = "Pedigree plot of the Waugh family sample showing William Pitt Waugh Sr. at top with two branches: the focal person's Y line through W. Henderson Waugh on the left, and the Segraves Y-DNA candidate branch through William Pitt Waugh Jr. on the right."}
 ggpedigree(
   ged_ped,
   personID = "personID",
@@ -265,7 +268,7 @@ in_granddad_henderson_line_not_dad_henderson_line =
   in_granddad_henderson_line & !in_dad_henderson_line
 ```
 
-This isolates individuals descended from William Pitt Waugh Sr. but **not** through W. Henderson Waugh — i.e., the Segraves (William Pitt Jr.) branch — who are the primary Y-DNA match candidates. `ggPedigreeInteractive()` renders the full tree with nodes colored by additive genetic relatedness to the focal individual and edges highlighted by patriline membership.
+This isolates individuals descended from William Pitt Waugh Sr. but **not** through W. Henderson Waugh — i.e., the Segraves (William Pitt Jr.) branch — who are the primary Y-DNA match candidates. `ggPedigreeInteractive()` from `ggpedigree` [@ggpedigree] renders the full tree with nodes colored by additive genetic relatedness to the focal individual and edges highlighted by patriline membership.
 
 
 ## Cleaning up
@@ -284,6 +287,12 @@ This isolates individuals descended from William Pitt Waugh Sr. but **not** thro
 | `summarizeGedcom(df)` | Coverage counts and percentages |
 | `extractGedcomYear(x)` | Year from any GEDCOM date string |
 | `convertGedcomCoords(df)` | Convert `_lat`/`_long` columns to decimal degrees |
-| `gedcomLatToNumeric(x)` | Convert a latitude string vector |
-| `gedcomLonToNumeric(x)` | Convert a longitude string vector |
+| `gedcomLat2Numeric(x)` | Convert a latitude string vector |
+| `gedcomLon2Numeric(x)` | Convert a longitude string vector |
+
+## A note on primary sources
+
+The primary records referred to above -- the *Alexandria Gazette* runaway notice of 21 March 1820, the Wilkes County will and estate papers of William Pitt Waugh (probated 22 July 1852), Tennessee death records, and United States federal census returns for 1830 through 1930 -- are carried as `SOUR` citations inside the GEDCOM file itself rather than restated here. 
+
+## References
 

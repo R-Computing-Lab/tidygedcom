@@ -1,6 +1,8 @@
 ---
 title: "Getting Started with tidygedcom"
 output: rmarkdown::html_vignette
+bibliography: references.bib
+link-citations: true
 vignette: >
   %\VignetteIndexEntry{Getting Started with tidygedcom}
   %\VignetteEngine{knitr::rmarkdown}
@@ -130,7 +132,7 @@ The example files shipped with this package deliberately contain only individual
 This vignette uses a real family tree as its running example: the W.
 Henderson Waugh Family Tree.
 We'll discuss more about our running example in another vignette.
-(But briefly, the Waugh family tree is a genetic genealogy collaboration between two Wake Forest psychology faculty -- SMG and CEW. See <https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832> for more on the historical context of the Waugh family tree.) The tidygedcom package provides the tools for parsing and tidying GEDCOM files, and the Waugh family tree provides a real-world test case for these tools.
+(But briefly, the Waugh family tree is a genetic genealogy collaboration between two Wake Forest psychology faculty -- SMG and CEW. See @griffin2017 for more on the historical context of the Waugh family tree.) The tidygedcom package provides the tools for parsing and tidying GEDCOM files, and the Waugh family tree provides a real-world test case for these tools.
 
 We construct a small GEDCOM in memory that captures the key relationships described above.
 
@@ -408,7 +410,7 @@ gedcomLon2Numeric(c("W81.1845", "E151.2093", NA))
 
 ## From GEDCOM to pedigree analysis
 
-Once the data is in a tidy data frame, the `BGmisc` package provides the next layer of analysis: computing pairwise relatedness, tracing paternal lineages, and identifying Y-chromosome carriers.
+Once the data is in a tidy data frame, the `BGmisc` package [@bgmisc] provides the next layer of analysis: computing pairwise relatedness, tracing paternal lineages, and identifying Y-chromosome carriers.
 
 ```{r bgmisc, eval = requireNamespace("BGmisc", quietly = TRUE) }
 library(BGmisc)
