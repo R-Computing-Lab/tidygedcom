@@ -4,7 +4,7 @@ library(here)
 library(readr)
 library(usethis)
 library(BGmisc)
-
+library(tidygedcom)
 # Helper Functions
 
 date_qualifier_regex <- "\\b(?:A[BF]T|BE[TF])\\b\\s*"
@@ -45,7 +45,7 @@ parse_gedcom_date <- function(x) {
 
 ## Add missing individuals and overwrite duplicates based on historical records and data cleaning needs; these are added to the raw data frame before processing to ensure that they are included in the final cleaned dataset and to maintain consistency in the data cleaning process. The `overwrite = TRUE` argument is used to ensure that any existing entries with the same `personID` are updated with the new information, which is crucial for correcting errors or filling in missing details in the original dataset.
 
-royal92 <- df_raw <- readGedcom("data-raw/royal92.ged") %>%
+royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
   addPersonToPed(
     personID = 128,
     name = "Simon de Montfort the Younger",
@@ -3033,8 +3033,8 @@ royal92_cleaned <- royal92 %>%
     dadID = as.numeric(dadID),
     approximated_dob = is_approximated_date(birth_date),
     approximated_dod = is_approximated_date(death_date),
-    birth_date = strip_date_qualifier(birth_date),
-    death_date = strip_date_qualifier(death_date),
+    birth_date = tidygedcom:::stripDateQualifiers(birth_date),
+    death_date = tidygedcom:::stripDateQualifiers(death_date),
     # if only year is given, assign 15th June as the date
     birth_date = parse_gedcom_date(standardize_partial_date(birth_date)),
     death_date = parse_gedcom_date(standardize_partial_date(death_date)),
@@ -3457,7 +3457,7 @@ checkis_acyclic <- checkPedigreeNetwork(royal92,
 checkis_acyclic
 if (checkis_acyclic$is_acyclic) {
   message("The pedigree is acyclic.")
-  write_csv(royal92, here("data-raw", "royal92.csv"))
+  write_csv(royal92, here("data-raw/royal92", "royal92.csv"))
   usethis::use_data(royal92, overwrite = TRUE, compress = "xz")
 } else {
   message("The pedigree contains cyclic relationships.")
