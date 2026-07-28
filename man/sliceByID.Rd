@@ -36,8 +36,11 @@ detected and searched too. The returned rows keep the caller's original
 column names.
 }
 \examples{
-\dontrun{
-# Inspect a couple's full household before repairing a link
-sliceByID(ped, ID = c(348700, 348701))
-}
+ped <- readGedcom(
+  system.file("extdata", "waugh.ged", package = "tidygedcom"),
+  verbose = FALSE
+)
+
+# Inspect William Pitt Waugh Sr. and everyone linked to him
+sliceByID(ped, ID = 1)
 }

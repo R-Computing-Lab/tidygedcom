@@ -1,6 +1,17 @@
-# tidygedcom
+# tidygedcom 0.1.0
 
-## Development version
+* Initial CRAN submission.
+
+### Bug fixes
+
+* `readGedcom()` no longer leaves a stray `/` in the `name` column when a name suffix follows the surname (e.g. `1 NAME William Pitt /Waugh/ Jr` parsed as `William Pitt Waugh/ Jr`). Both surname delimiters are now removed.
+* `readGedcom()` no longer errors with "missing value where TRUE/FALSE needed" when a spouse record has no `SEX` line. Individuals with unknown sex are skipped during parent mapping rather than compared.
+
+### Example data
+
+* Added two example GEDCOM files, installed under `inst/extdata`, drawn from the W. Henderson Waugh Family Tree and covering eight individuals (all deceased) across four families:
+  * `waugh.ged` — a clean excerpt for documentation examples.
+  * `waugh_messy.ged` — the same individuals retaining source-export defects (conflicting duplicate `BIRT` blocks, competing `PLAC` lines, an uncertain surname, a missing `SEX` value, and an individual with no birth record).
 
 ### Internal refactoring
 
@@ -19,8 +30,9 @@
 * Several improvements to GEDCOM parsing, focusing on more robust and flexible event parsing, better support for different GEDCOM versions, and enhanced usability.
 
 
-# tidygedcom 0.1
-* Splitting gedcom reader off from BGmisc. See history of those files in BGmisc:
+### Origin
+
+* Split the GEDCOM reader off from BGmisc. See history of those files in BGmisc:
 	- https://github.com/R-Computing-Lab/BGmisc/commits/main/R/readGedcom.R
 	- https://github.com/R-Computing-Lab/BGmisc/commits/main/R/readGedcomlegacy.R
 	- https://github.com/R-Computing-Lab/BGmisc/commits/main/R/readWikifamilytree.R

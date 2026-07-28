@@ -21,3 +21,19 @@ A list containing the summary, members, structure, and relationships of the fami
 \description{
 Read Wiki Family Tree
 }
+\examples{
+tree_text <- paste(
+  "{{familytree/start |summary=A three-generation example.}}",
+  "{{familytree | | | | GMa |~|y|~| GPa | | GMa=Gladys|GPa=Sydney}}",
+  "{{familytree | | | | | | | |)|-|-|-|.| }}",
+  "{{familytree | | | MOM |y| DAD | |AUNT| MOM=Mom|DAD=Dad|AUNT=Aunt Daisy}}",
+  "{{familytree | |,|-|-|-|.| | | | | | }}",
+  "{{familytree | JOE | | ME  | | JOE=Joe|ME=Me}}",
+  "{{familytree/end}}",
+  sep = "\n"
+)
+
+tree <- readWikifamilytree(text = tree_text)
+tree$summary
+head(tree$members)
+}

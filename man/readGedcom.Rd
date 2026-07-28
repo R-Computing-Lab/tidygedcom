@@ -174,3 +174,13 @@ controlled by `add_parents`, `combine_cols`, `remove_empty_cols`, and
 remove columns that are entirely missing, and drop raw family relationship
 columns for a slimmer output.
 }
+\examples{
+# A small excerpt of the W. Henderson Waugh family tree
+ged_file <- system.file("extdata", "waugh.ged", package = "tidygedcom")
+ped <- readGedcom(ged_file, verbose = FALSE)
+ped[, c("personID", "name", "sex", "birth_date", "momID", "dadID")]
+
+# Keep every parsed column rather than the default slimmed output
+full <- readGedcom(ged_file, verbose = FALSE, remove_empty_cols = FALSE)
+ncol(full)
+}

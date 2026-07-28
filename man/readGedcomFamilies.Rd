@@ -45,3 +45,10 @@ Parses `FAM` records from a GEDCOM file and returns a tidy data frame with
 one row per family unit. Captures husband, wife, children, marriage event,
 and divorce event details.
 }
+\examples{
+fam <- readGedcomFamilies(
+  system.file("extdata", "waugh.ged", package = "tidygedcom"),
+  verbose = FALSE
+)
+fam
+}

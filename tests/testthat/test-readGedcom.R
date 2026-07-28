@@ -294,6 +294,29 @@ test_that("readGedcom parses all supported name component tags", {
   unlink(temp_file)
 })
 
+test_that("name strips both surname slashes when a suffix follows", {
+  gedcom_content <- c(
+    "0 @I1@ INDI",
+    "1 NAME William Pitt /Waugh/ Jr",
+    "1 SEX M",
+    "0 @I2@ INDI",
+    "1 NAME Laura /Watkins/",
+    "1 SEX F"
+  )
+
+  temp_file <- tempfile(fileext = ".ged")
+  writeLines(gedcom_content, temp_file)
+  on.exit(unlink(temp_file), add = TRUE)
+
+  df <- readGedcom(temp_file, verbose = FALSE)
+
+  # A suffix after the closing slash must not strand the delimiter mid-name.
+  expect_equal(df$name[1], "William Pitt Waugh Jr")
+  # The no-suffix case must keep working.
+  expect_equal(df$name[2], "Laura Watkins")
+  expect_false(any(grepl("/", df$name)))
+})
+
 test_that("readGedcom parses all supported attribute tags", {
   gedcom_content <- c(
     "0 @I1@ INDI",

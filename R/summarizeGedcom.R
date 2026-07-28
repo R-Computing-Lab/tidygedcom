@@ -7,10 +7,18 @@
 #' @return An object of class \code{"tidygedcom_summary"} (a named list).
 #'   Print the result for a human-readable overview.
 #' @examples
-#' \dontrun{
-#' df <- readGedcom("my_file.ged")
+#' df <- readGedcom(
+#'   system.file("extdata", "waugh.ged", package = "tidygedcom"),
+#'   verbose = FALSE
+#' )
 #' summarizeGedcom(df)
-#' }
+#'
+#' # Coverage drops on a file with missing records
+#' messy <- readGedcom(
+#'   system.file("extdata", "waugh_messy.ged", package = "tidygedcom"),
+#'   verbose = FALSE
+#' )
+#' summarizeGedcom(messy)
 #' @export
 summarizeGedcom <- function(df) {
   stopifnot(is.data.frame(df))

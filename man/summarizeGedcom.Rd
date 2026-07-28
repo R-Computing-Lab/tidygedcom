@@ -18,8 +18,16 @@ Returns key counts and coverage statistics for a data frame produced by
 \code{readGedcom()}.
 }
 \examples{
-\dontrun{
-df <- readGedcom("my_file.ged")
+df <- readGedcom(
+  system.file("extdata", "waugh.ged", package = "tidygedcom"),
+  verbose = FALSE
+)
 summarizeGedcom(df)
-}
+
+# Coverage drops on a file with missing records
+messy <- readGedcom(
+  system.file("extdata", "waugh_messy.ged", package = "tidygedcom"),
+  verbose = FALSE
+)
+summarizeGedcom(messy)
 }

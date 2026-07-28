@@ -6,6 +6,21 @@
 #' @param ... Additional arguments (not used).
 #'
 #' @return A list containing the summary, members, structure, and relationships of the family tree.
+#' @examples
+#' tree_text <- paste(
+#'   "{{familytree/start |summary=A three-generation example.}}",
+#'   "{{familytree | | | | GMa |~|y|~| GPa | | GMa=Gladys|GPa=Sydney}}",
+#'   "{{familytree | | | | | | | |)|-|-|-|.| }}",
+#'   "{{familytree | | | MOM |y| DAD | |AUNT| MOM=Mom|DAD=Dad|AUNT=Aunt Daisy}}",
+#'   "{{familytree | |,|-|-|-|.| | | | | | }}",
+#'   "{{familytree | JOE | | ME  | | JOE=Joe|ME=Me}}",
+#'   "{{familytree/end}}",
+#'   sep = "\n"
+#' )
+#'
+#' tree <- readWikifamilytree(text = tree_text)
+#' tree$summary
+#' head(tree$members)
 #' @export
 #' @importFrom stringr str_extract_all str_detect str_trim str_match
 readWikifamilytree <- function(text = NULL, verbose = FALSE, file_path = NULL, ...) {
@@ -121,6 +136,8 @@ extractMemberTable <- function(text) {
 #' Extract Summary Text
 #' @inheritParams readWikifamilytree
 #' @return A character string containing the summary text.
+#' @examples
+#' getWikiTreeSummary("{{familytree/start |summary=A three-generation example.}}")
 #' @keywords internal
 #' @export
 #' @importFrom stringr str_match
@@ -134,6 +151,8 @@ getWikiTreeSummary <- function(text) {
 #' Parse Tree
 #' @param tree_lines A character vector containing the lines of the tree structure.
 #' @return A data frame containing the tree structure.
+#' @examples
+#' buildTreeGrid(c(" | | GMa |~|y|~| GPa | ", " | | MOM |y| DAD | | "))
 #' @keywords internal
 #' @export
 
@@ -271,6 +290,16 @@ populateParents <- function(df, child, parent) {
 #' @param tree_long A data.frame with columns: Row, Column, Value, id
 #' @param deduplicate Logical, if TRUE, will remove duplicate paths
 #' @return A data.frame with columns: from_id, to_id, direction, path_length, intermediates
+#' @examples
+#' # Two individuals joined by a horizontal connector
+#' tree_long <- data.frame(
+#'   Row = rep(1, 3),
+#'   Column = 1:3,
+#'   Value = c("A", "+", "B"),
+#'   id = c("A", NA, "B")
+#' )
+#'
+#' traceTreePaths(tree_long)
 #' @export
 #' @importFrom igraph graph_from_data_frame shortest_paths V
 #' @importFrom stats setNames

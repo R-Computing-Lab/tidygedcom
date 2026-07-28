@@ -1,0 +1,142 @@
+0 HEAD
+1 SOUR tidygedcom
+2 NAME tidygedcom example data
+2 VERS 0.1.0
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR UTF-8
+1 NOTE An eight-person excerpt of the W. Henderson Waugh Family Tree, used as a
+2 CONT toy example for the tidygedcom package. All individuals died before 1965.
+2 CONT Structure and tag usage follow an Ancestry.com export, including the
+2 CONT custom _SREL tag on family records.
+0 @I1@ INDI
+1 NAME William Pitt /Waugh/
+2 GIVN William Pitt
+2 SURN Waugh
+1 SEX M
+1 BIRT
+2 DATE 28 April 1775
+2 PLAC Adams County, Pennsylvania, USA
+1 EVEN
+2 TYPE Enslavement Article for Runaway/Fugitive
+2 DATE 21 Mar 1820
+2 PLAC Alexandria, Virginia, USA
+1 DEAT
+2 DATE 14 Aug 1852
+2 PLAC Wilkes County, North Carolina, USA
+2 NOTE Age at Death: 77. He did not make any bequest to his purported natural
+3 CONC  son by Martha Laws, William Segraves.
+1 BURI
+2 PLAC Wilkesboro, Wilkes, North Carolina, USA
+1 FAMS @F1@
+1 FAMS @F2@
+0 @I2@ INDI
+1 NAME Matilda /Grinton/
+2 GIVN Matilda
+2 SURN Grinton
+1 SEX F
+1 BIRT
+2 DATE abt 1797
+2 PLAC North Carolina, USA
+1 FAMS @F1@
+0 @I3@ INDI
+1 NAME W. Henderson /Waugh/
+2 GIVN W. Henderson
+2 SURN Waugh
+1 SEX M
+1 BIRT
+2 DATE abt 1835
+2 PLAC North Carolina, USA
+1 DEAT
+2 DATE Aft. Oct 1896
+2 PLAC Wilkes County, North Carolina, USA
+1 FAMC @F1@
+1 FAMS @F3@
+0 @I4@ INDI
+1 NAME Martha Law /Segraves/
+2 GIVN Martha Law
+2 SURN Segraves
+1 SEX F
+1 BIRT
+2 DATE Oct 1814
+1 DEAT
+2 DATE 26 February 1879
+2 PLAC Henderson County, Tennessee, USA
+1 FAMS @F2@
+0 @I5@ INDI
+1 NAME William Pitt /Waugh/ Jr
+2 GIVN William Pitt
+2 SURN Waugh
+2 NSFX Jr
+1 SEX M
+1 BIRT
+2 DATE 1844
+2 PLAC Wilkes County, North Carolina, USA
+2 NOTE Born out of wedlock to Martha Law Segraves. Uses her surname until 1865.
+3 CONC  Purported natural son of William P Waugh (1775-1852).
+1 DEAT
+2 DATE Feb 1880
+2 PLAC Henderson County, Tennessee, USA
+2 NOTE Age at Death: 36
+1 FAMC @F2@
+1 FAMS @F4@
+0 @I6@ INDI
+1 NAME Laura /Watkins/
+2 GIVN Laura
+2 SURN Watkins
+1 SEX F
+1 BIRT
+2 DATE abt 1846
+2 PLAC North Carolina, USA
+1 DEAT
+2 DATE 20 Apr 1900
+2 PLAC Wilkes County, North Carolina, USA
+1 FAMS @F3@
+0 @I7@ INDI
+1 NAME John William "Bud" /Waugh/
+2 GIVN John William "Bud"
+2 SURN Waugh
+1 SEX M
+1 BIRT
+2 DATE 13 Dec 1879
+2 PLAC Wilkes County, North Carolina, USA
+1 DEAT
+2 DATE 2 January 1963
+2 PLAC North Wilkesboro, Wilkes, North Carolina, USA
+1 BURI
+2 PLAC North Wilkesboro, Wilkes, North Carolina, USA
+1 FAMC @F3@
+0 @I8@ INDI
+1 NAME James Monroe /Waugh/
+2 GIVN James Monroe
+2 SURN Waugh
+1 SEX M
+1 BIRT
+2 DATE 10 Nov 1867
+2 PLAC Henderson County, Tennessee, USA
+1 DEAT
+2 DATE 23 Jul 1937
+2 PLAC Yuma, Henderson, Tennessee, USA
+1 FAMC @F4@
+0 @F1@ FAM
+1 _SREL partner
+1 HUSB @I1@
+1 WIFE @I2@
+1 CHIL @I3@
+0 @F2@ FAM
+1 _SREL friend
+1 HUSB @I1@
+1 WIFE @I4@
+1 CHIL @I5@
+0 @F3@ FAM
+1 HUSB @I3@
+1 WIFE @I6@
+1 CHIL @I7@
+1 MARR
+2 DATE 24 Jun 1877
+2 PLAC Wilkes, North Carolina, USA
+0 @F4@ FAM
+1 HUSB @I5@
+1 CHIL @I8@
+0 TRLR

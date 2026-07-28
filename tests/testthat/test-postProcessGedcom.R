@@ -1,3 +1,21 @@
+test_that("mapFAMS2parents tolerates a spouse with missing sex", {
+  # A GEDCOM record with no `1 SEX` line yields NA, which must be skipped
+  # rather than compared, since `if (NA == "M")` is a hard error.
+  df_temp <- data.frame(
+    personID = c("I1", "I2", "I3"),
+    sex = c("M", NA_character_, "M"),
+    FAMS = c("@F1@", "@F1@", NA),
+    FAMC = c(NA, NA, "@F1@"),
+    stringsAsFactors = FALSE
+  )
+
+  expect_no_error(parents <- mapFAMS2parents(df_temp))
+
+  # The known father is still recorded; the unknown-sex spouse is simply absent.
+  expect_equal(parents[["@F1@"]]$father, "I1")
+  expect_null(parents[["@F1@"]]$mother)
+})
+
 test_that("processParents adds momID and dadID correctly", {
   # Create a data frame for testing
   df_temp <- data.frame(

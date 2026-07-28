@@ -50,7 +50,15 @@ whole purpose is to catch IDs wherever they hide, including in non-canonical
 columns.
 }
 \examples{
-\dontrun{
-findIDs(list(clean = clean_df, raw = raw_df), ID = 389785)
-}
+clean <- readGedcom(
+  system.file("extdata", "waugh.ged", package = "tidygedcom"),
+  verbose = FALSE
+)
+messy <- readGedcom(
+  system.file("extdata", "waugh_messy.ged", package = "tidygedcom"),
+  verbose = FALSE
+)
+
+# Locate every reference to W. Henderson Waugh across both parses
+findIDs(list(clean = clean, messy = messy), ID = 3)
 }

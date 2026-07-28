@@ -39,12 +39,12 @@ extractInfoFromLines <- function(lines, tag) {
 #' @param record A named list representing the individual's record.
 #' @return The updated record with parsed name information.
 #' @keywords internal
-#' @importFrom stringr str_extract str_squish str_replace
+#' @importFrom stringr str_extract str_squish str_replace_all
 parseNameLine <- function(line, record) {
   record$name <- extractInfo(line, "NAME")
   record$name_given <- stringr::str_extract(record$name, ".*(?= /)")
   record$name_surn <- stringr::str_extract(record$name, "(?<=/).*(?=/)")
-  record$name <- stringr::str_squish(stringr::str_replace(record$name, "/", " "))
+  record$name <- stringr::str_squish(stringr::str_replace_all(record$name, "/", " "))
   record
 }
 

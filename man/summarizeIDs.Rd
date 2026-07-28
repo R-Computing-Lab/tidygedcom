@@ -27,7 +27,15 @@ quick census of how many places an ID appears before drilling in with
 [findIDs()].
 }
 \examples{
-\dontrun{
-summarizeIDs(list(clean = clean_df, raw = raw_df), ID = 389785)
-}
+clean <- readGedcom(
+  system.file("extdata", "waugh.ged", package = "tidygedcom"),
+  verbose = FALSE
+)
+messy <- readGedcom(
+  system.file("extdata", "waugh_messy.ged", package = "tidygedcom"),
+  verbose = FALSE
+)
+
+# Count references per dataset and column
+summarizeIDs(list(clean = clean, messy = messy), ID = 3)
 }

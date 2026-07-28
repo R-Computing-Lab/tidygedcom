@@ -15,4 +15,7 @@ A data frame containing the tree structure.
 \description{
 Parse Tree
 }
+\examples{
+buildTreeGrid(c(" | | GMa |~|y|~| GPa | ", " | | MOM |y| DAD | | "))
+}
 \keyword{internal}

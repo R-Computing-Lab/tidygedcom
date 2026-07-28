@@ -15,4 +15,7 @@ A character string containing the summary text.
 \description{
 Extract Summary Text
 }
+\examples{
+getWikiTreeSummary("{{familytree/start |summary=A three-generation example.}}")
+}
 \keyword{internal}

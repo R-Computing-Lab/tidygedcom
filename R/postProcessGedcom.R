@@ -187,19 +187,15 @@ mapFAMS2parents <- function(df_temp,
     if (!is.na(df_temp$FAMS[i])) {
       fams_ids <- unlist(strsplit(df_temp$FAMS[i], ", "))
       for (fams_id in fams_ids) {
-        if (!is.null(family_to_parents[[fams_id]])) {
-          if (df_temp$sex[i] == dad_sex) {
-            family_to_parents[[fams_id]]$father <- df_temp$personID[i]
-          } else if (df_temp$sex[i] == mom_sex) {
-            family_to_parents[[fams_id]]$mother <- df_temp$personID[i]
-          }
-        } else {
+        if (is.null(family_to_parents[[fams_id]])) {
           family_to_parents[[fams_id]] <- list()
-          if (df_temp$sex[i] == dad_sex) {
-            family_to_parents[[fams_id]]$father <- df_temp$personID[i]
-          } else if (df_temp$sex[i] == mom_sex) {
-            family_to_parents[[fams_id]]$mother <- df_temp$personID[i]
-          }
+        }
+        # `%in%` rather than `==` so a missing SEX skips the spouse
+        # instead of erroring on `if (NA)`.
+        if (df_temp$sex[i] %in% dad_sex) {
+          family_to_parents[[fams_id]]$father <- df_temp$personID[i]
+        } else if (df_temp$sex[i] %in% mom_sex) {
+          family_to_parents[[fams_id]]$mother <- df_temp$personID[i]
         }
       }
     }

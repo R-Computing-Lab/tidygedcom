@@ -22,10 +22,13 @@
 #' @return A data frame: the subset of `ped` rows in which any of `ID` appears in
 #'   a linking column, with the original columns and names preserved.
 #' @examples
-#' \dontrun{
-#' # Inspect a couple's full household before repairing a link
-#' sliceByID(ped, ID = c(348700, 348701))
-#' }
+#' ped <- readGedcom(
+#'   system.file("extdata", "waugh.ged", package = "tidygedcom"),
+#'   verbose = FALSE
+#' )
+#'
+#' # Inspect William Pitt Waugh Sr. and everyone linked to him
+#' sliceByID(ped, ID = 1)
 #' @export
 sliceByID <- function(ped, ID, sort = TRUE) {
   # Standardise a throwaway copy only to locate the linking columns; the copy's
@@ -88,9 +91,17 @@ sliceByID <- function(ped, ID, sort = TRUE) {
 #'   any available `context_cols`. Returns an empty data frame if nothing
 #'   matches.
 #' @examples
-#' \dontrun{
-#' findIDs(list(clean = clean_df, raw = raw_df), ID = 389785)
-#' }
+#' clean <- readGedcom(
+#'   system.file("extdata", "waugh.ged", package = "tidygedcom"),
+#'   verbose = FALSE
+#' )
+#' messy <- readGedcom(
+#'   system.file("extdata", "waugh_messy.ged", package = "tidygedcom"),
+#'   verbose = FALSE
+#' )
+#'
+#' # Locate every reference to W. Henderson Waugh across both parses
+#' findIDs(list(clean = clean, messy = messy), ID = 3)
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
 #' @export
@@ -161,9 +172,17 @@ findIDs <- function(data_list, ID,
 #' @return A data frame with columns `matched_id`, `dataset`, `matched_column`,
 #'   and `n_matches`.
 #' @examples
-#' \dontrun{
-#' summarizeIDs(list(clean = clean_df, raw = raw_df), ID = 389785)
-#' }
+#' clean <- readGedcom(
+#'   system.file("extdata", "waugh.ged", package = "tidygedcom"),
+#'   verbose = FALSE
+#' )
+#' messy <- readGedcom(
+#'   system.file("extdata", "waugh_messy.ged", package = "tidygedcom"),
+#'   verbose = FALSE
+#' )
+#'
+#' # Count references per dataset and column
+#' summarizeIDs(list(clean = clean, messy = messy), ID = 3)
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
 #' @export
@@ -205,16 +224,23 @@ summariseIDs <- summarizeIDs
 #' @return `ped` with the fixes applied and the `manual_fix` /
 #'   `manual_fix_comment` provenance columns populated.
 #' @examples
-#' \dontrun{
+#' # The messy example file omits Laura Watkins's SEX line, so she cannot be
+#' # resolved as a mother during parsing.
+#' ped <- readGedcom(
+#'   system.file("extdata", "waugh_messy.ged", package = "tidygedcom"),
+#'   verbose = FALSE
+#' )
+#' ped$sex[ped$personID == 6]
+#'
 #' fixes <- list(
-#'   swap_parents = list(
-#'     rows = rlang::quo(ID == 348700),
-#'     changes = list(momID = 348701, dadID = NA),
-#'     comment = "Verified against parish record."
+#'   laura_sex = list(
+#'     rows = rlang::quo(personID == 6),
+#'     changes = list(sex = "F"),
+#'     comment = "Sex absent from source export; confirmed by 1880 census."
 #'   )
 #' )
 #' ped <- repairManually(ped, fixes)
-#' }
+#' ped[ped$personID == 6, c("personID", "name", "sex", "manual_fix")]
 #' @importFrom rlang eval_tidy
 #' @export
 repairManually <- function(ped, fixes) {

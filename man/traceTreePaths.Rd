@@ -17,3 +17,14 @@ A data.frame with columns: from_id, to_id, direction, path_length, intermediates
 \description{
 Trace paths between individuals in a family tree grid
 }
+\examples{
+# Two individuals joined by a horizontal connector
+tree_long <- data.frame(
+  Row = rep(1, 3),
+  Column = 1:3,
+  Value = c("A", "+", "B"),
+  id = c("A", NA, "B")
+)
+
+traceTreePaths(tree_long)
+}

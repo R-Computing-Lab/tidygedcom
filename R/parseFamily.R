@@ -20,6 +20,12 @@
 #'   \item{div_place}{Divorce place (`DIV/PLAC`).}
 #' }
 #' Returns `NULL` with a warning if no family records are found.
+#' @examples
+#' fam <- readGedcomFamilies(
+#'   system.file("extdata", "waugh.ged", package = "tidygedcom"),
+#'   verbose = FALSE
+#' )
+#' fam
 #' @export
 readGedcomFamilies <- function(file_path,
                                verbose = FALSE,

@@ -113,6 +113,15 @@
 #'
 #' If no individual records are found, the function returns `NULL` with a
 #' warning.
+#' @examples
+#' # A small excerpt of the W. Henderson Waugh family tree
+#' ged_file <- system.file("extdata", "waugh.ged", package = "tidygedcom")
+#' ped <- readGedcom(ged_file, verbose = FALSE)
+#' ped[, c("personID", "name", "sex", "birth_date", "momID", "dadID")]
+#'
+#' # Keep every parsed column rather than the default slimmed output
+#' full <- readGedcom(ged_file, verbose = FALSE, remove_empty_cols = FALSE)
+#' ncol(full)
 #' @export
 
 
