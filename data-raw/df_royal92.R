@@ -18,27 +18,19 @@ is_approximated_date <- function(x) {
   str_detect(x, date_qualifier_regex) | str_length(x) == 4
 }
 
-strip_date_qualifier <- function(x) {
-  x %>%
-    str_replace_all(date_qualifier_regex, "") %>%
-    str_squish()
-}
+
 
 standardize_partial_date <- function(x, default_day = "15",
                                      default_month = "JUN") {
   case_when(
     str_length(x) == 0 ~ NA_character_,
-    str_length(x) %in% c(3, 4) ~ paste0(default_day, " ", default_month, " ", x),
-    str_length(x) %in% c(7, 8) ~ paste0(default_day, " ", x),
+    str_length(x) %in% c(3, 4, 7, 8) ~ tidygedcom:::imputePartialDates(x,default_day=default_day, default_month=default_month),
     TRUE ~ x
-  )
-}
-
-parse_gedcom_date <- function(x) {
-  x %>%
+  ) %>%
     str_trim() %>%
     as.Date(format = "%d %b %Y")
 }
+
 
 
 # Create dataframe
@@ -71,21 +63,29 @@ royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
     overwrite = TRUE
   ) %>%
   addPersonToPed(
+    personID = 1051, # overwriting duplicated Andreas, is already 911
+    name = "Louis II of Anjou",
+    sex = "M",
+    momID = NA_integer_,
+    dadID = 1125,
+    overwrite = TRUE
+  )  %>%
+  addPersonToPed(
+    personID = 1125, # overwriting duplicated Jean of Luxembourg
+    name = "Louis I of Anjou",
+    sex = "M",
+    momID = 2519,
+    dadID = 2498,
+    overwrite = TRUE
+  ) %>%
+  addPersonToPed(
     personID = 1147,
     name = "Henry de Montfort",
     sex = "M",
     momID = 1370,
     dadID = 873,
     overwrite = TRUE
-  ) %>%
-  addPersonToPed(
-    personID = 2848,
-    name = "Michael of Greece and Denmark",
-    sex = "M",
-    momID = 2846,
-    dadID = 465,
-    overwrite = TRUE
-  ) %>%
+  )  %>%
   addPersonToPed(
     personID = 1298,
     name = "Konstantin Pavlovich Romanov",
@@ -117,29 +117,21 @@ royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = 589,
     dadID = 235,
     overwrite = TRUE
-  ) %>%
-  addPersonToPed(
-    personID = 1051, # overwriting duplicated Andreas, is already 911
-    name = "TODO",
-    sex = "U",
-    momID = NA_integer_,
-    dadID = NA_integer_,
-    overwrite = TRUE
-  ) %>%
-  addPersonToPed(
-    personID = 1125, # overwriting duplicated Jean of Luxembourg
-    name = "TODO",
-    sex = "U",
-    momID = NA_integer_,
-    dadID = NA_integer_,
-    overwrite = TRUE
-  ) %>%
+  )%>%
   addPersonToPed(
     personID = 2300, # overwriting duplicated John Neville
     name = "TODO",
     sex = "U",
     momID = NA_integer_,
     dadID = NA_integer_,
+    overwrite = TRUE
+  ) %>%
+  addPersonToPed(
+    personID = 2848,
+    name = "Michael of Greece and Denmark",
+    sex = "M",
+    momID = 2846,
+    dadID = 465,
     overwrite = TRUE
   ) %>%
   addPersonToPed(
@@ -808,7 +800,7 @@ date_overrides <- tribble(
   1048, "1 JUN 1985", NA_character_, # Christian Heinrich of Hanover; living
   1049, "12 DEC 1962", "29 NOV 1988", # Isabella von Thurn und Valsassina; source conflict: another source gives 8 SEP 1962, selected 12 DEC 1962
   1050, "13 FEB 1988", NA_character_, # Otto Heinrich of Hanover; living
-  1051, NA_character_, NA_character_, # to replace
+  1051, "5 OCT 1377", "29 APR 1417" , # Louis II of Anjou
   1052, "3 JUL 1933", "29 DEC 2022", # Maximilian / Max, Margrave of Baden
   1053, "9 APR 1882", "17 NOV 1945", # Frederick Francis IV of Mecklenburg-Schwerin
   1054, "16 APR 1940", NA_character_, # Margrethe II of Denmark; living
@@ -870,7 +862,7 @@ date_overrides <- tribble(
   1122, "15 SEP 1904", "18 MAR 1983", # Umberto II of Italy
   1123, "11 OCT 1927", "10 JAN 2005", # Josephine-Charlotte of Belgium
   1124, "6 JUN 1934", NA_character_, # Albert II of Belgium; living
-  1125, NA_character_, NA_character_, # to replace
+  1125, "23 JUL 1339", "20 SEP 1384" , # Louis I of Anjou
   1126, "11 JUN 1928", "5 DEC 2014", # Fabiola de Mora y Aragón
   1127, "11 SEP 1937", NA_character_, # Paola Ruffo di Calabria; living
   1128, "15 APR 1960", NA_character_, # Philippe of Belgium; living
@@ -2487,6 +2479,7 @@ name_overrides <- tribble(
   1673, "Richard of Sayn-Wittgenstein-Berleburg",
   1694, "John Frederick of Brandenburg-Ansbach",
   1709, "Henry Somerset",
+  1762, "Daughter of Ethelred",
   1801, "Sihtric Cáech",
   1802, "Ælfflæd",
   1803, "Æthelweard",
@@ -2577,6 +2570,7 @@ name_overrides <- tribble(
   1991, "Cerdic of Wessex",
   1992, "Cynric of Wessex",
   1993, "Ceawlin of Wessex",
+  2019, "Unknown Daughter",
   2022, "Ceolric of Wessex",
   2023, "Ceolwulf of Wessex",
   2024, "Cynegils of Wessex",
@@ -3036,8 +3030,8 @@ royal92_cleaned <- royal92 %>%
     birth_date = tidygedcom:::stripDateQualifiers(birth_date),
     death_date = tidygedcom:::stripDateQualifiers(death_date),
     # if only year is given, assign 15th June as the date
-    birth_date = parse_gedcom_date(standardize_partial_date(birth_date)),
-    death_date = parse_gedcom_date(standardize_partial_date(death_date)),
+    birth_date = standardize_partial_date(birth_date),
+    death_date = standardize_partial_date(death_date),
     attribute_title = case_when(
       personID == 69 ~ "Duchess of Gloucester",
       personID == 77 ~ "Duchess of Saxe-Meiningen",
@@ -3181,7 +3175,7 @@ royal92_cleaned <- royal92 %>%
         c(914) ~ "Grand Duchess of Russia",
       personID == 932 ~ "Princess of Prussia",
       personID == 1051 ~ NA_character_,
-      personID == 1125 ~ NA_character_,
+      personID == 1125 ~ "Duke of Anjou",
       personID == 1250 ~ "Earl of Bothwell",
       personID %in%
         c(1373, 1867) ~ "Count of Poitiers",
@@ -3411,6 +3405,10 @@ royal92_cleaned <- royal92 %>%
       personID == 1282 ~ 1884,
       TRUE ~ momID
     ),
+    dadID = case_when(
+      personID == 2538 ~ 1051, # This is a correction for a missing dadID
+      TRUE ~ dadID
+    ),
     attribute_title = str_replace_all(attribute_title, text_cleanup_regex) %>%
       str_squish(),
     sex = case_when(
@@ -3492,3 +3490,22 @@ if (FALSE) {
     tooltip_columns = c("personID", "name", "title", "birth_date", "death_date")
   )
 }
+
+royal92 %>%
+  filter(is.na(momID) & is.na(dadID)) %>%
+  select(personID, name, famID, momID, dadID, sex) %>%
+  mutate(
+    first_name = str_extract(name, "^[^ ]+"),
+    last_name = str_extract(name, "[^ ]+$"),
+  ) %>%
+  arrange(last_name, personID)
+
+
+royal92 %>%
+  filter(!is.na(momID) & is.na(dadID)) %>%
+  select(personID, name, famID, momID, dadID, sex) %>%
+  mutate(
+    first_name = str_extract(name, "^[^ ]+"),
+    last_name = str_extract(name, "[^ ]+$"),
+  ) %>%
+  arrange(last_name, personID)
