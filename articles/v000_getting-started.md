@@ -144,12 +144,10 @@ This vignette uses a real family tree as its running example: the W.
 Henderson Waugh Family Tree. We’ll discuss more about our running
 example in another vignette. (But briefly, the Waugh family tree is a
 genetic genealogy collaboration between two Wake Forest psychology
-faculty – SMG and CEW. See
-<https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832>
-for more on the historical context of the Waugh family tree.) The
-tidygedcom package provides the tools for parsing and tidying GEDCOM
-files, and the Waugh family tree provides a real-world test case for
-these tools.
+faculty – SMG and CEW. See Griffin ([2017](#ref-griffin2017)) for more
+on the historical context of the Waugh family tree.) The tidygedcom
+package provides the tools for parsing and tidying GEDCOM files, and the
+Waugh family tree provides a real-world test case for these tools.
 
 We construct a small GEDCOM in memory that captures the key
 relationships described above.
@@ -540,9 +538,10 @@ gedcomLon2Numeric(c("W81.1845", "E151.2093", NA))
 
 ## From GEDCOM to pedigree analysis
 
-Once the data is in a tidy data frame, the `BGmisc` package provides the
-next layer of analysis: computing pairwise relatedness, tracing paternal
-lineages, and identifying Y-chromosome carriers.
+Once the data is in a tidy data frame, the `BGmisc` package ([Garrison
+et al. 2024](#ref-bgmisc)) provides the next layer of analysis:
+computing pairwise relatedness, tracing paternal lineages, and
+identifying Y-chromosome carriers.
 
 ``` r
 
@@ -634,3 +633,12 @@ unlink(tmp_ged)
 | `extractGedcomYear(x)` | Year from any GEDCOM date string |
 | `convertGedcomCoords(df)` | Convert `_lat`/`_long` columns to decimal degrees |
 | `gedcomLon2Numeric(x)` | Convert a longitude string vector |
+
+Garrison, S. Mason, Michael D. Hunter, Xuanyu Lyu, Jonathan D. Trattner,
+and S. Alexandra Burt. 2024. “BGmisc: An R Package for Extended Behavior
+Genetics Analysis.” *Journal of Open Source Software* 9 (94).
+<https://doi.org/10.21105/joss.06203>.
+
+Griffin, Larry J. 2017. *Slavery in Wilkes County, North Carolina*.
+American Heritage. The History Press.
+<https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832>.

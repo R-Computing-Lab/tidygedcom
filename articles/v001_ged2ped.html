@@ -79,10 +79,16 @@ is motivated by a desire to understand the historical context of the
 Waugh family tree, as well as to explore the potential for genetic
 genealogy to shed light on questions of ancestry and relatedness. The
 project is also motivated by a desire to contribute to the development
-of tools and methods for working with genealogical data,</p>
-<p>We encourage readers to explore some of the history of the Waugh
-family tree as recounted [<a href="https://thewilkesrecord.com/the-legacy-of-%E2%80%9Cbud%E2%80%9D-mitchell-p2771-149.htm" class="external-link uri">https://thewilkesrecord.com/the-legacy-of-%E2%80%9Cbud%E2%80%9D-mitchell-p2771-149.htm</a>]
-as well as through the (book)[<a href="https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832" class="external-link uri">https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832</a>]</p>
+of tools and methods for working with genealogical data.</p>
+<p>Readers who want the historical context behind this pedigree should
+start with <span class="citation">Griffin (<a href="#ref-griffin2017">2017</a>)</span>, a county-level history of
+slavery in Wilkes County, North Carolina, which is the setting for every
+event described below. For a portrait of one of the family’s
+twentieth-century descendants, see the retrospective of the artist
+Wilton Waugh “Bud” Mitchell (b. 1934) in <em>The Wilkes Record</em>
+<span class="citation">(<a href="#ref-wilkesrecord-mitchell"><em>The
+Legacy of <span>“<span>B</span>ud”</span> <span>M</span>itchell</em>,
+n.d.</a>)</span>.</p>
 <div class="section level2">
 <h2 id="history">History<a class="anchor" aria-label="anchor" href="#history"></a>
 </h2>
@@ -139,13 +145,13 @@ is:</p>
 </tr>
 <tr class="even">
 <td>Father</td>
-<td>Gregory Emil Waugh</td>
-<td>Jun 1958</td>
+<td>REDACTED</td>
+<td>1950s</td>
 </tr>
 <tr class="odd">
 <td>Grandfather</td>
-<td>Warner F Waugh</td>
-<td>abt 1933, NC</td>
+<td>REDACTED</td>
+<td>1930s</td>
 </tr>
 <tr class="even">
 <td>Great-grandfather</td>
@@ -210,7 +216,8 @@ name or birth date rather than by a hardcoded ID.</p>
 <h3 id="analyzing-the-pedigree-with-bgmisc">Analyzing the pedigree with BGmisc<a class="anchor" aria-label="anchor" href="#analyzing-the-pedigree-with-bgmisc"></a>
 </h3>
 <p>Once the data is in a tidy data frame, the <code>BGmisc</code>
-package provides the next layer of analysis: computing pairwise
+package <span class="citation">(<a href="#ref-bgmisc">Garrison et al.
+2024</a>)</span> provides the next layer of analysis: computing pairwise
 relatedness, tracing paternal lineages, and identifying Y-chromosome
 carriers.</p>
 <p>The strategy for the Waugh paternity question is:</p>
@@ -229,6 +236,12 @@ father.</li>
 </ol>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-Computing-Lab/BGmisc/" class="external-link">BGmisc</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'BGmisc'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:tidygedcom':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     buildTreeGrid, getWikiTreeSummary, readGed, readgedcom, readGedcom,</span></span>
+<span><span class="co">#&gt;     readWikifamilytree, royal92, traceTreePaths</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-Computing-Lab/ggpedigree/" class="external-link">ggpedigree</a></span><span class="op">)</span></span>
 <span><span class="va">sample_ged</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"0 HEAD"</span>,</span>
@@ -387,7 +400,13 @@ father.</li>
 <span>    add_phantoms <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    founder_order_seed <span class="op">=</span> <span class="fl">1L</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in buildPlotConfig(default_config = default_config, config = config, :</span></span>
+<span><span class="co">#&gt; The following config values are not recognized by getDefaultPlotConfig():</span></span>
+<span><span class="co">#&gt; segment_lineage_include, segment_lineage_focal_personID,</span></span>
+<span><span class="co">#&gt; segment_lineage_component, segment_lineage_legend_title, founder_order_seed</span></span>
+<span><span class="co">#&gt; REPAIR IN EARLY ALPHA</span></span></code></pre></div>
+<p><img src="v001_ged2ped_files/figure-html/pedigree-plot-1.png" class="r-plt" alt="Pedigree plot of the Waugh family sample showing William Pitt Waugh Sr. at top with two branches: the focal person's Y line through W. Henderson Waugh on the left, and the Segraves Y-DNA candidate branch through William Pitt Waugh Jr. on the right." width="672"></p>
 <p>The plot shows both branches descending from William Pitt Waugh Sr.:
 the green (focal) line through W. Henderson Waugh on the left, and the
 Segraves branch through William Pitt Waugh Jr. on the right. These are
@@ -403,9 +422,10 @@ is:</p>
 <p>This isolates individuals descended from William Pitt Waugh Sr. but
 <strong>not</strong> through W. Henderson Waugh — i.e., the Segraves
 (William Pitt Jr.) branch — who are the primary Y-DNA match candidates.
-<code><a href="https://r-computing-lab.github.io/ggpedigree/reference/ggPedigreeInteractive.html" class="external-link">ggPedigreeInteractive()</a></code> renders the full tree with nodes
-colored by additive genetic relatedness to the focal individual and
-edges highlighted by patriline membership.</p>
+<code><a href="https://r-computing-lab.github.io/ggpedigree/reference/ggPedigreeInteractive.html" class="external-link">ggPedigreeInteractive()</a></code> from <code>ggpedigree</code> <span class="citation">(<a href="#ref-ggpedigree">Garrison 2026</a>)</span>
+renders the full tree with nodes colored by additive genetic relatedness
+to the focal individual and edges highlighted by patriline
+membership.</p>
 </div>
 <div class="section level3">
 <h3 id="cleaning-up">Cleaning up<a class="anchor" aria-label="anchor" href="#cleaning-up"></a>
@@ -448,15 +468,52 @@ edges highlighted by patriline membership.</p>
 degrees</td>
 </tr>
 <tr class="even">
-<td><code>gedcomLatToNumeric(x)</code></td>
+<td><code>gedcomLat2Numeric(x)</code></td>
 <td>Convert a latitude string vector</td>
 </tr>
 <tr class="odd">
-<td><code>gedcomLonToNumeric(x)</code></td>
+<td><code>gedcomLon2Numeric(x)</code></td>
 <td>Convert a longitude string vector</td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section level3">
+<h3 id="a-note-on-primary-sources">A note on primary sources<a class="anchor" aria-label="anchor" href="#a-note-on-primary-sources"></a>
+</h3>
+<p>The primary records referred to above – the <em>Alexandria
+Gazette</em> runaway notice of 21 March 1820, the Wilkes County will and
+estate papers of William Pitt Waugh (probated 22 July 1852), Tennessee
+death records, and United States federal census returns for 1830 through
+1930 – are carried as <code>SOUR</code> citations inside the GEDCOM file
+itself rather than restated here.</p>
+</div>
+<div class="section level3">
+<h3 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-ggpedigree" class="csl-entry">
+Garrison, S. Mason. 2026. <span>“<span class="nocase">ggpedigree</span>:
+Visualizing Pedigrees with ’<span class="nocase">ggplot2</span>’ and
+’<span class="nocase">plotly</span>’.”</span> <em>Journal of Open Source
+Software</em> 11 (9434). <a href="https://doi.org/10.21105/joss.09434" class="external-link">https://doi.org/10.21105/joss.09434</a>.
+</div>
+<div id="ref-bgmisc" class="csl-entry">
+Garrison, S. Mason, Michael D. Hunter, Xuanyu Lyu, Jonathan D. Trattner,
+and S. Alexandra Burt. 2024. <span>“<span>BGmisc</span>: An
+<span>R</span> Package for Extended Behavior Genetics Analysis.”</span>
+<em>Journal of Open Source Software</em> 9 (94). <a href="https://doi.org/10.21105/joss.06203" class="external-link">https://doi.org/10.21105/joss.06203</a>.
+</div>
+<div id="ref-griffin2017" class="csl-entry">
+Griffin, Larry J. 2017. <em>Slavery in <span>W</span>ilkes
+<span>C</span>ounty, <span>N</span>orth <span>C</span>arolina</em>.
+American Heritage. The History Press. <a href="https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832" class="external-link">https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832</a>.
+</div>
+<div id="ref-wilkesrecord-mitchell" class="csl-entry">
+<em>The Legacy of <span>“<span>B</span>ud”</span>
+<span>M</span>itchell</em>. n.d. <em>The Wilkes Record</em>. <a href="https://thewilkesrecord.com/the-legacy-of-%E2%80%9Cbud%E2%80%9D-mitchell-p2771-149.htm" class="external-link">https://thewilkesrecord.com/the-legacy-of-%E2%80%9Cbud%E2%80%9D-mitchell-p2771-149.htm</a>.
+</div>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

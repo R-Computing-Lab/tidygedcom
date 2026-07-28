@@ -188,11 +188,10 @@ package deliberately contain only individuals who died before 1965.</p>
 Henderson Waugh Family Tree. We’ll discuss more about our running
 example in another vignette. (But briefly, the Waugh family tree is a
 genetic genealogy collaboration between two Wake Forest psychology
-faculty – SMG and CEW. See <a href="https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832" class="external-link uri">https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832</a>
-for more on the historical context of the Waugh family tree.) The
-tidygedcom package provides the tools for parsing and tidying GEDCOM
-files, and the Waugh family tree provides a real-world test case for
-these tools.</p>
+faculty – SMG and CEW. See <span class="citation">Griffin (<a href="#ref-griffin2017">2017</a>)</span> for more on the historical
+context of the Waugh family tree.) The tidygedcom package provides the
+tools for parsing and tidying GEDCOM files, and the Waugh family tree
+provides a real-world test case for these tools.</p>
 <p>We construct a small GEDCOM in memory that captures the key
 relationships described above.</p>
 <p>This allows all code examples below to run without an external
@@ -553,7 +552,8 @@ in one call:</p>
 <h2 id="from-gedcom-to-pedigree-analysis">From GEDCOM to pedigree analysis<a class="anchor" aria-label="anchor" href="#from-gedcom-to-pedigree-analysis"></a>
 </h2>
 <p>Once the data is in a tidy data frame, the <code>BGmisc</code>
-package provides the next layer of analysis: computing pairwise
+package <span class="citation">(<a href="#ref-bgmisc">Garrison et al.
+2024</a>)</span> provides the next layer of analysis: computing pairwise
 relatedness, tracing paternal lineages, and identifying Y-chromosome
 carriers.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
@@ -663,6 +663,19 @@ degrees</td>
 </tr>
 </tbody>
 </table>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-bgmisc" class="csl-entry">
+Garrison, S. Mason, Michael D. Hunter, Xuanyu Lyu, Jonathan D. Trattner,
+and S. Alexandra Burt. 2024. <span>“<span>BGmisc</span>: An
+<span>R</span> Package for Extended Behavior Genetics Analysis.”</span>
+<em>Journal of Open Source Software</em> 9 (94). <a href="https://doi.org/10.21105/joss.06203" class="external-link">https://doi.org/10.21105/joss.06203</a>.
+</div>
+<div id="ref-griffin2017" class="csl-entry">
+Griffin, Larry J. 2017. <em>Slavery in <span>W</span>ilkes
+<span>C</span>ounty, <span>N</span>orth <span>C</span>arolina</em>.
+American Heritage. The History Press. <a href="https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832" class="external-link">https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832</a>.
+</div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

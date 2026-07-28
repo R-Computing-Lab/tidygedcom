@@ -13,13 +13,15 @@ is motivated by a desire to understand the historical context of the
 Waugh family tree, as well as to explore the potential for genetic
 genealogy to shed light on questions of ancestry and relatedness. The
 project is also motivated by a desire to contribute to the development
-of tools and methods for working with genealogical data,
+of tools and methods for working with genealogical data.
 
-We encourage readers to explore some of the history of the Waugh family
-tree as recounted
-\[<https://thewilkesrecord.com/the-legacy-of-%E2%80%9Cbud%E2%80%9D-mitchell-p2771-149.htm>\]
-as well as through the
-(book)\[<https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832>\]
+Readers who want the historical context behind this pedigree should
+start with Griffin ([2017](#ref-griffin2017)), a county-level history of
+slavery in Wilkes County, North Carolina, which is the setting for every
+event described below. For a portrait of one of the family’s
+twentieth-century descendants, see the retrospective of the artist
+Wilton Waugh “Bud” Mitchell (b. 1934) in *The Wilkes Record* ([*The
+Legacy of “Bud” Mitchell*, n.d.](#ref-wilkesrecord-mitchell)).
 
 ## History
 
@@ -57,8 +59,8 @@ The paternal chain from the focal individual back through history is:
 | Generation | Individual | Birth |
 |----|----|----|
 | Self | Christian Emil WAUGH | 29 Apr 1978, Monterey County CA |
-| Father | Gregory Emil Waugh | Jun 1958 |
-| Grandfather | Warner F Waugh | abt 1933, NC |
+| Father | REDACTED | 1950s |
+| Grandfather | REDACTED | 1930s |
 | Great-grandfather | John William “Bud” Waugh | abt Jun 1880, NC |
 | 2nd great-grandfather | **W. Henderson Waugh** | abt 1835, NC |
 | 3rd great-grandfather | **William Pitt Waugh Sr.** | 28 Apr 1775, Adams County PA |
@@ -111,9 +113,10 @@ or birth date rather than by a hardcoded ID.
 
 ### Analyzing the pedigree with BGmisc
 
-Once the data is in a tidy data frame, the `BGmisc` package provides the
-next layer of analysis: computing pairwise relatedness, tracing paternal
-lineages, and identifying Y-chromosome carriers.
+Once the data is in a tidy data frame, the `BGmisc` package ([Garrison
+et al. 2024](#ref-bgmisc)) provides the next layer of analysis:
+computing pairwise relatedness, tracing paternal lineages, and
+identifying Y-chromosome carriers.
 
 The strategy for the Waugh paternity question is:
 
@@ -132,6 +135,12 @@ The strategy for the Waugh paternity question is:
 ``` r
 
 library(BGmisc)
+#> 
+#> Attaching package: 'BGmisc'
+#> The following objects are masked from 'package:tidygedcom':
+#> 
+#>     buildTreeGrid, getWikiTreeSummary, readGed, readgedcom, readGedcom,
+#>     readWikifamilytree, royal92, traceTreePaths
 library(ggpedigree)
 sample_ged <- c(
   "0 HEAD",
@@ -294,7 +303,18 @@ ggpedigree(
     founder_order_seed = 1L
   )
 )
+#> Warning in buildPlotConfig(default_config = default_config, config = config, :
+#> The following config values are not recognized by getDefaultPlotConfig():
+#> segment_lineage_include, segment_lineage_focal_personID,
+#> segment_lineage_component, segment_lineage_legend_title, founder_order_seed
+#> REPAIR IN EARLY ALPHA
 ```
+
+![Pedigree plot of the Waugh family sample showing William Pitt Waugh
+Sr. at top with two branches: the focal person's Y line through W.
+Henderson Waugh on the left, and the Segraves Y-DNA candidate branch
+through William Pitt Waugh Jr. on the
+right.](v001_ged2ped_files/figure-html/pedigree-plot-1.png)
 
 The plot shows both branches descending from William Pitt Waugh Sr.: the
 green (focal) line through W. Henderson Waugh on the left, and the
@@ -316,8 +336,9 @@ This isolates individuals descended from William Pitt Waugh Sr. but
 **not** through W. Henderson Waugh — i.e., the Segraves (William Pitt
 Jr.) branch — who are the primary Y-DNA match candidates.
 [`ggPedigreeInteractive()`](https://r-computing-lab.github.io/ggpedigree/reference/ggPedigreeInteractive.html)
-renders the full tree with nodes colored by additive genetic relatedness
-to the focal individual and edges highlighted by patriline membership.
+from `ggpedigree` ([Garrison 2026](#ref-ggpedigree)) renders the full
+tree with nodes colored by additive genetic relatedness to the focal
+individual and edges highlighted by patriline membership.
 
 ### Cleaning up
 
@@ -335,5 +356,32 @@ to the focal individual and edges highlighted by patriline membership.
 | `summarizeGedcom(df)` | Coverage counts and percentages |
 | `extractGedcomYear(x)` | Year from any GEDCOM date string |
 | `convertGedcomCoords(df)` | Convert `_lat`/`_long` columns to decimal degrees |
-| `gedcomLatToNumeric(x)` | Convert a latitude string vector |
-| `gedcomLonToNumeric(x)` | Convert a longitude string vector |
+| `gedcomLat2Numeric(x)` | Convert a latitude string vector |
+| `gedcomLon2Numeric(x)` | Convert a longitude string vector |
+
+### A note on primary sources
+
+The primary records referred to above – the *Alexandria Gazette* runaway
+notice of 21 March 1820, the Wilkes County will and estate papers of
+William Pitt Waugh (probated 22 July 1852), Tennessee death records, and
+United States federal census returns for 1830 through 1930 – are carried
+as `SOUR` citations inside the GEDCOM file itself rather than restated
+here.
+
+### References
+
+Garrison, S. Mason. 2026. “ggpedigree: Visualizing Pedigrees with
+’ggplot2’ and ’plotly’.” *Journal of Open Source Software* 11 (9434).
+<https://doi.org/10.21105/joss.09434>.
+
+Garrison, S. Mason, Michael D. Hunter, Xuanyu Lyu, Jonathan D. Trattner,
+and S. Alexandra Burt. 2024. “BGmisc: An R Package for Extended Behavior
+Genetics Analysis.” *Journal of Open Source Software* 9 (94).
+<https://doi.org/10.21105/joss.06203>.
+
+Griffin, Larry J. 2017. *Slavery in Wilkes County, North Carolina*.
+American Heritage. The History Press.
+<https://www.arcadiapublishing.com/products/slavery-in-wilkes-county-north-carolina-9781467135832>.
+
+*The Legacy of “Bud” Mitchell*. n.d. *The Wilkes Record*.
+<https://thewilkesrecord.com/the-legacy-of-%E2%80%9Cbud%E2%80%9D-mitchell-p2771-149.htm>.
