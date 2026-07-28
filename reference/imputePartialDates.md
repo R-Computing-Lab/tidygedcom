@@ -17,7 +17,7 @@ Callers should strip calendar escapes and qualifiers (\`ABT\`, \`BEF\`,
 ## Usage
 
 ``` r
-imputePartialDates(x)
+imputePartialDates(x, default_day = "15", default_month = "JUN")
 ```
 
 ## Arguments
@@ -25,6 +25,12 @@ imputePartialDates(x)
 - x:
 
   Character vector of GEDCOM date strings.
+
+- default_day:
+
+  Character string of the day to impute for month-precision dates
+  (default \`"15"\`). @param default_month Character string of the month
+  to impute for year-precision
 
 ## Value
 
@@ -35,5 +41,5 @@ entries expanded to a full \`"
 
 ``` r
 tidygedcom:::imputePartialDates(c("Oct 1814", "1844", "28 Apr 1775", NA))
-#> [1] "15 Oct 1814" "15 Jun 1844" "28 Apr 1775" NA           
+#> [1] "15 Oct 1814" "15 JUN 1844" "28 Apr 1775" NA           
 ```
