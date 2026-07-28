@@ -461,11 +461,11 @@ ggpedigree(
     add_phantoms = TRUE
   )
 )
-
-## Cleaning up
 ```
 
 Please see the vignettes from the `ggpedigree` package for more on customizing pedigree diagrams with `ggpedigree()`.
+
+## Cleaning up
 
 ```{r cleanup}
 unlink(tmp_ged)

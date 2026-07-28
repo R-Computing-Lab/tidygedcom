@@ -94,6 +94,8 @@ The strategy for the Waugh paternity question is:
 3. Among those, find living males: they carry the same Y chromosome as William Pitt Waugh Sr. and are potential DNA match candidates.
 4. A Y-chromosome match between a living Segraves-line male and the focal individual (or his close Y-line relatives) would strongly confirm that W. Henderson Waugh and William Pitt Waugh Jr. share the same father.
 
+Alas, that analysis is beyond the scope of this vignette, but the following code demonstrates how to structure the pedigree and flag Y-line membership.
+
 ```{r bgmisc-workflow, eval = requireNamespace("BGmisc", quietly = TRUE) && requireNamespace("ggpedigree", quietly = TRUE)}
 library(BGmisc)
 library(ggpedigree)
@@ -273,8 +275,8 @@ This isolates individuals descended from William Pitt Waugh Sr. but **not** thro
 
 ## Cleaning up
 
-```{r cleanup, eval = FALSE}
-#unlink(tmp_ged)
+```{r cleanup}
+unlink(tmp_ged)
 ```
 
 

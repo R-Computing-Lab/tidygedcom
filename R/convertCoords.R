@@ -1,7 +1,7 @@
 #' Convert GEDCOM Latitude String to Numeric
 #'
 #' Converts GEDCOM-style latitude strings like `"N51.5074"` or `"S33.8688"` to
-#' signed decimal degrees. Returns `NA` for `NA` or unrecognised-prefix input.
+#' signed decimal degrees. Returns `NA` for `NA` or unrecognized-prefix input.
 #'
 #' @param x Character vector of GEDCOM latitude values.
 #' @return Numeric vector of decimal degrees (positive = N, negative = S).

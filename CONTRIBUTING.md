@@ -1,6 +1,7 @@
-# Contributing Guidelines for BGmisc
+# Contributing Guidelines for tidygedcom
 
-Thank you for considering contributing to BGmisc. This document outlines the process and best practices for contributing to this R package hosted on GitHub under the R Computing Lab.
+Thank you for considering contributing to tidygedcom. This document outlines the process and best practices for contributing to this R package hosted on GitHub under the R Computing Lab.
+
 ## Table of Contents
 
 1. [Code of Conduct](#code-of-conduct)
@@ -15,11 +16,11 @@ Thank you for considering contributing to BGmisc. This document outlines the pro
 
 ## Code of Conduct
 
-All contributors are expected to adhere to the project's [Code of Conduct](https://github.com/R-Computing-Lab/BGmisc/blob/main/CODE_OF_CONDUCT.md). Please read it carefully before contributing.
+All contributors are expected to adhere to the project's [Code of Conduct](https://github.com/R-Computing-Lab/tidygedcom/blob/main/CODE_OF_CONDUCT.md). Please read it carefully before contributing.
 
 ## Getting Started
 
-1. Fork the [BGmisc repository](https://github.com/R-Computing-Lab/BGmisc) to your GitHub account.
+1. Fork the [tidygedcom repository](https://github.com/R-Computing-Lab/tidygedcom) to your GitHub account.
 2. Clone the forked repository to your local machine.
 3. Install the required packages and set up the development environment.
 
@@ -67,7 +68,8 @@ Follow the [Tidyverse Style Guide](https://style.tidyverse.org/) for R programmi
 
 - Use GitHub issues for all communication.
 - For more direct communication, you can [contact the maintainers](mailto:garrissm@wfu.edu).
+- You can also join the [R Computing Lab](https://github.com/R-Computing-Lab) community on GitHub to connect with other contributors.
 
-By contributing, you agree to abide by these guidelines and the project's [Code of Conduct](https://github.com/R-Computing-Lab/BGmisc/blob/main/CODE_OF_CONDUCT.md).
+By contributing, you agree to abide by these guidelines and the project's [Code of Conduct](https://github.com/R-Computing-Lab/tidygedcom/blob/main/CODE_OF_CONDUCT.md).
 
-Thank you for contributing to BGmisc!
+Thank you for contributing to tidygedcom!

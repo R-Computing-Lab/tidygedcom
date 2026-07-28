@@ -1,4 +1,4 @@
-#' Summarise a Parsed GEDCOM Data Frame
+#' Summarize a Parsed GEDCOM Data Frame
 #'
 #' Returns key counts and coverage statistics for a data frame produced by
 #' \code{readGedcom()}.

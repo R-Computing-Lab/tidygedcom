@@ -4,20 +4,17 @@
 
 ### Date handling
 
-* `readGedcom(parse_dates = TRUE)` now retains dates that are precise only to the month or the year. Previously these became `NA`, which discarded most of the dates in a typical historical pedigree. Partial dates are completed with the midpoint of the known interval (the 15th of a known month, 15 June for a known year); set the new `impute_partial_dates = FALSE` to restore the stricter behaviour and keep only dates that specify a day.
+* `readGedcom(parse_dates = TRUE)` now retains dates that are precise only to the month or the year. Previously these became `NA`, which discarded most of the dates in a typical historical pedigree. Partial dates are completed with the midpoint of the known interval (the 15th of a known month, 15 June for a known year); set the new `impute_partial_dates = FALSE` to restore the stricter behavior and keep only dates that specify a day.
 * Date qualifiers written with a trailing period (`Abt.`, `Aft.`), as Ancestry.com exports them, are now stripped. Previously only the specification's unpunctuated forms (`ABT`, `AFT`) were recognized, so `"Aft. Oct 1896"` failed to parse.
-* Extracted `stripDateQualifiers()` and `imputePartialDates()` as documented internal helpers.
 
 ### Bug fixes
 
 * `readGedcom()` no longer leaves a stray `/` in the `name` column when a name suffix follows the surname (e.g. `1 NAME William Pitt /Waugh/ Jr` parsed as `William Pitt Waugh/ Jr`). Both surname delimiters are now removed.
 * `readGedcom()` no longer errors with "missing value where TRUE/FALSE needed" when a spouse record has no `SEX` line. Individuals with unknown sex are skipped during parent mapping rather than compared.
 
-### Documentation
+### Documentation and examples
 
 * The "Getting Started" vignette now walks through exporting a GEDCOM file from a genealogy service, including the instability of person IDs across exports and a note on the privacy implications of sharing an export containing living people.
-
-### Example data
 
 * Added two example GEDCOM files, installed under `inst/extdata`, drawn from the W. Henderson Waugh Family Tree and covering eight individuals (all deceased) across four families:
   * `waugh.ged` — a clean excerpt for documentation examples.
@@ -34,9 +31,9 @@
 
 ### Earlier development changes
 
-* Optimized gedcom reader for speed and memory usage, with a focus on large pedigrees.
-* Fixed bug in gedcom reader that resulted in document records being added to the final person in the pedigree.
-* Added more unit tests for gedcom reader and data parser.
+* Optimized GEDCOM reader for speed and memory usage, with a focus on large pedigrees.
+* Fixed bug in GEDCOM reader that resulted in document records being added to the final person in the pedigree.
+* Added more unit tests for GEDCOM reader and data parser.
 * Several improvements to GEDCOM parsing, focusing on more robust and flexible event parsing, better support for different GEDCOM versions, and enhanced usability.
 
 

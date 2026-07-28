@@ -118,7 +118,7 @@ stripDateQualifiers <- function(x) {
 #'
 #' This helper fills in the missing components with the midpoint of the known
 #' interval -- the 15th for a known month, and 15 June for a known year only --
-#' which minimises the expected error of the imputed value. Values that already
+#' which minimizes the expected error of the imputed value. Values that already
 #' carry a day, and values that match neither pattern, are returned unchanged.
 #'
 #' Callers should strip calendar escapes and qualifiers (`ABT`, `BEF`, `AFT`)

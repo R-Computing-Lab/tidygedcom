@@ -6,8 +6,8 @@
 #' manually repairing links in GEDCOM-derived pedigrees. The result is a subset
 #' of `ped` with the same columns..
 #'
-#' Incoming column names are normalised with BGmisc's internal column
-#' standardiser, so the common variants (`ID`/`personID`, `dadID`/`pid_fath`,
+#' Incoming column names are normalized with BGmisc's internal column
+#' standardizer, so the common variants (`ID`/`personID`, `dadID`/`pid_fath`,
 #' `momID`/`pid_moth`, `spID`/`pid_spouse1`, ...) are all recognized without the
 #' caller naming them. Because BGmisc's canonical schema is single-spouse but
 #' GEDCOM-derived pedigrees often record remarriages in extra columns, any
@@ -37,7 +37,7 @@ sliceByID <- function(ped, ID, sort = TRUE) {
   std <- BGmisc:::standardizeColnames(ped)
 
   # BGmisc canonical linking slots, plus any extra spouse-like columns the
-  # single-spouse standardiser leaves untouched (e.g. spID2, pid_spouse3).
+  # single-spouse standardizer leaves untouched (e.g. spID2, pid_spouse3).
   canonical <- c("ID", "momID", "dadID", "matID", "patID", "spID")
   extra_spouse <- grep("^sp(id)?[0-9]+$|spouse", names(std),
     ignore.case = TRUE, value = TRUE

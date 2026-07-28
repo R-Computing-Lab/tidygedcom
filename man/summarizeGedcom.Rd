@@ -2,7 +2,7 @@
 % Please edit documentation in R/summarizeGedcom.R
 \name{summarizeGedcom}
 \alias{summarizeGedcom}
-\title{Summarise a Parsed GEDCOM Data Frame}
+\title{Summarize a Parsed GEDCOM Data Frame}
 \usage{
 summarizeGedcom(df)
 }
