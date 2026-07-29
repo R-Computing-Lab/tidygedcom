@@ -160,6 +160,7 @@ royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
       personID == 1297 ~ 624,
       personID == 1282 ~ 1884,
       personID == 1988 ~ 2579, # judith of flanders
+      personID == 2657 ~  200,
       TRUE ~ momID
     ),
     dadID = case_when(
@@ -167,6 +168,7 @@ royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
       personID == 1868 ~ 2300, # William IX of Aquitaine is the father of William X of Aquitaine
       personID == 1988 ~ 1970,
       personID == 2538 ~ 1051,
+      personID == 2657 ~ 199,
       TRUE ~ dadID
     ),
         sex = case_when(
@@ -2904,7 +2906,7 @@ name_overrides <- tribble(
   2654, "Alexandrine of Prussia",
   2655, "Frederick of Orange-Nassau",
   2656, "Amalia of Saxe-Weimar-Eisenach",
-  2657, "Marie of Prussia",
+  2657, "Marie Hohenzollern of Prussia",
   2660, "Feodor Nikitich Romanov",
   2661, "Xenia Shestova",
   2665, "Nicholas Nikolaevich Romanov",
