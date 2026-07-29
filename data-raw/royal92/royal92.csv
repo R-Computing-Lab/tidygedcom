@@ -622,7 +622,7 @@ personID,momID,dadID,famID,twinID,name,sex,birth_date,death_date,title
 621,619,620,1,NA,Karl Friedrich of Baden,M,1728-11-22,1811-06-10,Grand Duke of Baden
 622,NA,NA,1,NA,Unknown,F,NA,NA,NA
 623,622,621,1,NA,Karl Ludwig of Baden,M,1755-02-14,1801-12-16,Hereditary Prince of Baden
-624,NA,NA,1,NA,Unknown,F,NA,NA,NA
+624,NA,NA,1,NA,Amalie of Hesse-Darmstadt,F,1754-06-20,1832-06-21,NA
 625,624,623,1,NA,Karl of Baden,M,1786-07-08,1818-12-08,Grand Duke of Baden
 626,624,623,1,NA,Caroline of Baden,F,1776-07-13,1841-11-13,NA
 627,NA,NA,1,NA,Unknown,F,NA,NA,NA
@@ -988,7 +988,7 @@ personID,momID,dadID,famID,twinID,name,sex,birth_date,death_date,title
 987,NA,1342,1,NA,Richard Neville,M,1428-11-22,1471-04-14,Earl of Warwick
 988,1024,1023,1,NA,Richard Plantagenet,M,1411-09-21,1460-12-30,Duke of York
 989,1331,990,1,NA,Cicely Neville,F,1415-05-03,1495-05-31,Lady
-990,NA,NA,1,NA,Ralph of Westmoreland 1st,M,1364-06-15,1425-10-21,Earl
+990,NA,NA,1,NA,Ralph Neville,M,1364-06-15,1425-10-21,Earl of Westmoreland
 991,989,988,1,NA,Edward IV,M,1442-04-28,1483-04-09,King of England
 992,989,988,1,NA,Edmund,M,1443-05-17,1460-12-30,Earl of Rutland
 993,989,988,1,NA,George,M,1449-10-21,1478-02-18,Duke of Clarence
@@ -1295,7 +1295,7 @@ personID,momID,dadID,famID,twinID,name,sex,birth_date,death_date,title
 1294,1299,1300,1,NA,Paul I Romanov,M,1754-10-01,1801-03-24,Emperor
 1295,2690,2689,1,NA,Maria Feodorovna of Wurttemberg,F,1759-10-25,1828-11-05,NA
 1296,1295,1294,1,NA,Alexander I Romanov,M,1777-12-23,1825-12-01,Tsar of Russia
-1297,NA,NA,1,NA,Elizabeth Alexeievna (Louise of Baden),F,1779-01-24,1826-05-16,NA
+1297,624,623,1,NA,Elizabeth Alexeievna (Louise of Baden),F,1779-01-24,1826-05-16,NA
 1298,1295,1294,1,NA,Konstantin Pavlovich Romanov,M,1779-05-08,1831-06-27,NA
 1299,2692,2691,1,NA,Catherine II the Great,F,1729-05-02,1796-11-17,Empress
 1300,1303,1419,1,NA,Peter III Romanov,M,1728-02-21,1762-07-17,Emperor Russia

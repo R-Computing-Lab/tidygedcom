@@ -65,7 +65,7 @@ new_colors <- c(
 color_replacements <- setNames(new_colors, old_colors)
 # Use str_replace_all to replace all occurrences of the old color
 modified_svg_string <- str_replace_all(svg_string, color_replacements)
-writeLines(modified_svg_string, "data-raw/recoloredcat.svg")
+writeLines(modified_svg_string, "data-raw/hex/recoloredcat.svg")
 
 rsvg::rsvg_png("data-raw/hex/recoloredcat.svg",
   "data-raw/hex/recoloredcat.png",

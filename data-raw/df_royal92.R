@@ -157,14 +157,16 @@ royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
       TRUE ~ NA_real_
     ),
     momID = case_when(
+      personID == 1297 ~ 624,
       personID == 1282 ~ 1884,
       personID == 1988 ~ 2579, # judith of flanders
       TRUE ~ momID
     ),
     dadID = case_when(
-      personID == 2538 ~ 1051,
+      personID == 1297 ~ 623,
       personID == 1868 ~ 2300, # William IX of Aquitaine is the father of William X of Aquitaine
-       personID == 1988 ~ 1970,
+      personID == 1988 ~ 1970,
+      personID == 2538 ~ 1051,
       TRUE ~ dadID
     ),
         sex = case_when(
@@ -182,6 +184,7 @@ royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
         2993
       ) ~ "M",
       personID %in% c(
+        624,
         932,
         1149,
         2992
@@ -612,6 +615,7 @@ date_overrides <- tribble(
   620, "7 OCT 1703", "26 MAR 1732", # Frederick, Hereditary Prince of Baden-Durlach
   621, "22 NOV 1728", "10 JUN 1811", # Charles Frederick, Grand Duke of Baden
   623, "14 FEB 1755", "16 DEC 1801", # Charles Louis, Hereditary Prince of Baden
+  624, "20 JUN 1754", "21 JUN 1832", # Amalie of Hesse-Darmstadt
   625, "8 JUL 1786", "8 DEC 1818", # Charles, Grand Duke of Baden
   628, "11 OCT 1817", "17 OCT 1888", # Marie Amelie of Baden
   629, "19 FEB 1811", "15 JUL 1863", # William Hamilton, 11th Duke of Hamilton
@@ -2275,7 +2279,6 @@ date_overrides <- tribble(
 # 2688: likely duplicate/identity match to Peter I of Serbia at personID == 2530.
 
 # 2689, 2690: likely duplicate/identity matches to the Württemberg/Brandenburg-Schwedt parents already represented at personID == 1067 and 1068.
-# 2839 is listed as Mary, but the row clearly matches Marie Bonaparte through the father Roland Bonaparte and the marriage to Prince George of Greece.
 
 
 # 2964, 2965, and 2967 resolve the Greek/Yugoslav branch: Olga of Greece and Denmark, Prince Paul of Yugoslavia, and Elizabeth of Greece and Denmark.
@@ -2448,6 +2451,7 @@ name_overrides <- tribble(
   616, "John William Friso",
   617, "Marie Louise of Hesse-Kassel",
   619, "Anna Charlotte Amalia of Nassau-Dietz",
+  624, "Amalie of Hesse-Darmstadt",
   628, "Marie Amelie of Baden",
   630, "Mary Victoria Hamilton",
   638, "Sophie of Bavaria",
@@ -2498,6 +2502,7 @@ name_overrides <- tribble(
   932, "Michaela of Prussia",
   985, "Anne Neville",
   989, "Cicely Neville",
+  990, "Ralph Neville",
   1137, "Augusta Wilhelmine of Hesse-Darmstadt",
   1176, "Sophia Louise of Mecklenburg-Schwerin",
   1197, "Karl Theodor (Gackl)",
@@ -3220,6 +3225,7 @@ royal92_cleaned <- royal92 %>%
       personID %in%
         c(914) ~ "Grand Duchess of Russia",
       personID == 932 ~ "Princess of Prussia",
+      personID == 990 ~ "Earl of Westmoreland",
       personID %in%
         c(1051, 1125) ~ "Duke of Anjou",
       personID == 1250 ~ "Earl of Bothwell",
@@ -3501,7 +3507,7 @@ royal92 %>%
     first_name = str_extract(name, "^[^ ]+"),
     last_name = str_extract(name, "[^ ]+$"),
   ) %>%
-  arrange(last_name, personID)
+  arrange(desc(famID),last_name, personID)
 
 
 royal92 %>%
@@ -3511,7 +3517,7 @@ royal92 %>%
     first_name = str_extract(name, "^[^ ]+"),
     last_name = str_extract(name, "[^ ]+$"),
   ) %>%
-  arrange(last_name, personID)
+  arrange(desc(famID),last_name, personID)
 
 
-# todo, continue linking judith of flanders to the wessex line
+
