@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   v000_getting-started: v000_getting-started.html
   v001_ged2ped: v001_ged2ped.html
-last_built: 2026-07-29T13:52Z
+last_built: 2026-07-29T21:21Z
 urls:
   reference: https://r-computing-lab.github.io/tidygedcom/reference
   article: https://r-computing-lab.github.io/tidygedcom/articles
