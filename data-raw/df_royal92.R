@@ -122,8 +122,16 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = NA_integer_,
     overwrite = TRUE
   ) %>%
-    addPersonToPed(
+  addPersonToPed(
     personID = 1975, # duplicated Æthelstan
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  ) %>%
+  addPersonToPed(
+    personID = 2070, # duplicated Edmund Stafford
     name = "TODO",
     sex = "U",
     momID = NA,
@@ -153,9 +161,33 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = NA_integer_,
     dadID = NA_integer_,
     overwrite = TRUE
+  )  %>%
+  addPersonToPed(
+    personID = 2344, # duplicated Anne of York
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
   ) %>%
   addPersonToPed(
     personID = 2545, # duplicated Anne of Brittany
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  ) %>%
+  addPersonToPed(
+    personID = 2689, # duplicated Frederick Eugene of Württemberg
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  ) %>%
+    addPersonToPed(
+    personID = 2690, # duplicated Frederica
     name = "TODO",
     sex = "U",
     momID = NA,
@@ -193,6 +225,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
       TRUE ~ NA_real_
     ),
     momID = case_when(
+      personID == 1295 ~ 1068, #merging duplicated Frederica
       personID == 1297 ~ 624,
       personID == 1282 ~ 1884,
       personID == 1988 ~ 2579, # judith of flanders
@@ -200,6 +233,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
       TRUE ~ momID
     ),
     dadID = case_when(
+      personID == 1295 ~ 1067, #merging duplicate Frederick Eugene Wurttemberg
       personID == 1297 ~ 623,
       personID == 1596 ~ 2518, # merging Philip the Bolds
       personID == 1868 ~ 2300, # William IX of Aquitaine is the father of William X of Aquitaine
@@ -1586,7 +1620,7 @@ date_overrides <- tribble(
   2067, "24 AUG 1358", "9 OCT 1390", # John I of Castile
   2068, "13 JAN 1334", "29 MAY 1379", # Henry II of Castile
   2069, "25 MAR 1342", "16 JAN 1373", # Humphrey de Bohun, Earl of Hereford; date source sometimes gives 1341/1342
-  2070, "2 MAR 1378", "21 JUL 1403", # Edmund Stafford, Earl of Stafford
+  2070, NA, NA, # Edmund Stafford, Earl of Stafford
   2071, "15 AUG 1402", "10 JUL 1460", # Humphrey Stafford, Duke of Buckingham
   2074, "1370", "24 SEP 1435", # Isabeau/Isabelle of Bavaria
   2079, "1409", "1449", # Margaret Beaufort, Countess of Devon
@@ -1814,7 +1848,7 @@ date_overrides <- tribble(
   2341, "1443", "21 MAY 1524", # Thomas Howard, 2nd Duke of Norfolk
   2342, "1445", "4 APR 1497", # Elizabeth Tilney
   2343, "1473", "25 AUG 1554", # Thomas Howard, 3rd Duke of Norfolk
-  2344, "2 NOV 1475", "23 NOV 1511", # Anne of York
+  2344, NA, NA, # Anne of York duplicate
   2345, "1497", "30 NOV 1558", # Elizabeth Stafford / Duchess of Norfolk
   2347, "1477", "15 MAY 1545", # Agnes Tilney and mid-month death date
   2348, "1510", "12 JAN 1573", # William Howard, 1st Baron Howard of Effingham
@@ -2098,8 +2132,8 @@ date_overrides <- tribble(
   2686, "10 JUN 1894", "18 JUL 1918", # Igor Konstantinovich Romanov, Gregorian/New Style; Old Style birth = 29 MAY 1894
   2687, "4 NOV 1884", "16 OCT 1962", # Helen of Serbia / Jelena Petrovic-Njegos
   2688, "11 JUL 1844", "16 AUG 1921", # Peter I of Serbia; duplicate/identity match to personID 2530 likely
-  2689, "21 JAN 1732", "23 DEC 1797", # Frederick Eugene of Württemberg; duplicate/identity match to personID 1067 likely
-  2690, "18 DEC 1736", "9 MAR 1798", # Friederike Dorothea Sophia of Brandenburg-Schwedt; duplicate/identity match to personID 1068 likely
+  2689, NA_character_, NA_character_, #  duplicate/identity match to personID 1067 likely
+  2690, NA_character_, NA_character_, # Friederike Dorothea Sophia of Brandenburg-Schwedt; duplicate/identity match to personID 1068 likely
   2691, "29 NOV 1690", "16 MAR 1747", # Christian August of Anhalt-Zerbst
   2692, "24 OCT 1712", "30 MAY 1760", # Johanna Elisabeth of Holstein-Gottorp
   2693, "3 DEC 1908", "15 OCT 1980", # Peter of Greece and Denmark
@@ -2284,18 +2318,12 @@ date_overrides <- tribble(
 # 1847: likely Isabel de Warenne based on the Balliol/Warenne placement, but the row’s given name alone is underspecified. I included the date data and flagged the inference.
 
 
-# 1975: likely duplicates or variant-matches 1968 Æthelstan of Kent. I included the date data and flagged it.
-
-
 # 2065 likely duplicates the Catherine Swynford branch already represented elsewhere.
-
 
 # 2158 likely duplicates George Mountbatten already represented at personID == 102.
 
 # 2215 has a current death-year pattern that may not match the most likely identification as Murchad mac Diarmata; I included the date data and flagged the identity concern.
 
-
-# 2279 likely duplicates Edmund Stafford already represented at personID == 2070.
 
 # 2288 likely duplicates John Hastings already represented at personID == 1417.
 
@@ -2315,9 +2343,6 @@ date_overrides <- tribble(
 # 2624, 2682: likely duplicate/identity matches to Frederick Francis II of Mecklenburg-Schwerin at personID == 1213.
 
 # 2688: likely duplicate/identity match to Peter I of Serbia at personID == 2530.
-
-# 2689, 2690: likely duplicate/identity matches to the Württemberg/Brandenburg-Schwedt parents already represented at personID == 1067 and 1068.
-
 
 # 2964, 2965, and 2967 resolve the Greek/Yugoslav branch: Olga of Greece and Denmark, Prince Paul of Yugoslavia, and Elizabeth of Greece and Denmark.
 
@@ -2541,6 +2566,8 @@ name_overrides <- tribble(
   985, "Anne Neville",
   989, "Cicely Neville",
   990, "Ralph Neville",
+  1067, "Frederick Eugene of Württemberg",
+  1068, "Friederike Dorothea Sophia of Brandenburg-Schwedt",
   1137, "Augusta Wilhelmine of Hesse-Darmstadt",
   1176, "Sophia Louise of Mecklenburg-Schwerin",
   1197, "Karl Theodor (Gackl)",
@@ -2681,7 +2708,6 @@ name_overrides <- tribble(
   2067, "John I of Castile",
   2068, "Henry II of Castile",
   2069, "Humphrey de Bohun",
-  2070, "Edmund Stafford",
   2071, "Humphrey Stafford",
   2074, "Isabeau of Bavaria",
   2096, "Humphrey Stafford",
@@ -2960,8 +2986,6 @@ name_overrides <- tribble(
   2686, "Igor Konstantinovich Romanov",
   2687, "Helen of Serbia",
   2688, "Peter I of Serbia",
-  2689, "Frederick Eugene of Württemberg",
-  2690, "Friederike Dorothea Sophia of Brandenburg-Schwedt",
   2691, "Christian August of Anhalt-Zerbst",
   2692, "Johanna Elisabeth of Holstein-Gottorp",
   2693, "Peter of Greece and Denmark",
@@ -3322,8 +3346,7 @@ royal92_cleaned <- royal92 %>%
       personID %in%
         c(2058, 2277) ~ "Earl of Kent",
       personID == 2059 ~ "Earl of Ulster",
-      personID %in%
-        c(2070, 2096, 2279) ~ "Earl of Stafford",
+      personID == 2070 ~ NA_character_,
       personID == 2071 ~ "Duke of Buckingham",
       personID == 2079 ~ "Countess of Devon",
       personID == 2080 ~ "Earl of Devon",
@@ -3333,6 +3356,8 @@ royal92_cleaned <- royal92 %>%
         c(2083, 2084, 2392) ~ "Duke of Somerset",
       personID == 2091 ~ "Earl of Wiltshire and Ormond",
       personID == 2093 ~ "Lord Howth",
+      personID %in%
+        c(2096, 2279) ~ "Earl of Stafford",
       personID == 2099 ~ "Earl of Wiltshire",
       personID %in%
         c(2102, 2393) ~ "Duchess of Somerset",
@@ -3437,6 +3462,8 @@ royal92_cleaned <- royal92 %>%
       personID == 2645 ~ "Prince of Civitella-Cesi",
       personID == 2654 ~ "Grand Duchess",
       personID == 2657 ~ "Princess of the Netherlands",
+      personID == 2689 ~ NA_character_, # duplicate overwrite
+      personID == 2690 ~ NA_character_, # duplicate overwrite
       personID == 2731 ~ "Princess of Sweden",
       personID == 2770 ~ "Count of Wisborg",
       personID == 2771 ~ "Duke of Närke; Prince of Sweden",
@@ -3560,8 +3587,7 @@ royal92 %>%
 
 ## 78 1475-11-02 1511-11-23     1004 Anne                                 1   998   991 F     Anne       Anne
 # 79 1475-11-02 1511-11-23     2344 Anne of York                       266    NA    NA F     Anne       York
-# 98 1732-01-21 1797-12-23     1067 Frederick Eugene Wurttemberg         1    NA    NA M     Frederick  Wurttemberg
-# 99 1732-01-21 1797-12-23     2689 Frederick Eugene of Württemberg      1    NA    NA M     Frederick  Württemberg
+
 royal92 %>%
   select(birth_date,death_date, personID, name, famID, momID, dadID, sex) %>%
   mutate(
