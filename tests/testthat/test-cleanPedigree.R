@@ -4,10 +4,10 @@
 
 test_that("sliceByID returns self, parent, and spouse rows", {
   ped <- data.frame(
-    ID    = c(1, 2, 3, 4, 5),
+    ID = c(1, 2, 3, 4, 5),
     momID = c(NA, NA, 2, 2, NA),
     dadID = c(NA, NA, 1, 1, NA),
-    spID  = c(2, 1, NA, 5, 4),
+    spID = c(2, 1, NA, 5, 4),
     stringsAsFactors = FALSE
   )
   # 1 appears as ID (row 1), as dadID (rows 3, 4), and as spID (row 2)
@@ -17,10 +17,10 @@ test_that("sliceByID returns self, parent, and spouse rows", {
 
 test_that("sliceByID accepts multiple IDs", {
   ped <- data.frame(
-    ID    = c(1, 2, 3),
+    ID = c(1, 2, 3),
     momID = c(NA, NA, 2),
     dadID = c(NA, NA, 1),
-    spID  = c(2, 1, NA),
+    spID = c(2, 1, NA),
     stringsAsFactors = FALSE
   )
   res <- sliceByID(ped, ID = c(1, 2))
@@ -29,9 +29,9 @@ test_that("sliceByID accepts multiple IDs", {
 
 test_that("sliceByID recognises non-canonical column names via the standardiser", {
   ped_var <- data.frame(
-    personID    = c(1, 2, 3),
-    pid_moth    = c(NA, NA, 2),
-    pid_fath    = c(NA, NA, 1),
+    personID = c(1, 2, 3),
+    pid_moth = c(NA, NA, 2),
+    pid_fath = c(NA, NA, 1),
     pid_spouse1 = c(2, 1, NA),
     stringsAsFactors = FALSE
   )
@@ -42,8 +42,8 @@ test_that("sliceByID recognises non-canonical column names via the standardiser"
 
 test_that("sliceByID preserves the caller's original column names", {
   ped_var <- data.frame(
-    personID    = c(1, 2, 3),
-    pid_fath    = c(NA, NA, 1),
+    personID = c(1, 2, 3),
+    pid_fath = c(NA, NA, 1),
     pid_spouse1 = c(2, 1, NA),
     stringsAsFactors = FALSE
   )
@@ -54,8 +54,8 @@ test_that("sliceByID preserves the caller's original column names", {
 
 test_that("sliceByID searches extra (multi-)spouse columns", {
   ped_ms <- data.frame(
-    ID    = c(1, 2, 3),
-    spID  = c(2, 1, NA),
+    ID = c(1, 2, 3),
+    spID = c(2, 1, NA),
     spID2 = c(3, NA, 1),
     stringsAsFactors = FALSE
   )

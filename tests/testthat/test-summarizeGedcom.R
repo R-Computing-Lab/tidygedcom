@@ -4,15 +4,15 @@ make_df <- function(...) {
 
 base_df <- make_df(
   personID = c("1", "2", "3", "4", "5"),
-  sex          = c("F", "M", "M", "F", NA),
-  birth_date   = c("1 JAN 1900", NA, "5 MAR 1910", NA, "2 FEB 1920"),
-  death_date   = c(NA, "3 APR 1980", NA, NA, NA),
-  chr_date     = c(NA, NA, NA, "10 JUN 1960", NA),
-  burial_date  = c(NA, NA, NA, NA, NA),
-  birth_place  = c("London", NA, "Paris", NA, "Berlin"),
-  death_place  = c(NA, "Rome", NA, NA, NA),
-  momID        = c(NA, NA, NA,"1", "1"),
-  dadID        = c(NA, NA, NA, "2", "2")
+  sex = c("F", "M", "M", "F", NA),
+  birth_date = c("1 JAN 1900", NA, "5 MAR 1910", NA, "2 FEB 1920"),
+  death_date = c(NA, "3 APR 1980", NA, NA, NA),
+  chr_date = c(NA, NA, NA, "10 JUN 1960", NA),
+  burial_date = c(NA, NA, NA, NA, NA),
+  birth_place = c("London", NA, "Paris", NA, "Berlin"),
+  death_place = c(NA, "Rome", NA, NA, NA),
+  momID = c(NA, NA, NA, "1", "1"),
+  dadID = c(NA, NA, NA, "2", "2")
 )
 
 # ---------------------------------------------------------------------------

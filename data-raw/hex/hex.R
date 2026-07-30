@@ -21,7 +21,7 @@ tuxedo_palette <- c(
   st7_fill   = "#C9828F", # darker inner ear pink
   st8_fill   = "#07080A", # deepest outline/detail
   st9_fill   = "#111317", # dark black accent
-  st10_fill  = "#F4F7F8"  # white muzzle/patch highlight
+  st10_fill  = "#F4F7F8" # white muzzle/patch highlight
 )
 
 replace_css_property <- function(svg_string, class_name, property, color) {
@@ -47,7 +47,7 @@ old_colors <- c(
   "#f45f34", # st4_color
   "#c15b65", # st6_color pink nose
   "#a54653", # st7_color pink inner ear
-  "#842307"  # st9_color
+  "#842307" # st9_color
 )
 
 
@@ -60,7 +60,7 @@ new_colors <- c(
   "#30343A", # st4_color, main black-fur highlight replacing bright orange
   "#E8A9B3", # st6_color, inner ear / nose pink
   "#C9828F", # st7_color, darker inner ear pink
-  "#111317"  # st9_color, dark black accent replacing reddish-brown accent
+  "#111317" # st9_color, dark black accent replacing reddish-brown accent
 )
 color_replacements <- setNames(new_colors, old_colors)
 # Use str_replace_all to replace all occurrences of the old color
@@ -85,17 +85,17 @@ library(magick)
 cat_img <- magick::image_read(normalizePath("data-raw/hex/recoloredcat.png"))
 
 # make the three cats
-cat_left   <- image_scale(cat_img, "300x300")
+cat_left <- image_scale(cat_img, "300x300")
 cat_center <- image_scale(cat_img, "360x360")
-cat_right  <- image_scale(cat_img, "300x300")
+cat_right <- image_scale(cat_img, "300x300")
 
 # tighter transparent canvas
 three_cats <- image_blank(width = 860, height = 380, color = "transparent")
 
 # place cats higher on the canvas
-three_cats <- image_composite(three_cats, cat_left,   operator = "over", offset = "+0+0")
+three_cats <- image_composite(three_cats, cat_left, operator = "over", offset = "+0+0")
 three_cats <- image_composite(three_cats, cat_center, operator = "over", offset = "+230+0")
-three_cats <- image_composite(three_cats, cat_right,  operator = "over", offset = "+520+0")
+three_cats <- image_composite(three_cats, cat_right, operator = "over", offset = "+520+0")
 
 
 image_write(three_cats, path = "data-raw/hex/threecats.png", format = "png")
@@ -106,7 +106,7 @@ sticker(
   p_size = 20,
   s_x = 1,
   s_y = 0.66,
-  s_width =  1.55,
+  s_width = 1.55,
   h_fill = "#0fa1e0",
   h_color = "#333333",
   p_color = "white",
@@ -119,36 +119,36 @@ library(BGmisc)
 library(ggplot2)
 data(potter)
 p <- ggpedigree(potter,
-                config =
-                  list(
-                    label_include = FALSE,
-                    point_size = 10,
-                    segment_linewidth = 2,
-                    sex_color_include=FALSE,
-                    focal_fill_include = TRUE,
-                    focal_fill_personID = 7,
-                    focal_fill_high_color = "white",
-                    focal_fill_mid_color =  "#0fa1e0",
-                    focal_fill_low_color = "#333333",
-                    focal_fill_na_color = "#333333",
-                    outline_include = TRUE,
-                    outline_color_include = TRUE,
-                    outline_additional_size = 0.15,
-                    outline_color = "#333333",
-                    segment_lineage_include = TRUE,
-                    segment_lineage_focal_personID = 7,
-                    segment_lineage_method = "gradient",
-              #      segment_lineage_palette = "viridis",
-                    segment_lineage_legend_show = FALSE,
-                     segment_lineage_na_color = "white"
-                  )
-)  +
+  config =
+    list(
+      label_include = FALSE,
+      point_size = 10,
+      segment_linewidth = 2,
+      sex_color_include = FALSE,
+      focal_fill_include = TRUE,
+      focal_fill_personID = 7,
+      focal_fill_high_color = "white",
+      focal_fill_mid_color = "#0fa1e0",
+      focal_fill_low_color = "#333333",
+      focal_fill_na_color = "#333333",
+      outline_include = TRUE,
+      outline_color_include = TRUE,
+      outline_additional_size = 0.15,
+      outline_color = "#333333",
+      segment_lineage_include = TRUE,
+      segment_lineage_focal_personID = 7,
+      segment_lineage_method = "gradient",
+      #      segment_lineage_palette = "viridis",
+      segment_lineage_legend_show = FALSE,
+      segment_lineage_na_color = "white"
+    )
+) +
   scale_x_continuous(
     expand = expansion(mult = c(0.04, 0.04))
   ) +
-#  scale_y_continuous(
-#    expand = expansion(mult = c(0.12, 0.12))
- # ) +
+  #  scale_y_continuous(
+  #    expand = expansion(mult = c(0.12, 0.12))
+  # ) +
   coord_cartesian(clip = "off") +
   theme_void() +
   theme(
@@ -156,7 +156,6 @@ p <- ggpedigree(potter,
     plot.background = element_rect(fill = "transparent", color = NA),
     # need to add a little padding to the plot area to avoid clipping the edges of the pedigree
     plot.margin = margin(0.15, 0.15, 0.15, 0.15, "cm"),
-
   ) + ggplot2::guides(
     shape = "none",
     color = "none",
@@ -164,22 +163,19 @@ p <- ggpedigree(potter,
   )
 
 
-
 ggsave("data-raw/hex/bgplot.png", p, width = 8, height = 3.75, bg = "transparent", dpi = 400)
-
 
 
 ## Step 3: Combine background and logo
 graph_img <- magick::image_read(normalizePath("data-raw/hex/bgplot.png"))
 
 # Match sizes
-graph_img <- image_resize(graph_img, geometry_size_pixels(width = 860*1.25, height = 390*1.25, preserve_aspect = T))
+graph_img <- image_resize(graph_img, geometry_size_pixels(width = 860 * 1.25, height = 390 * 1.25, preserve_aspect = T))
 
 # fade color
 graph_img <- image_fx(graph_img, expression = "pow(p, 0.8)")
 
 combined_img <- image_composite(graph_img, three_cats, operator = "Over", gravity = "South", offset = "+10-40")
-
 
 
 # Save combined image
@@ -189,9 +185,8 @@ combined_img <- magick::image_read(normalizePath("data-raw/hex/combined.png"))
 
 
 sticker(combined_img,
-        package = "tidygedcom",
-        p_size = 20, s_x = 1 - .05, s_y = .925, s_width = 1.9,s_height = 1.3,
-        h_fill = "#0fa1e0", h_color = "#333333",
-        p_color = "white", filename = "man/figures/hex.png")
-
-
+  package = "tidygedcom",
+  p_size = 20, s_x = 1 - .05, s_y = .925, s_width = 1.9, s_height = 1.3,
+  h_fill = "#0fa1e0", h_color = "#333333",
+  p_color = "white", filename = "man/figures/hex.png"
+)

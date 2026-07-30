@@ -60,9 +60,9 @@ test_that("gedcomLon2Numeric output length matches input length", {
 
 test_that("convertGedcomCoords converts _lat and _long columns automatically", {
   df <- data.frame(
-    birth_lat  = "N51.5074",
+    birth_lat = "N51.5074",
     birth_long = "W0.1278",
-    name       = "Alice",
+    name = "Alice",
     stringsAsFactors = FALSE
   )
   result <- convertGedcomCoords(df)
@@ -73,22 +73,22 @@ test_that("convertGedcomCoords converts _lat and _long columns automatically", {
 
 test_that("convertGedcomCoords converts multiple coordinate column pairs", {
   df <- data.frame(
-    birth_lat  = "N51.5074",
+    birth_lat = "N51.5074",
     birth_long = "W0.1278",
-    death_lat  = "S33.8688",
+    death_lat = "S33.8688",
     death_long = "E151.2093",
     stringsAsFactors = FALSE
   )
   result <- convertGedcomCoords(df)
-  expect_equal(result$birth_lat,   51.5074)
-  expect_equal(result$birth_long,  -0.1278)
-  expect_equal(result$death_lat,  -33.8688)
+  expect_equal(result$birth_lat, 51.5074)
+  expect_equal(result$birth_long, -0.1278)
+  expect_equal(result$death_lat, -33.8688)
   expect_equal(result$death_long, 151.2093)
 })
 
 test_that("convertGedcomCoords respects explicit lat_cols and long_cols", {
   df <- data.frame(
-    my_latitude  = "N40.7128",
+    my_latitude = "N40.7128",
     my_longitude = "W74.0060",
     stringsAsFactors = FALSE
   )
@@ -96,15 +96,15 @@ test_that("convertGedcomCoords respects explicit lat_cols and long_cols", {
     lat_cols  = "my_latitude",
     long_cols = "my_longitude"
   )
-  expect_equal(result$my_latitude,   40.7128)
+  expect_equal(result$my_latitude, 40.7128)
   expect_equal(result$my_longitude, -74.0060)
 })
 
 test_that("convertGedcomCoords leaves non-coordinate columns unchanged", {
   df <- data.frame(
-    birth_lat  = "N10.0",
+    birth_lat = "N10.0",
     birth_long = "E20.0",
-    id         = 99L,
+    id = 99L,
     stringsAsFactors = FALSE
   )
   result <- convertGedcomCoords(df)
@@ -113,7 +113,7 @@ test_that("convertGedcomCoords leaves non-coordinate columns unchanged", {
 
 test_that("convertGedcomCoords handles NA values in coordinate columns", {
   df <- data.frame(
-    birth_lat  = NA_character_,
+    birth_lat = NA_character_,
     birth_long = NA_character_,
     stringsAsFactors = FALSE
   )

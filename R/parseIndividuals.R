@@ -40,7 +40,7 @@ splitIndividuals <- function(lines, verbose = FALSE) {
   }
   if (verbose == TRUE) {
     message("Found ", length(blocks), " individual blocks")
-    }
+  }
   blocks
 }
 
@@ -251,7 +251,6 @@ applyTagMappings <- function(line, record, pattern_rows, tag_mappings) {
   }
   list(record = record, matched = FALSE)
 }
-
 
 
 #' Count GEDCOM Pattern Rows

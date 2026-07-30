@@ -133,7 +133,7 @@ royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = NA,
     dadID = NA,
     overwrite = TRUE
-  )%>%
+  ) %>%
   addPersonToPed(
     personID = 2149,
     name = "Helen Louise Kirby",
@@ -141,13 +141,29 @@ royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = 589,
     dadID = 235,
     overwrite = TRUE
-  )%>%
+  ) %>%
+  addPersonToPed(
+    personID = 2269, # duplicated Philip the Bold
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  ) %>%
   addPersonToPed(
     personID = 2300, # overwriting duplicated John Neville
     name = "William IX of Aquitaine",
     sex = "M",
     momID = NA_integer_,
     dadID = NA_integer_,
+    overwrite = TRUE
+  ) %>%
+  addPersonToPed(
+    personID = 2545, # duplicated Anne of Brittany
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
     overwrite = TRUE
   ) %>%
   addPersonToPed(
@@ -189,6 +205,7 @@ royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
     ),
     dadID = case_when(
       personID == 1297 ~ 623,
+      personID == 1596 ~ 2518, # merging Philip the Bolds
       personID == 1868 ~ 2300, # William IX of Aquitaine is the father of William X of Aquitaine
       personID == 1988 ~ 1970,
       personID == 2538 ~ 1051,
@@ -1730,7 +1747,7 @@ date_overrides <- tribble(
   2266, "812", "13 APR 862", # Donald I of Scotland
   2267, "10 OCT 1332", "1 JAN 1387", # Charles II of Navarre
   2268, "1348", "6 JUL 1403", # Reynold Cobham
-  2269, "17 JAN 1342", "27 APR 1404", # Philip the Bold, Duke of Burgundy; identity inferred from Burgundy row
+  2269, NA, NA, # Philip the Bold, Duke of Burgundy; identity inferred from Burgundy row
   2270, "1390", "31 AUG 1433", # Peter of Luxembourg, Count of Saint-Pol
   2271, "1405", "12 AUG 1469", # Richard Woodville, Earl Rivers
   2272, "16 JAN 1409", "10 JUL 1480", # René of Anjou
@@ -1963,7 +1980,7 @@ date_overrides <- tribble(
   2541, "25 DEC 1424", "16 AUG 1445", # Margaret of Scotland, Dauphine of France
   2542, "11 NOV 1441", "1 DEC 1483", # Charlotte of Savoy
   2544, "3 APR 1461", "14 NOV 1522", # Anne of France
-  2545, "25 JAN 1477", "9 JAN 1514", # Anne of Brittany; duplicate/identity match to personID 2548 likely
+  2545, NA_character_, NA_character_, # Anne of Brittany; duplicate/identity match to personID 2548 likely
   2546, "22 SEP 1515", "16 JUL 1557", # Anne of Cleves
   2547, "23 APR 1464", "4 FEB 1505", # Joan of Valois
   2548, "25 JAN 1477", "9 JAN 1514", # Anne of Brittany
@@ -2281,7 +2298,6 @@ date_overrides <- tribble(
 
 # 2215 has a current death-year pattern that may not match the most likely identification as Murchad mac Diarmata; I included the date data and flagged the identity concern.
 
-# 2269 is listed only as “of Burgundy,” but the most likely identity in context is Philip the Bold, Duke of Burgundy. I included the date data and flagged that inference.
 
 # 2279 likely duplicates Edmund Stafford already represented at personID == 2070.
 
@@ -2299,7 +2315,7 @@ date_overrides <- tribble(
 
 # 2501 appears to be Louis I, Duke of Orléans, but the row label says Louis of Beaumont / Count of Valois, so that identity/name should be reviewed separately.
 
-# 2545 and 2548 appear to duplicate Anne of Brittany.
+
 # 2624, 2682: likely duplicate/identity matches to Frederick Francis II of Mecklenburg-Schwerin at personID == 1213.
 
 # 2688: likely duplicate/identity match to Peter I of Serbia at personID == 2530.
@@ -2776,7 +2792,6 @@ name_overrides <- tribble(
   2266, "Donald I of Scotland",
   2267, "Charles II of Navarre",
   2268, "Reynold Cobham",
-  2269, "Philip the Bold",
   2270, "Peter of Luxembourg",
   2272, "René of Anjou",
   2273, "Thomas Grey of Heton",
@@ -3341,9 +3356,7 @@ royal92_cleaned <- royal92 %>%
       personID %in%
         c(2195, 2202) ~ "King of Thomond",
       personID == 2218 ~ "Countess of Pembroke",
-      personID %in%
-        c(2269, 2426,
-          2518, 2533) ~ "Duke of Burgundy",
+      personID == 2269  ~ NA_character_,
       personID == 2270 ~ "Count of Saint-Pol",
       personID == 2271 ~ "Earl Rivers",
       personID == 2278 ~ "Lord Cherleton",
@@ -3398,6 +3411,9 @@ royal92_cleaned <- royal92 %>%
         c(2403, 2963) ~ "Lady",
       personID == 2407 ~ "Earl of Banbury",
       personID == 2414 ~ "Lord Offaly",
+      personID %in%
+        c(2426,
+          2518, 2533) ~ "Duke of Burgundy",
       personID == 2427 ~ "Electress",
       personID == 2432 ~ "Empress",
       personID == 2435 ~ "Duke of Leuchtenberg",
@@ -3487,6 +3503,7 @@ checkis_acyclic <- checkPedigreeNetwork(royal92,
   dadID = "dadID",
   verbose = TRUE
 )
+
 checkis_acyclic
 if (checkis_acyclic$is_acyclic) {
   message("The pedigree is acyclic.")
@@ -3544,9 +3561,10 @@ royal92 %>%
     last_name = str_extract(name, "[^ ]+$"),
   ) %>%
   arrange(desc(famID),last_name, personID)
-
-# 33 1092-06-15 1143-06-15     1923 Sibyl de Neufmarché                 1  1925  1924 F     Sibyl      Neufmarché
- # 34 1092-06-15 1143-06-15     2224 Sibyl de Neufmarché                 1  1392  1391 F     Sibyl      Neufmarché
+## 78 1475-11-02 1511-11-23     1004 Anne                                 1   998   991 F     Anne       Anne
+# 79 1475-11-02 1511-11-23     2344 Anne of York                       266    NA    NA F     Anne       York
+# 98 1732-01-21 1797-12-23     1067 Frederick Eugene Wurttemberg         1    NA    NA M     Frederick  Wurttemberg
+# 99 1732-01-21 1797-12-23     2689 Frederick Eugene of Württemberg      1    NA    NA M     Frederick  Württemberg
 royal92 %>%
   select(birth_date,death_date, personID, name, famID, momID, dadID, sex) %>%
   mutate(
