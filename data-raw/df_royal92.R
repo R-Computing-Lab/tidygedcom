@@ -102,6 +102,22 @@ royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = 1881,
     overwrite = TRUE
   ) %>%
+    addPersonToPed(
+    personID = 1811, # duplicated Charles the simple
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  )%>%
+    addPersonToPed(
+    personID = 1813, # duplicated Otto I the Great
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  ) %>%
   addPersonToPed(
     personID = 1884,
     name = "Beatrice of Savoy",
@@ -110,6 +126,14 @@ royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = NA_integer_,
     overwrite = TRUE
   ) %>%
+    addPersonToPed(
+    personID = 1975, # duplicated Æthelstan
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  )%>%
   addPersonToPed(
     personID = 2149,
     name = "Helen Louise Kirby",
@@ -171,7 +195,7 @@ royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
       personID == 2657 ~ 199,
       TRUE ~ dadID
     ),
-        sex = case_when(
+     sex = case_when(
       personID %in% c(
         235,
         1098,
@@ -1383,9 +1407,9 @@ date_overrides <- tribble(
   1806, "902", "26 DEC 955", # Eadgifu / Edgiva of Kent
   1808, "910", "26 JAN 937", # Eadhild / Edhilda, daughter of Edward the Elder
   1809, "910", "26 JAN 946", # Eadgyth / Edith of England, wife of Otto I
-  1811, "17 SEP 879", "7 OCT 929", # Charles III the Simple, King of West Francia
+  1811, NA, NA, # duplicated Charles III the Simple, King of West Francia
   1812, "898", "16 JUN 956", # Hugh the Great
-  1813, "23 NOV 912", "7 MAY 973", # Otto I the Great
+  1813, NA, NA, # duplicated  # Otto I the Great
   1814, "932", "7 FEB 999", # Boleslaus II, Duke of Bohemia; birth year only
   1815, "20 OCT 1496", "12 APR 1550", # Claude, Duke of Guise
   1817, "11 SEP 1476", "22 SEP 1531", # Louise of Savoy; replaces year-placeholder dates
@@ -1499,13 +1523,13 @@ date_overrides <- tribble(
   # birth year sometimes given 847-849, selected 849
   1965, "852", "5 DEC 902", # Ealhswith of Mercia
   1966, "795", "13 JAN 858", # Æthelwulf of Wessex
-  1968, "825", "852", # Æthelstan of Kent
+  1968, "825", "852", # Æthelstan, son of Æthelwulf of Wessex
   1969, "834", "20 DEC 860", # Æthelbald of Wessex
   1970, "830", "879", # probably 830s
   1971, "835", "865", # Æthelberht of Wessex
   1972, "847", "APR 871", # Æthelred I of Wessex
   1973, "771", "839", # Egbert of Wessex
-  1975, "825", "852", # Æthelstan of Kent; likely duplicate/variant to personID 1968
+  1975, NA, NA, # duplicate
   1977, "838", "888", # Æthelswith of Mercia
   1978, "860", "898", # Æthelhelm, son of Æthelred I
   1979, "868", "13 DEC 902", # Æthelwold ætheling
@@ -1665,7 +1689,7 @@ date_overrides <- tribble(
   2220, "1145", "1188", # Aoife/Eva MacMurrough
   2221, "1110", "1 MAY 1171", # Dermot MacMurrough / Diarmait Mac Murchada
   2222, "1080", "1126", # Énna Mac Murchada and death year
-  2224, "1092", "1143", # Sibyl de Neufmarché
+  2224, "1092", "13 JUL 1122", # Sibyl of Normandy; birth year sometimes given 1090, selected 1092
   2225, "1021", "1069", # Ingibiorg Finnsdottir
   2226, "1005", "1065", # Finn Arnesson
   2227, "1074", "23 APR 1130", # Matilda of Huntingdon; death sometimes given 1130/1131
@@ -2539,7 +2563,6 @@ name_overrides <- tribble(
   1806, "Eadgifu of Kent",
   1808, "Eadhild",
   1809, "Eadgyth of England",
-  1811, "Charles III the Simple",
   1814, "Boleslaus II",
   1827, "Christian I of Denmark",
   1828, "Dorothea of Brandenburg",
@@ -2610,7 +2633,6 @@ name_overrides <- tribble(
   1971, "Æthelberht of Wessex",
   1972, "Æthelred I of Wessex",
   1973, "Egbert of Wessex",
-  1975, "Æthelstan of Kent",
   1977, "Æthelswith of Mercia",
   1978, "Æthelhelm",
   1979, "Æthelwold ætheling",
@@ -2716,7 +2738,7 @@ name_overrides <- tribble(
   2218, "Isabel de Clare",
   2219, "Richard de Clare",
   2222, "Énna Mac Murchada",
-  2224, "Sibyl de Neufmarché",
+  2224, "Sybilla of Normandy",
   2225, "Ingibiorg Finnsdottir",
   2226, "Finn Arnesson",
   2227, "Matilda of Huntingdon",
@@ -3249,7 +3271,8 @@ royal92_cleaned <- royal92 %>%
         c(1706, 2162, 2789) ~ "Captain",
       personID == 1802 ~ "wife of Edward the Elder",
       personID == 1804 ~ "son of Edward the Elder",
-      personID == 1811 ~ "King of West Francia",
+      personID == 1811 ~ NA_character_,
+      personID == 1813 ~ NA_character_,
       personID == 1814 ~ "Duke of Bohemia",
       personID == 1815 ~ "Duke of Guise",
       personID %in%
@@ -3392,6 +3415,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2541 ~ "Dauphine of France",
       personID == 2554 ~ "daughter of Charlemagne",
       personID == 2578 ~ "son of Charles the Bald",
+      personID == 2584 ~ "King of West Francia",
       personID == 2632 ~ "Baron Geddes",
       personID %in%
         c(2634, 2875) ~ "Princess of Asturias",
@@ -3521,5 +3545,16 @@ royal92 %>%
   ) %>%
   arrange(desc(famID),last_name, personID)
 
-
-
+# 33 1092-06-15 1143-06-15     1923 Sibyl de Neufmarché                 1  1925  1924 F     Sibyl      Neufmarché
+ # 34 1092-06-15 1143-06-15     2224 Sibyl de Neufmarché                 1  1392  1391 F     Sibyl      Neufmarché
+royal92 %>%
+  select(birth_date,death_date, personID, name, famID, momID, dadID, sex) %>%
+  mutate(
+    first_name = str_extract(name, "^[^ ]+"),
+    last_name = str_extract(name, "[^ ]+$"),
+  ) %>%
+  group_by(death_date) %>%
+# look at multiple people with the same date
+  filter(n() > 1) %>%
+  arrange(death_date, famID, last_name, personID) %>%
+  print(n = 100)
