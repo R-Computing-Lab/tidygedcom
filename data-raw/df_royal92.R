@@ -18,8 +18,6 @@ is_approximated_date <- function(x) {
   str_detect(x, date_qualifier_regex) | str_length(x) == 4
 }
 
-
-
 standardize_partial_date <- function(x, default_day = "15",
                                      default_month = "JUN") {
   case_when(
@@ -31,13 +29,11 @@ standardize_partial_date <- function(x, default_day = "15",
     as.Date(format = "%d %b %Y")
 }
 
-
-
 # Create dataframe
 
 ## Add missing individuals and overwrite duplicates based on historical records and data cleaning needs; these are added to the raw data frame before processing to ensure that they are included in the final cleaned dataset and to maintain consistency in the data cleaning process. The `overwrite = TRUE` argument is used to ensure that any existing entries with the same `personID` are updated with the new information, which is crucial for correcting errors or filling in missing details in the original dataset.
 
-royal92 <- df_raw <- readGedcom("data-raw/royal92/royal92.ged") %>%
+royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   addPersonToPed(
     personID = 128,
     name = "Simon de Montfort the Younger",
@@ -3561,6 +3557,7 @@ royal92 %>%
     last_name = str_extract(name, "[^ ]+$"),
   ) %>%
   arrange(desc(famID),last_name, personID)
+
 ## 78 1475-11-02 1511-11-23     1004 Anne                                 1   998   991 F     Anne       Anne
 # 79 1475-11-02 1511-11-23     2344 Anne of York                       266    NA    NA F     Anne       York
 # 98 1732-01-21 1797-12-23     1067 Frederick Eugene Wurttemberg         1    NA    NA M     Frederick  Wurttemberg
