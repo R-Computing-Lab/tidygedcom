@@ -148,8 +148,8 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   ) %>%
   addPersonToPed(
     personID = 2269, # duplicated Philip the Bold
-    name = "TODO",
-    sex = "U",
+    name = "Welf (father of Judith)",
+    sex = "M",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
@@ -160,6 +160,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     sex = "M",
     momID = NA_integer_,
     dadID = NA_integer_,
+    overwrite = TRUE
+  ) %>%
+  addPersonToPed(
+    personID = 2336, # duplicated Anne Dacre
+    name = "Isambart the Saxon",
+    sex = "M",
+    momID = NA,
+    dadID = NA,
     overwrite = TRUE
   )  %>%
   addPersonToPed(
@@ -172,10 +180,26 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   ) %>%
   addPersonToPed(
     personID = 2545, # duplicated Anne of Brittany
-    name = "TODO",
-    sex = "U",
+    name = "Hedwig of Bavaria",
+    sex = "F",
     momID = NA,
-    dadID = NA,
+    dadID = 2336,
+    overwrite = TRUE
+  ) %>%
+  addPersonToPed(
+    personID = 2559,
+    name = "Judith of Bavaria",
+    sex = "F",
+    momID = 2545,
+    dadID = 2269,
+    overwrite = TRUE
+  ) %>%
+  addPersonToPed(
+    personID = 2571,
+    name = "Emma of Altdorf",
+    sex = "F",
+    momID = 2545,
+    dadID = 2269,
     overwrite = TRUE
   ) %>%
   addPersonToPed(
@@ -1777,7 +1801,7 @@ date_overrides <- tribble(
   2266, "812", "13 APR 862", # Donald I of Scotland
   2267, "10 OCT 1332", "1 JAN 1387", # Charles II of Navarre
   2268, "1348", "6 JUL 1403", # Reynold Cobham
-  2269, NA, NA, # Philip the Bold, Duke of Burgundy; identity inferred from Burgundy row
+  2269, "776", "825", # Welf https://en.wikipedia.org/wiki/Welf_(father_of_Judith)
   2270, "1390", "31 AUG 1433", # Peter of Luxembourg, Count of Saint-Pol
   2271, "1405", "12 AUG 1469", # Richard Woodville, Earl Rivers
   2272, "16 JAN 1409", "10 JUL 1480", # René of Anjou
@@ -1840,7 +1864,7 @@ date_overrides <- tribble(
   2333, "1524", "3 SEP 1571", # Thomas Keyes
   2334, "1540", "29 SEP 1596", # Margaret Clifford / Countess of Derby
   2335, "SEP 1531", "25 SEP 1593", # Henry Stanley, 4th Earl of Derby; month-level birth date
-  2336, "21 MAR 1557", "19 APR 1630", # Anne Dacre; identity inferred from Howard/Arundel cluster
+  2336, "750", "806", # Anne Dacre duplicate after 806   Isambart
   2337, "1480", "3 APR 1538", # Elizabeth Howard / Lady Boleyn
   2338, "1504", "17 MAY 1536", # George Boleyn, Viscount Rochford
   2339, "1499", "19 JUL 1543", # Mary Boleyn
@@ -2010,7 +2034,7 @@ date_overrides <- tribble(
   2541, "25 DEC 1424", "16 AUG 1445", # Margaret of Scotland, Dauphine of France
   2542, "11 NOV 1441", "1 DEC 1483", # Charlotte of Savoy
   2544, "3 APR 1461", "14 NOV 1522", # Anne of France
-  2545, NA_character_, NA_character_, # Anne of Brittany; duplicate/identity match to personID 2548 likely
+  2545, "778", "835", # Hedwig of Bavaria
   2546, "22 SEP 1515", "16 JUL 1557", # Anne of Cleves
   2547, "23 APR 1464", "4 FEB 1505", # Joan of Valois
   2548, "25 JAN 1477", "9 JAN 1514", # Anne of Brittany
@@ -2034,7 +2058,7 @@ date_overrides <- tribble(
   2568, "835", "8 AUG 869", # Lothair II of Lorraine
   2569, "845", "25 JAN 863", # Charles of Provence
   2570, "823", "864", # Pepin II of Aquitaine and death year
-  2571, "808", "31 JAN 876", # Emma of Bavaria
+  2571, "803", "31 JAN 876", # Emma of Bavaria
   2572, "830", "22 MAR 880", # Carloman of Bavaria
   2573, "830", "20 JAN 882", # Louis the Younger
   2574, "13 JUN 839", "13 JAN 888", # Charles III the Fat
@@ -2579,6 +2603,7 @@ name_overrides <- tribble(
   1342, "Richard Neville",
   1347, "Violante Visconti",
   1373, "William IX",
+  1387, "Adeliza",
   1407, "Paul Romanovsky-Ilyinsky",
   1419, "Charles Frederick of Schleswig-Holstein-Gottorp",
   1442, "Ferdinand Philippe Marie d'Orléans",
@@ -2642,6 +2667,7 @@ name_overrides <- tribble(
   1896, "Yolande of Dreux",
   1909, "Maud de Braose",
   1910, "Ralph de Mortimer",
+  1911, "Gwladus Ddu ferch Llywelyn",
   1917, "Arthur Wellesley",
   1918, "Arthur Hill-Trevor",
   1921, "Bertha of Hereford",
@@ -2915,6 +2941,7 @@ name_overrides <- tribble(
   2567, "Louis II the Younger",
   2568, "Lothair II of Lorraine",
   2569, "Charles of Provence",
+
   2572, "Carloman of Bavaria",
   2573, "Louis the Younger",
   2575, "Ermentrude of Orléans",
