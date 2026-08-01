@@ -220,6 +220,20 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = NA,
     overwrite = TRUE
   ) %>%  addPersonToPed(
+    personID = 2436, # duplicated Franz Karl of Austria
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  ) %>%  addPersonToPed(
+    personID = 2437, # duplicated Auguste Wittelsbach
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  )  %>%  addPersonToPed(
     personID = 2450, # duplicated Joseph of Austria
     name = "TODO",
     sex = "U",
@@ -325,14 +339,16 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
       personID == 1295 ~ 1068, #merging duplicated Frederica
       personID == 1297 ~ 624,
       personID == 1282 ~ 1884,
+      personID == 1614 ~ 1139, # merging Auguste Wittelsbachs
       personID == 1988 ~ 2579, # judith of flanders
       personID == 2604 ~ 1806, # Eadgifu
       personID == 2657 ~  200,
       TRUE ~ momID
     ),
     dadID = case_when(
-      personID == 1295 ~ 1067, #merging duplicate Frederick Eugene Wurttemberg
+      personID == 1295 ~ 1067, # merging duplicate Frederick Eugene Wurttemberg
       personID == 1297 ~ 623,
+      personID == 1438 ~ 639,
       personID == 1596 ~ 2518, # merging Philip the Bolds
       personID == 1812 ~ 573,
       personID == 1868 ~ 2300, # William IX of Aquitaine is the father of William X of Aquitaine
@@ -1717,7 +1733,7 @@ date_overrides <- tribble(
   2062, "30 AUG 1334", "23 MAR 1369", # Peter/Pedro of Castile
   2063, "1310", "1380", # Payne Roet of Guienne
   2064, "1340", "13 NOV 1371", # Hugh Swynford
-  2065, "1350", "10 MAY 1403", # Katherine Swynford; likely duplicate/identity match to Catherine Swynford branch
+  2065,  NA, NA, # duplicate
   2066, "4 OCT 1379", "25 DEC 1406", # Henry III of Castile
   2067, "24 AUG 1358", "9 OCT 1390", # John I of Castile
   2068, "13 JAN 1334", "29 MAY 1379", # Henry II of Castile
@@ -2024,8 +2040,8 @@ date_overrides <- tribble(
   2433, "8 DEC 1708", "18 AUG 1765", # Francis I Stephen, Holy Roman Emperor
   2434, "13 MAR 1741", "20 FEB 1790", # Joseph II, Holy Roman Emperor
   2435, "3 SEP 1781", "21 FEB 1824", # Eugène de Beauharnais, Duke of Leuchtenberg
-  2436, "21 JUN 1788", "13 MAY 1851", # Augusta of Bavaria / Duchess of Leuchtenberg
-  2437, "17 DEC 1802", "8 MAR 1878", # Franz Karl of Austria; likely duplicate/identity match to personID 639
+  2436, NA, NA, # duplicated
+  2437,  NA, NA, # duplicated
   2439, "13 APR 1519", "5 JAN 1589", # Catherine de Medici
   2440, "13 OCT 1499", "20 JUL 1524", # Claude of France
   2441, "11 APR 1492", "21 DEC 1549", # Margaret of Navarre
@@ -2420,8 +2436,6 @@ date_overrides <- tribble(
 # 1847: likely Isabel de Warenne based on the Balliol/Warenne placement, but the row’s given name alone is underspecified. I included the date data and flagged the inference.
 
 
-# 2065 likely duplicates the Catherine Swynford branch already represented elsewhere.
-
 # 2158 likely duplicates George Mountbatten already represented at personID == 102.
 
 # 2215 has a current death-year pattern that may not match the most likely identification as Murchad mac Diarmata; I included the date data and flagged the identity concern.
@@ -2436,7 +2450,6 @@ date_overrides <- tribble(
 
 # 2389 may be the Frances Howard involved in the Essex/Somerset marriage context, but the current death-year placeholder appears inconsistent with that identification.
 
-# 2437 likely duplicates Franz Karl of Austria already represented elsewhere in the file.
 
 # 2501 appears to be Louis I, Duke of Orléans, but the row label says Louis of Beaumont / Count of Valois, so that identity/name should be reviewed separately.
 
@@ -2808,7 +2821,6 @@ name_overrides <- tribble(
   2060, "Galeazzo II Visconti",
   2061, "Otto III of Montferrat",
   2063, "Payne Roet of Guienne",
-  2065, "Katherine Swynford",
   2066, "Henry III of Castile",
   2067, "John I of Castile",
   2068, "Henry II of Castile",
@@ -2956,7 +2968,6 @@ name_overrides <- tribble(
   2428, "Maximilian II Emanuel of Bavaria",
   2429, "Joseph Ferdinand of Bavaria",
   2435, "Eugène de Beauharnais",
-  2437, "Franz Karl of Austria",
   2439, "Catherine de Medici",
   2442, "John II of Castile",
   2445, "Alice Soares de Toledo",
@@ -3395,6 +3406,7 @@ royal92_cleaned <- royal92 %>%
       personID == 990 ~ "Earl of Westmoreland",
       personID %in%
         c(1051, 1125) ~ "Duke of Anjou",
+      personID == 1139 ~ "Duchess of Leuchtenberg",
       personID == 1250 ~ "Earl of Bothwell",
       personID %in%
         c(1373, 1867) ~ "Count of Poitiers",
@@ -3549,7 +3561,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2427 ~ "Electress",
       personID == 2432 ~ "Empress",
       personID == 2435 ~ "Duke of Leuchtenberg",
-      personID == 2436 ~ "Duchess of Leuchtenberg",
+      personID == 2436 ~ NA_character_, # duplicate overwrite
       personID == 2450 ~ NA_character_, # duplicate overwrite
       personID == 2469 ~ "son of Louis VI",
       personID == 2472 ~ "Bishop of Rouen",
