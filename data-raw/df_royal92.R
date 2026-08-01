@@ -201,7 +201,15 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = 2545,
     dadID = 2269,
     overwrite = TRUE
-  ) %>%
+  )  %>%
+  addPersonToPed(
+    personID = 2624, # duplicated Frederick Francis II of Mecklenburg-Schwerin
+    name =  "TODO",
+    sex = "U",
+    momID = NA,
+    dadID =  NA,
+    overwrite = TRUE
+  )  %>%
   addPersonToPed(
     personID = 2689, # duplicated Frederick Eugene of Württemberg
     name = "TODO",
@@ -1812,10 +1820,10 @@ date_overrides <- tribble(
   2277, "1350", "25 APR 1397", # Thomas Holland, 2nd Earl of Kent
   2278, "1370", "14 MAR 1421", # Edward Charleton, Lord Cherleton
   2279, "2 MAR 1378", "21 JUL 1403", # Edmund Stafford, Earl of Stafford; duplicate/identity match to personID 2070 likely
-  2280, "11 APR 1374", "20 JUL 1398", # Roger Mortimer, 4th Earl of March
+  2280, "23 APR 1393", "1409", # son of Roger Mortimer
   2281, "1375", "1405", # Eleanor Mortimer
   2282, "1357", "5 DEC 1419", # Edward Courtenay; identity should be checked against Courtenay branch
-  2283, "6 NOV 1391", "18 JAN 1425", # Edmund Mortimer, 5th Earl of March
+  2283, "10 DEC 1376", "JAN 1409", #   Edmund Mortimer (rebel)
   2284, "12 FEB 1371", "20 APR 1417", # Elizabeth Mortimer
   2285, "21 NOV 1375", "24 SEP 1401", # Philippa Mortimer
   2286, "20 MAY 1364", "21 JUL 1403", # Henry Percy / Hotspur
@@ -2106,7 +2114,7 @@ date_overrides <- tribble(
   2618, "1247", "28 JAN 1271", # Isabella of Aragon / Queen of France
   2619, "1290", "14 AUG 1315", # Margaret of Burgundy
   2620, "8 MAY 1326", "29 SEP 1360", # Joan of Boulogne
-  2624, "28 FEB 1823", "15 APR 1883", # Frederick Francis II of Mecklenburg-Schwerin; duplicate/identity match to personID 1213 likely
+  2624, NA, NA, # Frederick Francis II of Mecklenburg-Schwerin; duplicate/identity match to personID 1213 likely
   2629, "25 OCT 1931", "16 NOV 1937", # Ludwig of Hesse and by Rhine
   2630, "14 APR 1933", "16 NOV 1937", # Alexander of Hesse and by Rhine
   2631, "20 SEP 1936", "14 JUN 1939", # Johanna of Hesse and by Rhine
@@ -2967,7 +2975,7 @@ name_overrides <- tribble(
   2611, "Carloman I",
   2612, "Gerberga of the Lombards",
   2618, "Isabella of Aragon",
-  2624, "Frederick Francis II of Mecklenburg-Schwerin",
+ # 2624, "Frederick Francis II of Mecklenburg-Schwerin",
   2629, "Ludwig of Hesse and by Rhine",
   2630, "Alexander of Hesse and by Rhine",
   2631, "Johanna of Hesse and by Rhine",
@@ -3480,6 +3488,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2554 ~ "daughter of Charlemagne",
       personID == 2578 ~ "son of Charles the Bald",
       personID == 2584 ~ "King of West Francia",
+      personID == 2624 ~ NA_character_, # duplicate overwrite
       personID == 2632 ~ "Baron Geddes",
       personID %in%
         c(2634, 2875) ~ "Princess of Asturias",
@@ -3626,3 +3635,17 @@ royal92 %>%
   filter(n() > 1) %>%
   arrange(death_date, famID, last_name, personID) %>%
   print(n = 100)
+
+
+
+# deal with the mortimor mess Mortimer
+
+royal92 %>%
+  select(birth_date,death_date, personID, name, famID, momID, dadID, sex) %>%
+  mutate(
+    first_name = str_extract(name, "^[^ ]+"),
+    last_name = str_extract(name, "[^ ]+$"),
+  ) %>%
+  # look at people with Mortimer in their name
+  filter(str_detect(name, "Mortimer")==TRUE) %>%
+  arrange(birth_date, personID)

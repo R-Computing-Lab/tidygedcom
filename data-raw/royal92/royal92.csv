@@ -2278,10 +2278,10 @@ personID,momID,dadID,famID,twinID,name,sex,birth_date,death_date,title
 2277,NA,NA,1,NA,Thomas Holland,M,1350-06-15,1397-04-25,Earl of Kent
 2278,NA,NA,240,NA,Edward Charleton,M,1370-06-15,1421-03-14,Lord Cherleton
 2279,NA,NA,112,NA,Edmund Stafford,M,1378-03-02,1403-07-21,Earl of Stafford
-2280,1345,1344,1,NA,Roger Mortimer,M,1374-04-11,1398-07-20,Earl of March
+2280,1345,1344,1,NA,Roger Mortimer,M,1393-04-23,1409-06-15,Earl of March
 2281,1345,1344,1,NA,Eleanor Mortimer,F,1375-06-15,1405-06-15,NA
 2282,NA,NA,241,NA,Edward Courtenay,M,1357-06-15,1419-12-05,Sir
-2283,1348,1349,1,NA,Edmund Mortimer,M,1391-11-06,1425-01-18,Earl of March
+2283,1348,1349,1,NA,Edmund Mortimer,M,1376-12-10,1409-01-15,Earl of March
 2284,1348,1349,1,NA,Elizabeth Mortimer,F,1371-02-12,1417-04-20,NA
 2285,1348,1349,1,NA,Philippa Mortimer,F,1375-11-21,1401-09-24,NA
 2286,NA,NA,242,NA,Henry (Hotspur) Percy,M,1364-05-20,1403-07-21,NA
@@ -2622,7 +2622,7 @@ personID,momID,dadID,famID,twinID,name,sex,birth_date,death_date,title
 2621,NA,NA,320,NA,Magdalen of Hochstadten,F,1846-06-15,1917-06-15,Baroness
 2622,NA,NA,1,NA,William of Prussia,M,NA,NA,Prince
 2623,NA,NA,32,NA,John Loisinger,M,NA,NA,NA
-2624,NA,NA,321,NA,Frederick Francis II of Mecklenburg-Schwerin,M,1823-02-28,1883-04-15,Grand Duke
+2624,NA,NA,321,NA,TODO,U,1823-06-15,1883-06-15,NA
 2625,NA,2626,322,NA,Josephine of Lichtenberg,F,1857-06-15,1952-06-15,Baroness
 2626,NA,NA,322,NA,Philip Bender,M,NA,NA,NA
 2627,NA,NA,323,NA,Caroline of Nidda,F,1848-06-15,1879-06-15,Baroness
