@@ -33,6 +33,8 @@ standardize_partial_date <- function(x, default_day = "15",
 
 ## Add missing individuals and overwrite duplicates based on historical records and data cleaning needs; these are added to the raw data frame before processing to ensure that they are included in the final cleaned dataset and to maintain consistency in the data cleaning process. The `overwrite = TRUE` argument is used to ensure that any existing entries with the same `personID` are updated with the new information, which is crucial for correcting errors or filling in missing details in the original dataset.
 
+
+
 royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   addPersonToPed(
     personID = 128,
@@ -44,6 +46,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   )  %>%
   addPersonToPed(
     personID = 573, # duplicated William V of Orange
+    name =  "Robert I of France",
+    sex = "M",
+    momID = NA,
+    dadID =  NA,
+    overwrite = TRUE
+  ) %>%
+    addPersonToPed(
+    personID = 651, # duplicated Wilhelmina of Prussia
     name =  "TODO",
     sex = "U",
     momID = NA,
@@ -138,6 +148,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = NA,
     overwrite = TRUE
   ) %>%
+    addPersonToPed(
+    personID = 2065, # duplicated Katherine Swynford
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  ) %>%
   addPersonToPed(
     personID = 2070, # duplicated Edmund Stafford
     name = "TODO",
@@ -171,6 +189,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     overwrite = TRUE
   ) %>%
   addPersonToPed(
+    personID = 2325, # duplicated Margaret Audley
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  ) %>%
+    addPersonToPed(
     personID = 2326, # duplicated Thomas Howard
     name = "TODO",
     sex = "U",
@@ -216,6 +242,13 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = 2545,
     dadID = 2269,
     overwrite = TRUE
+  ) %>% addPersonToPed(
+    personID = 2585, # duplicated Eadgifu of England
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
   ) %>%
   addPersonToPed(
     personID = 2571,
@@ -257,6 +290,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = 465,
     overwrite = TRUE
   ) %>%
+      addPersonToPed(
+    personID = 2853, # duplicated William of Hesse-Cassel
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  ) %>%
   addPersonToPed(
     personID = 3009, # overwriting unnamed stillborn sibling of barbara cartland
     name = "Arnulf I of Flanders",
@@ -280,10 +321,12 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
       TRUE ~ NA_real_
     ),
     momID = case_when(
+      personID %in% c(565,2653,2655) ~ 571, # merging duplicate Wilhelmina of Prussia
       personID == 1295 ~ 1068, #merging duplicated Frederica
       personID == 1297 ~ 624,
       personID == 1282 ~ 1884,
       personID == 1988 ~ 2579, # judith of flanders
+      personID == 2604 ~ 1806, # Eadgifu
       personID == 2657 ~  200,
       TRUE ~ momID
     ),
@@ -291,9 +334,11 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
       personID == 1295 ~ 1067, #merging duplicate Frederick Eugene Wurttemberg
       personID == 1297 ~ 623,
       personID == 1596 ~ 2518, # merging Philip the Bolds
+      personID == 1812 ~ 573,
       personID == 1868 ~ 2300, # William IX of Aquitaine is the father of William X of Aquitaine
       personID == 1988 ~ 1970,
       personID == 2449 ~ 684, # mergin Joseph of Austria
+      personID == 2463 ~ 1812, # linking Hugh the Great to son
       personID == 2538 ~ 1051,
       personID == 2657 ~ 199,
       TRUE ~ dadID
@@ -326,6 +371,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
 # Create overrides for dates and names based on historical records and data cleaning needs
 #----
 
+# Create a tibble for date overrides
 date_overrides <- tribble(
   ~personID, ~birth_date_override, ~death_date_override,
   19, "14 JAN 1831", "12 MAY 1893", # George Victor of Waldeck
@@ -711,7 +757,7 @@ date_overrides <- tribble(
   570, "30 DEC 1747", "26 MAY 1767", # Frederick Henry Charles of Prussia
   571, "7 AUG 1751", "9 JUN 1820", # Wilhelmina of Prussia
   572, "30 OCT 1758", "15 FEB 1759", # George Charles Emil of Prussia
-  573, NA, NA_character_, # duplicate
+  573, "866", "15 JUN 923", # duplicate
   574, "16 JAN 1735", "28 NOV 1788", # Charles Christian of Nassau-Weilburg
   575, "28 FEB 1743", "6 MAY 1787", # Caroline of Orange-Nassau
   576, "25 OCT 1768", "9 JAN 1816", # Friedrich Wilhelm of Nassau-Weilburg
@@ -765,7 +811,7 @@ date_overrides <- tribble(
   648, "17 JUN 1869", "17 MAR 1955", # Aloys of Liechtenstein
   649, "16 AUG 1906", "13 NOV 1989", # Franz Joseph II of Liechtenstein
   650, "8 MAR 1748", "9 APR 1806", # William V of Orange
-  651, "7 AUG 1751", "9 JUN 1820", # Wilhelmina of Prussia
+  651, NA_character_,NA_character_, # Wilhelmina of Prussia
   653, "28 FEB 1797", "8 SEP 1881", # Frederick of the Netherlands
   659, "30 APR 1909", "20 MAR 2004", # Juliana of Netherlands
   660, "29 JUN 1911", "1 DEC 2004", # Bernhard of Lippe-Biesterfeld
@@ -1507,7 +1553,7 @@ date_overrides <- tribble(
   1802, "878", "920", # Ælfflæd, wife of Edward the Elder; approximate birth and death years
   1803, "904", "16 OCT 922", # Æthelweard, son of Edward the Elder
   1804, "902", "933", # Edwin, son of Edward the Elder
-  1806, "902", "26 DEC 955", # Eadgifu / Edgiva of Kent
+  1806, "902", "951", # Eadgifu of Wessex
   1808, "910", "26 JAN 937", # Eadhild / Edhilda, daughter of Edward the Elder
   1809, "910", "26 JAN 946", # Eadgyth / Edith of England, wife of Otto I
   1811, NA, NA, # duplicated Charles III the Simple, King of West Francia
@@ -1886,7 +1932,7 @@ date_overrides <- tribble(
   2321, "1500", "26 MAY 1552", # Anne Whorwood
   2322, "1520", "1563", # Elizabeth Talboys
   2323, "1548", "9 FEB 1604", # Anne Russell / Countess of Warwick
-  2325, "1540", "9 JAN 1564", # Margaret Audley
+  2325, NA, NA, # duplicated Margaret Audley
   2326,  NA, NA, # Thomas Howard, 4th Duke of Norfolk; likely duplicate
   2328, "20 JUL 1529", "5 MAY 1586", # Henry Sidney
   2329, "1535", "14 DEC 1595", # Henry Hastings, 3rd Earl of Huntingdon
@@ -1926,7 +1972,7 @@ date_overrides <- tribble(
   2368, "21 MAR 1557", "19 APR 1630", # Anne Dacre / Countess of Arundel
   2369, "7 JUL 1585", "4 OCT 1646", # Thomas Howard, Earl of Arundel
   2370, "1585", "3 JUN 1654", # Aletheia Talbot
-  2371, "1540", "9 JAN 1564", # Margaret Audley; likely duplicate/identity match to personID 2325
+  2371, "1540", "9 JAN 1564", # Margaret Audley
   2372, "24 AUG 1561", "28 MAY 1626", # Thomas Howard, 1st Earl of Suffolk
   2373, "4 JUL 1563", "7 APR 1578", # Mary Dacre; identity inferred from Suffolk/Howard branch
   2374, "1564", "25 DEC 1633", # Catherine Knyvett / Countess of Suffolk
@@ -2104,7 +2150,7 @@ date_overrides <- tribble(
   2582, "866", "6 DEC 884", # Carloman II of France
   2583, "850", "10 NOV 901", # Adelaide of Paris / Adelaide Judith
   2584, "17 SEP 879", "7 OCT 929", # Charles III the Simple
-  2585, "902", "26 DEC 955", # Eadgifu of England
+  2585, NA, NA, # duplicated Eadgifu of England
   2586, "830", "896", # Engelberga / Engeberge
   2587, "852", "22 JUN 896", # Ermengarde of Provence
   2588, "841", "11 JAN 887", # Boso of Provence
@@ -2255,7 +2301,7 @@ date_overrides <- tribble(
   2850, "19 OCT 1726", "8 AUG 1756", # Louise of Denmark and Norway / Duchess of Saxe-Hildburghausen
   2851, "10 JUN 1727", "23 SEP 1780", # Ernest Frederick III of Saxe-Hildburghausen
   2852, "24 JAN 1746", "29 MAR 1792", # Gustav III of Sweden
-  2853, "3 JUN 1743", "27 FEB 1821", # William I, Elector of Hesse-Cassel
+  2853, NA_character_,NA_character_, # duplicate William I, Elector of Hesse-Cassel
   2856, "1 SEP 1647", "1 JUL 1717", # Anne Sophie of Denmark
   2857, "11 APR 1649", "30 OCT 1704", # Frederica Amalia of Denmark
   2858, "11 SEP 1656", "26 JUL 1693", # Ulrika Eleonora of Denmark / Queen of Sweden
@@ -2385,7 +2431,6 @@ date_overrides <- tribble(
 
 # 2359 likely duplicates Thomas Howard, 4th Duke of Norfolk, already represented at personID == 2326.
 
-# 2371 likely duplicates Margaret Audley already represented at personID == 2325.
 
 # 2384 has a title/name mismatch. The row name fits William Cecil, 2nd Earl of Salisbury, but the current title says Berkshire.
 
@@ -2402,7 +2447,9 @@ date_overrides <- tribble(
 
 # 2964, 2965, and 2967 resolve the Greek/Yugoslav branch: Olga of Greece and Denmark, Prince Paul of Yugoslavia, and Elizabeth of Greece and Denmark.
 
-
+#----
+# Name overrides
+#----
 name_overrides <- tribble(
   ~personID, ~name_override,
   12, "Alexandra of Denmark (Alix)",
@@ -2577,7 +2624,7 @@ name_overrides <- tribble(
   640, "Otto Franz of Austria",
   641, "Elisabeth Amalie of Austria",
   646, "Karl Ludwig of Austria",
-  651, "Wilhelmina of Prussia",
+#  651, "Wilhelmina of Prussia",
   653, "Frederick of the Netherlands",
   673, "Gyula Apponyi de Nagy-Appony",
   675, "Geraldine of Albania",
@@ -2656,7 +2703,7 @@ name_overrides <- tribble(
   1801, "Sihtric Cáech",
   1802, "Ælfflæd",
   1803, "Æthelweard",
-  1806, "Eadgifu of Kent",
+  1806, "Eadgifu of Wessex",
   1808, "Eadhild",
   1809, "Eadgyth of England",
   1814, "Boleslaus II",
@@ -3169,6 +3216,10 @@ name_overrides <- tribble(
   2998, "Anthony Cartland"
 )
 
+#----
+# Pipeline to clean up the royal92 pedigree data
+#----
+
 # Convert the pedigree data to a tidy format and clean it up
 royal92 <- ped2fam(royal92, personID = "personID") %>%
   select(
@@ -3361,6 +3412,7 @@ royal92_cleaned <- royal92 %>%
         ) ~ "Earl of Gloucester",
       personID %in%
         c(1706, 2162, 2789) ~ "Captain",
+      personID  == 1736 ~ "Elector of Hesse-Cassel",
       personID == 1802 ~ "wife of Edward the Elder",
       personID == 1804 ~ "son of Edward the Elder",
       personID == 1811 ~ NA_character_,
@@ -3530,7 +3582,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2829 ~ "Princess of Denmark",
       personID == 2832 ~ "Countess",
       personID == 2850 ~ "Duchess of Saxe-Hildburghausen",
-      personID == 2853 ~ "Elector of Hesse-Cassel",
+      personID == 2853 ~ NA_character_, # duplicate overwrite
       personID == 2867 ~ "Duke of Ross",
       personID == 2868 ~ "Earl of Mar and Garioch",
       personID == 2869 ~ "Earl of Carrick",
