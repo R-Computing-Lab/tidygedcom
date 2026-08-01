@@ -367,6 +367,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
         1755,
         1756,
         1803,
+        1970,
         2033,
         2509,
         2990,
@@ -3666,15 +3667,8 @@ if (FALSE) {
     group_by(famID) %>%
     group_split()
 
-  royal92_trimmed1 <-
-    royal92_famid[[1]] %>% trimPedigree(
-      personID = "personID",
-      momID = "momID",
-      dadID = "dadID",
-      max_iter = 2
-    )
 
-  ggped <- ggPedigreeInteractive(royal92_trimmed1,
+    ggped_full <- ggPedigreeInteractive(royal92_famid[[1]],
     personID = "personID",
     momID = "momID",
     dadID = "dadID",
@@ -3688,6 +3682,42 @@ if (FALSE) {
     ),
     tooltip_columns = c("personID", "name", "title", "birth_date", "death_date")
   )
+
+htmlwidgets::saveWidget(
+ ggped_full,
+ file = "data_raw/ggped_full.html",
+  selfcontained = TRUE
+)
+
+  royal92_trimmed1 <-
+    royal92_famid[[1]] %>% trimPedigree(
+      personID = "personID",
+      momID = "momID",
+      dadID = "dadID",
+      max_iter = 2
+    )
+
+  ggped_trimmed1 <- ggPedigreeInteractive(royal92_trimmed1,
+    personID = "personID",
+    momID = "momID",
+    dadID = "dadID",
+    twinID = "twinID",
+    config = list(
+      code_male = "M",
+      code_female = "F",
+      add_phantoms = TRUE,
+      ped_packed = TRUE,
+      ped_align = TRUE
+    ),
+    tooltip_columns = c("personID", "name", "title", "birth_date", "death_date")
+  )
+
+htmlwidgets::saveWidget(
+ ggped_trimmed1,
+ file = "data_raw/ggped_trimmed1.html",
+  selfcontained = TRUE
+)
+
 }
 
 royal92 %>%

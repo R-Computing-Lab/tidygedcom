@@ -1968,7 +1968,7 @@ personID,momID,dadID,famID,twinID,name,sex,birth_date,death_date,title
 1967,NA,1976,1,NA,Osburh,F,NA,846-06-15,NA
 1968,1967,1966,1,NA,Æthelstan of Kent,M,825-06-15,852-06-15,NA
 1969,1967,1966,1,NA,Æthelbald of Wessex,M,834-06-15,860-12-20,King of Wessex
-1970,NA,NA,1,NA,Baldwin I of Flanders,F,830-06-15,879-06-15,NA
+1970,NA,NA,1,NA,Baldwin I of Flanders,M,830-06-15,879-06-15,NA
 1971,1967,1966,1,NA,Æthelberht of Wessex,M,835-06-15,865-06-15,King of Wessex
 1972,1967,1966,1,NA,Æthelred I of Wessex,M,847-06-15,871-04-15,King of Wessex
 1973,NA,2054,1,NA,Egbert of Wessex,M,771-06-15,839-06-15,King of Wessex
