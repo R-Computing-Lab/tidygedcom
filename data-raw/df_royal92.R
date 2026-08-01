@@ -41,6 +41,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = 1370,
     dadID = 873,
     overwrite = TRUE
+  )  %>%
+  addPersonToPed(
+    personID = 573, # duplicated William V of Orange
+    name =  "TODO",
+    sex = "U",
+    momID = NA,
+    dadID =  NA,
+    overwrite = TRUE
   ) %>%
   addPersonToPed(
     personID = 914, # overwriting duplicates
@@ -163,6 +171,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     overwrite = TRUE
   ) %>%
   addPersonToPed(
+    personID = 2326, # duplicated Thomas Howard
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  ) %>%
+  addPersonToPed(
     personID = 2336, # duplicated Anne Dacre
     name = "Isambart the Saxon",
     sex = "M",
@@ -172,6 +188,13 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   )  %>%
   addPersonToPed(
     personID = 2344, # duplicated Anne of York
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  ) %>%  addPersonToPed(
+    personID = 2450, # duplicated Joseph of Austria
     name = "TODO",
     sex = "U",
     momID = NA,
@@ -270,6 +293,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
       personID == 1596 ~ 2518, # merging Philip the Bolds
       personID == 1868 ~ 2300, # William IX of Aquitaine is the father of William X of Aquitaine
       personID == 1988 ~ 1970,
+      personID == 2449 ~ 684, # mergin Joseph of Austria
       personID == 2538 ~ 1051,
       personID == 2657 ~ 199,
       TRUE ~ dadID
@@ -687,7 +711,7 @@ date_overrides <- tribble(
   570, "30 DEC 1747", "26 MAY 1767", # Frederick Henry Charles of Prussia
   571, "7 AUG 1751", "9 JUN 1820", # Wilhelmina of Prussia
   572, "30 OCT 1758", "15 FEB 1759", # George Charles Emil of Prussia
-  573, "8 MAR 1748", "9 APR 1806", # William V of Orange
+  573, NA, NA_character_, # duplicate
   574, "16 JAN 1735", "28 NOV 1788", # Charles Christian of Nassau-Weilburg
   575, "28 FEB 1743", "6 MAY 1787", # Caroline of Orange-Nassau
   576, "25 OCT 1768", "9 JAN 1816", # Friedrich Wilhelm of Nassau-Weilburg
@@ -1863,7 +1887,7 @@ date_overrides <- tribble(
   2322, "1520", "1563", # Elizabeth Talboys
   2323, "1548", "9 FEB 1604", # Anne Russell / Countess of Warwick
   2325, "1540", "9 JAN 1564", # Margaret Audley
-  2326, "10 MAR 1538", "2 JUN 1572", # Thomas Howard, 4th Duke of Norfolk; source conflict on 1536/1538, selected Britannica date
+  2326,  NA, NA, # Thomas Howard, 4th Duke of Norfolk; likely duplicate
   2328, "20 JUL 1529", "5 MAY 1586", # Henry Sidney
   2329, "1535", "14 DEC 1595", # Henry Hastings, 3rd Earl of Huntingdon
   2330, "7 JUN 1532", "8 SEP 1560", # Amy Robsart
@@ -1965,7 +1989,7 @@ date_overrides <- tribble(
   2445, "25 MAY 1906", "9 MAR 1997", # Alice Soares de Toledo / Alice de Toledo
   2448, "15 JUL 1750", "9 DEC 1806", # Francis Frederick of Saxe-Coburg-Saalfeld
   2449, "23 AUG 1836", "19 SEP 1902", # Maria Henrietta of Austria / Queen of the Belgians
-  2450, "9 MAR 1776", "13 JAN 1847", # Joseph of Austria, Palatine of Hungary
+  2450, NA, NA, # duplicated
   2452, "1 DEC 1081", "1 AUG 1137", # Louis VI the Fat of France
   2453, "1092", "18 NOV 1154", # Adelaide of Savoy / Maurienne
   2454, "23 MAY 1052", "29 JUL 1108", # Philip I of France
@@ -2949,7 +2973,6 @@ name_overrides <- tribble(
   2567, "Louis II the Younger",
   2568, "Lothair II of Lorraine",
   2569, "Charles of Provence",
-
   2572, "Carloman of Bavaria",
   2573, "Louis the Younger",
   2575, "Ermentrude of Orléans",
@@ -2975,7 +2998,6 @@ name_overrides <- tribble(
   2611, "Carloman I",
   2612, "Gerberga of the Lombards",
   2618, "Isabella of Aragon",
- # 2624, "Frederick Francis II of Mecklenburg-Schwerin",
   2629, "Ludwig of Hesse and by Rhine",
   2630, "Alexander of Hesse and by Rhine",
   2631, "Johanna of Hesse and by Rhine",
@@ -3435,11 +3457,13 @@ royal92_cleaned <- royal92 %>%
       personID %in%
         c(2319, 2323) ~ "Countess of Warwick",
       personID %in%
-        c(2326, 2341, 2343, 2359) ~ "Duke of Norfolk",
+        c(2326) ~ NA_character_, # duplicate overwrite
       personID == 2334 ~ "Countess of Derby",
       personID %in%
         c(2335, 2353) ~ "Earl of Derby",
       personID == 2338 ~ "Viscount Rochford",
+      personID %in%
+        c(2341, 2343, 2359) ~ "Duke of Norfolk",
       personID %in% c(2345, 2366) ~ "Duchess of Norfolk",
       personID == 2348 ~ "Baron Howard of Effingham",
       personID == 2354 ~ "Earl of Sussex",
@@ -3474,7 +3498,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2432 ~ "Empress",
       personID == 2435 ~ "Duke of Leuchtenberg",
       personID == 2436 ~ "Duchess of Leuchtenberg",
-      personID == 2450 ~ "Palatine of Hungary",
+      personID == 2450 ~ NA_character_, # duplicate overwrite
       personID == 2469 ~ "son of Louis VI",
       personID == 2472 ~ "Bishop of Rouen",
       personID == 2483 ~ "Count of Provence",
@@ -3621,8 +3645,17 @@ royal92 %>%
   ) %>%
   arrange(desc(famID),last_name, personID)
 
-## 78 1475-11-02 1511-11-23     1004 Anne                                 1   998   991 F     Anne       Anne
-# 79 1475-11-02 1511-11-23     2344 Anne of York                       266    NA    NA F     Anne       York
+# deal with the mortimor mess Mortimer
+
+royal92 %>%
+  select(birth_date,death_date, personID, name, famID, momID, dadID, sex) %>%
+  mutate(
+    first_name = str_extract(name, "^[^ ]+"),
+    last_name = str_extract(name, "[^ ]+$"),
+  ) %>%
+  # look at people with Mortimer in their name
+  filter(str_detect(name, "Mortimer")==TRUE) %>%
+  arrange(birth_date, personID)
 
 royal92 %>%
   select(birth_date,death_date, personID, name, famID, momID, dadID, sex) %>%
@@ -3638,14 +3671,4 @@ royal92 %>%
 
 
 
-# deal with the mortimor mess Mortimer
 
-royal92 %>%
-  select(birth_date,death_date, personID, name, famID, momID, dadID, sex) %>%
-  mutate(
-    first_name = str_extract(name, "^[^ ]+"),
-    last_name = str_extract(name, "[^ ]+$"),
-  ) %>%
-  # look at people with Mortimer in their name
-  filter(str_detect(name, "Mortimer")==TRUE) %>%
-  arrange(birth_date, personID)
