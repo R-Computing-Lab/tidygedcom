@@ -1437,7 +1437,7 @@ personID,momID,dadID,famID,twinID,name,sex,birth_date,death_date,title
 1436,2112,2109,1,NA,William Seymour,M,1588-06-15,1660-10-24,Duke Sommerset
 1437,1328,1236,1,NA,Thomas Beaufort,M,NA,NA,Duke of Exeter
 1438,NA,639,1,NA,Franz Josef of Austria,M,1830-08-18,1916-11-21,Emperor
-1439,1196,1438,1,NA,Rudolf,M,1858-08-21,1889-01-30,Archduke
+1439,1196,1438,1,NA,Rudolf of Austria,M,1858-08-21,1889-01-30,Crown Prince of Austria
 1440,1196,1438,1,NA,Daughter 1,F,NA,NA,NA
 1441,1196,1438,1,NA,Daughter 2,F,NA,NA,NA
 1442,NA,NA,107,NA,Ferdinand Philippe Marie d'Orléans,M,1844-07-12,1910-06-29,duc d' Alencon
@@ -2286,7 +2286,7 @@ personID,momID,dadID,famID,twinID,name,sex,birth_date,death_date,title
 2285,1348,1349,1,NA,Philippa Mortimer,F,1375-11-21,1401-09-24,NA
 2286,NA,NA,238,NA,Henry (Hotspur) Percy,M,1364-05-20,1403-07-21,NA
 2287,NA,NA,239,NA,Thomas de Camoys,M,1351-06-15,1421-03-28,Lord Camoys
-2288,NA,NA,240,NA,John Hastings,M,1347-08-29,1375-04-16,Earl of Pembroke
+2288,NA,NA,240,NA,TODO,U,NA,NA,NA
 2289,NA,NA,241,NA,Richard FitzAlan,M,1346-06-15,1397-09-21,Earl of Arundel
 2290,NA,NA,242,NA,Thomas of Basing Poynings,M,1350-06-15,1429-03-07,Lord St John
 2291,NA,NA,103,NA,Charles IV,M,1316-05-14,1378-11-29,Holy Roman Emperor
@@ -2903,7 +2903,7 @@ personID,momID,dadID,famID,twinID,name,sex,birth_date,death_date,title
 2902,2449,1698,1,NA,Stéphanie of Belgium,F,1864-05-21,1945-08-23,NA
 2903,2449,1698,1,NA,Clémentine of Belgium,F,1872-07-30,1955-03-08,NA
 2904,NA,NA,385,NA,Victor,M,1862-07-18,1926-05-03,Prince Napoléon
-2905,NA,NA,386,NA,Rudolph of Austria,M,1858-08-21,1889-01-30,Crown Prince of Austria
+2905,NA,NA,386,NA,TODO,U,1858-06-15,1889-06-15,NA
 2906,NA,NA,387,NA,Elemér Lónyay,M,1863-08-24,1946-07-29,Prince Lonyai
 2907,NA,NA,388,NA,Philipp of Saxe-Coburg and Gotha,M,1844-03-28,1921-07-03,Prince
 2908,NA,NA,389,NA,Sophia,F,1760-06-15,1776-06-15,NA
@@ -2988,11 +2988,11 @@ personID,momID,dadID,famID,twinID,name,sex,birth_date,death_date,title
 2987,NA,NA,19,NA,Harold McCorquodale,M,NA,NA,NA
 2988,NA,NA,19,NA,Gracie,F,NA,NA,NA
 2989,806,2986,19,NA,Ian McCorquodale,M,1937-10-11,NA,NA
-2990,243,2985,19,NA,William Legge,M,NA,NA,NA
-2991,243,2985,19,NA,Rupert Legge,M,NA,NA,NA
-2992,243,2985,19,NA,Charlotte Legge,F,NA,NA,NA
-2993,243,2985,19,NA,Henry Legge,M,NA,NA,NA
-2994,NA,NA,19,NA,Humphrey Legge,M,NA,NA,Hon.
+2990,243,2985,19,NA,William Legge,M,1949-09-23,NA,NA
+2991,243,2985,19,NA,Rupert Legge,M,1951-01-01,NA,NA
+2992,243,2985,19,NA,Charlotte Legge,F,1963-07-16,NA,NA
+2993,243,2985,19,NA,Henry Legge,M,1968-12-28,NA,NA
+2994,NA,NA,19,NA,Humphrey Legge,M,1888-03-14,1962-10-16,8th Earl of Dartmouth
 2995,3008,3007,19,NA,Bertram Cartland,M,1876-01-03,1917-05-27,Major
 2996,2999,3002,19,NA,Mary Hamilton (Polly) Scobell,F,1877-09-05,1976-06-15,NA
 2997,2996,2995,19,NA,Ronald Cartland,M,1907-01-03,1940-05-30,NA

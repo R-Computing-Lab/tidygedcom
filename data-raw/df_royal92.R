@@ -203,6 +203,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = NA,
     overwrite = TRUE
   ) %>%
+    tidygedcom::addPersonToPed(
+    personID = 2288, # duplicated John Hastings
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  ) %>%
   tidygedcom::addPersonToPed(
     personID = 2300, # overwriting duplicated John Neville
     name = "William IX of Aquitaine",
@@ -357,6 +365,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   ) %>%
   tidygedcom::addPersonToPed(
     personID = 2853, # duplicated William of Hesse-Cassel
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  ) %>%
+    tidygedcom::addPersonToPed(
+    personID = 2905, # duplicated Rudolph of Austria
     name = "TODO",
     sex = "U",
     momID = NA,
@@ -1972,7 +1988,7 @@ date_overrides <- tribble(
   2285, "21 NOV 1375", "24 SEP 1401", # Philippa Mortimer
   2286, "20 MAY 1364", "21 JUL 1403", # Henry Percy / Hotspur
   2287, "1351", "28 MAR 1421", # Thomas de Camoys
-  2288, "29 AUG 1347", "16 APR 1375", # John Hastings, Earl of Pembroke; duplicate/identity match to personID 1417 likely
+  2288, NA, NA, # John Hastings, Earl of Pembroke; duplicate/identity match to personID 1417 likely
   2289, "1346", "21 SEP 1397", # Richard FitzAlan, Earl of Arundel
   2290, "1350", "7 MAR 1429", # Thomas Poynings, Lord St John; identity should be checked
   2291, "14 MAY 1316", "29 NOV 1378", # Charles IV, Holy Roman Emperor
@@ -2424,7 +2440,7 @@ date_overrides <- tribble(
   2902, "21 MAY 1864", "23 AUG 1945", # Stéphanie of Belgium
   2903, "30 JUL 1872", "8 MAR 1955", # Clémentine of Belgium
   2904, "18 JUL 1862", "3 MAY 1926", # Victor, Prince Napoléon
-  2905, "21 AUG 1858", "30 JAN 1889", # Rudolf, Crown Prince of Austria
+  2905, NA, NA, # duplicate/identity match to personID 1439 likely
   2906, "24 AUG 1863", "29 JUL 1946", # Elemér Lónyay
   2907, "28 MAR 1844", "3 JUL 1921", # Philipp of Saxe-Coburg and Gotha
   2909, "6 DEC 1820", "20 DEC 1904", # Alexandrine of Baden
@@ -2479,6 +2495,11 @@ date_overrides <- tribble(
   2976, "27 SEP 1763", "4 JUL 1814", # Emich Carl of Leiningen
   2984, "20 APR 1898", "12 NOV 1964", # Alexander / Sachie McCorquodale
   2985, "26 APR 1924", "14 DEC 1997", # Gerald Legge
+  2990, "23 SEP 1949", NA_character_, # William Legge
+  2991, "1 JAN 1951", NA_character_, # Rupert Legge; living
+  2992, "16 JUL 1963", NA_character_, # Lady Charlotte Legge; living
+  2993, "28 DEC 1968", NA_character_, # Henry Legge; living
+  2994, "14 MAR 1888", "16 OCT 1962", # "Humphry Legge, 8th Earl of Dartmouth"
   2995, "3 JAN 1876", "27 MAY 1917", # Bertram Cartland / Bertie Cartland
   2996, "5 SEP 1877", "1976", # Mary Hamilton (Polly) Scobell
   2997, "3 JAN 1907", "30 MAY 1940", # Ronald Cartland
@@ -2499,7 +2520,6 @@ date_overrides <- tribble(
 # 2215 has a current death-year pattern that may not match the most likely identification as Murchad mac Diarmata; I included the date data and flagged the identity concern.
 
 
-# 2288 likely duplicates John Hastings already represented at personID == 1417.
 
 # 2359 likely duplicates Thomas Howard, 4th Duke of Norfolk, already represented at personID == 2326.
 
@@ -2753,6 +2773,7 @@ name_overrides <- tribble(
   1387, "Adeliza",
   1407, "Paul Romanovsky-Ilyinsky",
   1419, "Charles Frederick of Schleswig-Holstein-Gottorp",
+  1439, "Rudolf of Austria",
   1442, "Ferdinand Philippe Marie d'Orléans",
   1512, "Margaret of Scotland",
   1515, "David I of Scotland",
@@ -3449,7 +3470,7 @@ royal92_cleaned <- royal92 %>%
       ) ~ "Earl of Leicester",
       personID %in% c(
         876, 1883,
-        2217, 2288, 2332
+        2217,  2332
       ) ~ "Earl of Pembroke",
       personID == 877 ~ "Crown Prince of Yugoslavia",
       personID %in%
@@ -3463,6 +3484,7 @@ royal92_cleaned <- royal92 %>%
       personID %in%
         c(1373, 1867) ~ "Count of Poitiers",
       personID == 1385 ~ "Abbess",
+      personID == 1439 ~ "Crown Prince of Austria",
       personID %in%
         c(
           1473, 1476,
@@ -3559,6 +3581,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2270 ~ "Count of Saint-Pol",
       personID == 2271 ~ "Earl Rivers",
       personID == 2278 ~ "Lord Cherleton",
+      personID == 2288 ~ NA_character_,
       personID == 2289 ~ "Earl of Arundel",
       personID == 2290 ~ "Lord St John",
       personID == 2292 ~ "Duke of Exeter",
@@ -3611,6 +3634,7 @@ royal92_cleaned <- royal92 %>%
       personID %in%
         c(2403, 2963) ~ "Lady",
       personID == 2407 ~ "Earl of Banbury",
+
       personID == 2414 ~ "Lord Offaly",
       personID %in%
         c(
@@ -3667,7 +3691,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2893 ~ "Duke of Savoy",
       personID == 2900 ~ "Duke of Vendôme",
       personID == 2904 ~ "Prince Napoléon",
-      personID == 2905 ~ "Crown Prince of Austria",
+      personID == 2905 ~ NA_character_, # duplicate overwrite,
       personID %in%
         c(2914, 2915) ~ "Duchess of Montpensier",
       personID == 2916 ~ "Duchess of Orléans",
@@ -3683,6 +3707,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2956 ~ "Earl of Albemarle",
       personID == 2964 ~ "Princess of Yugoslavia",
       personID == 2965 ~ "Prince of Yugoslavia",
+      personID == 2994 ~ "8th Earl of Dartmouth",
       personID == 3009 ~ "Count of Flanders",
       TRUE ~ attribute_title
     ),
@@ -3723,9 +3748,11 @@ if (FALSE) {
   royal92_famid <- royal92 %>%
     group_by(famID) %>%
     group_split()
+# find 2nd largest family
+  family_sizes <- sapply(royal92_famid, nrow)
+  second_largest_family <- order(family_sizes, decreasing = TRUE)[2]
 
-
-  ggped_full <- ggPedigreeInteractive(royal92_famid[[1]],
+  ggped_full <- ggPedigreeInteractive(royal92_famid[[second_largest_family]],
     personID = "personID",
     momID = "momID",
     dadID = "dadID",
