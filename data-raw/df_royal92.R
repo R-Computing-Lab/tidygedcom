@@ -341,16 +341,16 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   ) %>%
   tidygedcom::addPersonToPed(
     personID = 2689, # duplicated Frederick Eugene of Württemberg
-    name = "TODO",
-    sex = "U",
+    name = "Eleanor of Lancaster",
+    sex = "F",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
     personID = 2690, # duplicated Frederica
-    name = "TODO",
-    sex = "U",
+    name = "Richard Fitzalan",
+    sex = "M",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
@@ -365,10 +365,10 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   ) %>%
   tidygedcom::addPersonToPed(
     personID = 2853, # duplicated William of Hesse-Cassel
-    name = "TODO",
-    sex = "U",
-    momID = NA,
-    dadID = NA,
+    name = "Joan Fitzalan",
+    sex = "F",
+    momID = 2689,
+    dadID = 2690,
     overwrite = TRUE
   ) %>%
     tidygedcom::addPersonToPed(
@@ -407,6 +407,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
       personID == 1295 ~ 1068, # merging duplicated Frederica
       personID == 1297 ~ 624,
       personID == 1282 ~ 1884,
+      personID == 1343 ~ 2853, # Joan Fitzalan
       personID == 1614 ~ 1139, # merging Auguste Wittelsbachs
       personID == 1988 ~ 2579, # judith of flanders
       personID == 2463 ~ 1011, # linking Hugh Capet to mother ~
@@ -1813,7 +1814,7 @@ date_overrides <- tribble(
   2068, "13 JAN 1334", "29 MAY 1379", # Henry II of Castile
   2069, "25 MAR 1342", "16 JAN 1373", # Humphrey de Bohun, Earl of Hereford; date source sometimes gives 1341/1342
   2070, NA, NA, # Edmund Stafford, Earl of Stafford
-  2071, "15 AUG 1402", "10 JUL 1460", # Humphrey Stafford, Duke of Buckingham
+  2071, "1381", "2 SEP 1399", # Humphrey 2nd Earl of Buckingham
   2074, "1370", "24 SEP 1435", # Isabeau/Isabelle of Bavaria
   2079, "1409", "1449", # Margaret Beaufort, Countess of Devon
   2080, "1414", "3 FEB 1458", # Thomas Courtenay, Earl of Devon
@@ -2324,8 +2325,8 @@ date_overrides <- tribble(
   2686, "10 JUN 1894", "18 JUL 1918", # Igor Konstantinovich Romanov, Gregorian/New Style; Old Style birth = 29 MAY 1894
   2687, "4 NOV 1884", "16 OCT 1962", # Helen of Serbia / Jelena Petrovic-Njegos
   2688, "11 JUL 1844", "16 AUG 1921", # Peter I of Serbia; duplicate/identity match to personID 2530 likely
-  2689, NA_character_, NA_character_, #  duplicate/identity match to personID 1067 likely
-  2690, NA_character_, NA_character_, # Friederike Dorothea Sophia of Brandenburg-Schwedt; duplicate/identity match to personID 1068 likely
+  2689, "11 SEP 1318", 	"11 JAN 1372", #  duplicate/identity match to personID 1067 likely
+  2690, "1306", "24 JAN 1376", # Friederike Dorothea Sophia of Brandenburg-Schwedt; duplicate/identity match to personID 1068 likely
   2691, "29 NOV 1690", "16 MAR 1747", # Christian August of Anhalt-Zerbst
   2692, "24 OCT 1712", "30 MAY 1760", # Johanna Elisabeth of Holstein-Gottorp
   2693, "3 DEC 1908", "15 OCT 1980", # Peter of Greece and Denmark
@@ -2391,7 +2392,7 @@ date_overrides <- tribble(
   2850, "19 OCT 1726", "8 AUG 1756", # Louise of Denmark and Norway / Duchess of Saxe-Hildburghausen
   2851, "10 JUN 1727", "23 SEP 1780", # Ernest Frederick III of Saxe-Hildburghausen
   2852, "24 JAN 1746", "29 MAR 1792", # Gustav III of Sweden
-  2853, NA_character_, NA_character_, # duplicate William I, Elector of Hesse-Cassel
+  2853,  "1347", 	"7 APR 1419", # Joan Fitzalan, Countess of Hereford, duplicate William I, Elector of Hesse-Cassel
   2856, "1 SEP 1647", "1 JUL 1717", # Anne Sophie of Denmark
   2857, "11 APR 1649", "30 OCT 1704", # Frederica Amalia of Denmark
   2858, "11 SEP 1656", "26 JUL 1693", # Ulrika Eleonora of Denmark / Queen of Sweden
@@ -2901,7 +2902,7 @@ name_overrides <- tribble(
   2067, "John I of Castile",
   2068, "Henry II of Castile",
   2069, "Humphrey de Bohun",
-  2071, "Humphrey Stafford",
+  2071, "Humphrey 2nd Earl of Buckingham",
   2074, "Isabeau of Bavaria",
   2096, "Humphrey Stafford",
   2099, "Thomas Boleyn",
@@ -3545,7 +3546,7 @@ royal92_cleaned <- royal92 %>%
         c(2058, 2277) ~ "Earl of Kent",
       personID == 2059 ~ "Earl of Ulster",
       personID == 2070 ~ NA_character_,
-      personID == 2071 ~ "Duke of Buckingham",
+      personID == 2071 ~ "Earl of Buckingham",
       personID == 2079 ~ "Countess of Devon",
       personID == 2080 ~ "Earl of Devon",
       personID %in%
@@ -3670,14 +3671,14 @@ royal92_cleaned <- royal92 %>%
       personID == 2657 ~ "Princess of the Netherlands",
       personID == 2682 ~ NA_character_, # duplicate overwrite
       personID == 2689 ~ NA_character_, # duplicate overwrite
-      personID == 2690 ~ NA_character_, # duplicate overwrite
+      personID == 2690 ~ "3rd Earl of Arundel", # duplicate overwrite
       personID == 2731 ~ "Princess of Sweden",
       personID == 2770 ~ "Count of Wisborg",
       personID == 2771 ~ "Duke of Närke; Prince of Sweden",
       personID == 2829 ~ "Princess of Denmark",
       personID == 2832 ~ "Countess",
       personID == 2850 ~ "Duchess of Saxe-Hildburghausen",
-      personID == 2853 ~ NA_character_, # duplicate overwrite
+      personID == 2853 ~ "Countess of Hereford", # duplicate overwrite
       personID == 2867 ~ "Duke of Ross",
       personID == 2868 ~ "Earl of Mar and Garioch",
       personID == 2869 ~ "Earl of Carrick",
