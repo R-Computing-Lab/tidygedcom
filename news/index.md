@@ -1,5 +1,10 @@
 # Changelog
 
+## tidygedcom 0.2.0
+
+- Transferred addPersonToPed from BGmisc to tidygedcom.
+- Removed multiple duplicated people from Royal92
+
 ## tidygedcom 0.1.0
 
 - Initial CRAN submission.

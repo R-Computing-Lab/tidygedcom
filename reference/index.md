@@ -2,6 +2,8 @@
 
 ## All functions
 
+- [`addPersonToPed()`](https://r-computing-lab.github.io/tidygedcom/reference/addPersonToPed.md)
+  : addPersonToPed
 - [`applyTagMappings()`](https://r-computing-lab.github.io/tidygedcom/reference/applyTagMappings.md)
   : Apply Tag Mappings to a Line
 - [`convertGedcomCoords()`](https://r-computing-lab.github.io/tidygedcom/reference/convertGedcomCoords.md)

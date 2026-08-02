@@ -550,8 +550,8 @@ library(BGmisc)
 #> Attaching package: 'BGmisc'
 #> The following objects are masked from 'package:tidygedcom':
 #> 
-#>     buildTreeGrid, getWikiTreeSummary, readGed, readgedcom, readGedcom,
-#>     readWikifamilytree, royal92, traceTreePaths
+#>     addPersonToPed, buildTreeGrid, getWikiTreeSummary, readGed,
+#>     readgedcom, readGedcom, readWikifamilytree, royal92, traceTreePaths
 
 ped <- readGedcom(tmp_ged, verbose = FALSE)
 
