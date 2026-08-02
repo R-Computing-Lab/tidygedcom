@@ -1009,7 +1009,7 @@ personID,momID,dadID,famID,twinID,name,sex,birth_date,death_date,title
 1008,NA,NA,68,NA,John 1st Welles,M,1450-06-15,1499-02-09,Viscount Welles
 1009,NA,NA,69,NA,Thomas of Isle of Wight Kyme,M,NA,NA,NA
 1010,NA,NA,70,NA,Anne Mowbray,F,1472-12-10,1481-11-19,Lady
-1011,NA,NA,71,NA,Thomas 3rd Howard,M,1473-06-15,1554-08-25,Duke of Norfolk
+1011,NA,NA,71,NA,TODO,U,NA,NA,Duke of Norfolk
 1012,NA,NA,72,NA,William Courtenay,M,1475-06-15,1511-06-09,Earl of Devon
 1013,NA,NA,1,NA,John Grey,M,1432-06-15,1461-02-17,Sir
 1014,998,1013,1,NA,Son Grey,M,1461-06-15,NA,NA

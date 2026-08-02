@@ -22,7 +22,7 @@ standardize_partial_date <- function(x, default_day = "15",
                                      default_month = "JUN") {
   case_when(
     str_length(x) == 0 ~ NA_character_,
-    str_length(x) %in% c(3, 4, 7, 8) ~ tidygedcom:::imputePartialDates(x,default_day=default_day, default_month=default_month),
+    str_length(x) %in% c(3, 4, 7, 8) ~ tidygedcom:::imputePartialDates(x, default_day = default_day, default_month = default_month),
     TRUE ~ x
   ) %>%
     str_trim() %>%
@@ -34,7 +34,6 @@ standardize_partial_date <- function(x, default_day = "15",
 ## Add missing individuals and overwrite duplicates based on historical records and data cleaning needs; these are added to the raw data frame before processing to ensure that they are included in the final cleaned dataset and to maintain consistency in the data cleaning process. The `overwrite = TRUE` argument is used to ensure that any existing entries with the same `personID` are updated with the new information, which is crucial for correcting errors or filling in missing details in the original dataset.
 
 
-
 royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   tidygedcom::addPersonToPed(
     personID = 128,
@@ -43,21 +42,21 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = 1370,
     dadID = 873,
     overwrite = TRUE
-  )  %>%
+  ) %>%
   tidygedcom::addPersonToPed(
     personID = 573, # duplicated William V of Orange
-    name =  "Robert I of France",
+    name = "Robert I of France",
     sex = "M",
     momID = NA,
-    dadID =  NA,
+    dadID = NA,
     overwrite = TRUE
   ) %>%
-    tidygedcom::addPersonToPed(
+  tidygedcom::addPersonToPed(
     personID = 651, # duplicated Wilhelmina of Prussia
-    name =  "TODO",
+    name = "TODO",
     sex = "U",
     momID = NA,
-    dadID =  NA,
+    dadID = NA,
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
@@ -77,13 +76,21 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
+    personID = 1011, # duplicated Thomas 3rd Howard
+    name = "TODO",
+    sex = "U",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  ) %>%
+  tidygedcom::addPersonToPed(
     personID = 1051, # overwriting duplicated Andreas, is already 911
     name = "Louis II of Anjou",
     sex = "M",
     momID = NA_integer_,
     dadID = 1125,
     overwrite = TRUE
-  )  %>%
+  ) %>%
   tidygedcom::addPersonToPed(
     personID = 1125, # overwriting duplicated Jean of Luxembourg
     name = "Louis I of Anjou",
@@ -99,7 +106,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = 1370,
     dadID = 873,
     overwrite = TRUE
-  )  %>%
+  ) %>%
   tidygedcom::addPersonToPed(
     personID = 1298,
     name = "Konstantin Pavlovich Romanov",
@@ -116,15 +123,15 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = 1881,
     overwrite = TRUE
   ) %>%
-    tidygedcom::addPersonToPed(
+  tidygedcom::addPersonToPed(
     personID = 1811, # duplicated Charles the simple
     name = "TODO",
     sex = "U",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
-  )%>%
-    tidygedcom::addPersonToPed(
+  ) %>%
+  tidygedcom::addPersonToPed(
     personID = 1813, # duplicated Otto I the Great
     name = "TODO",
     sex = "U",
@@ -148,7 +155,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = NA,
     overwrite = TRUE
   ) %>%
-    tidygedcom::addPersonToPed(
+  tidygedcom::addPersonToPed(
     personID = 2065, # duplicated Katherine Swynford
     name = "TODO",
     sex = "U",
@@ -172,7 +179,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = 235,
     overwrite = TRUE
   ) %>%
-    tidygedcom::addPersonToPed(
+  tidygedcom::addPersonToPed(
     personID = 2217, # duplicated William Marshal
     name = "TODO",
     sex = "U",
@@ -204,7 +211,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = NA,
     overwrite = TRUE
   ) %>%
-    tidygedcom::addPersonToPed(
+  tidygedcom::addPersonToPed(
     personID = 2326, # duplicated Thomas Howard
     name = "TODO",
     sex = "U",
@@ -219,7 +226,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = NA,
     dadID = NA,
     overwrite = TRUE
-  )  %>%
+  ) %>%
   tidygedcom::addPersonToPed(
     personID = 2344, # duplicated Anne of York
     name = "TODO",
@@ -227,21 +234,23 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = NA,
     dadID = NA,
     overwrite = TRUE
-  ) %>%  tidygedcom::addPersonToPed(
+  ) %>%
+  tidygedcom::addPersonToPed(
     personID = 2436, # duplicated Franz Karl of Austria
     name = "TODO",
     sex = "U",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
-  ) %>%  tidygedcom::addPersonToPed(
+  ) %>%
+  tidygedcom::addPersonToPed(
     personID = 2437, # duplicated Auguste Wittelsbach
     name = "TODO",
     sex = "U",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
-  )  %>%
+  ) %>%
   tidygedcom::addPersonToPed(
     personID = 2450, # duplicated Joseph of Austria
     name = "TODO",
@@ -250,7 +259,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = NA,
     overwrite = TRUE
   ) %>%
-    tidygedcom::addPersonToPed(
+  tidygedcom::addPersonToPed(
     personID = 2512, # duplicated Désirée Clary
     name = "TODO",
     sex = "U",
@@ -273,7 +282,8 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = 2545,
     dadID = 2269,
     overwrite = TRUE
-  ) %>% tidygedcom::addPersonToPed(
+  ) %>%
+  tidygedcom::addPersonToPed(
     personID = 2585, # duplicated Eadgifu of England
     name = "TODO",
     sex = "U",
@@ -288,15 +298,15 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = 2545,
     dadID = 2269,
     overwrite = TRUE
-  )  %>%
+  ) %>%
   tidygedcom::addPersonToPed(
     personID = 2624, # duplicated Frederick Francis II of Mecklenburg-Schwerin
-    name =  "TODO",
+    name = "TODO",
     sex = "U",
     momID = NA,
-    dadID =  NA,
+    dadID = NA,
     overwrite = TRUE
-  )  %>%
+  ) %>%
   tidygedcom::addPersonToPed(
     personID = 2689, # duplicated Frederick Eugene of Württemberg
     name = "TODO",
@@ -305,7 +315,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = NA,
     overwrite = TRUE
   ) %>%
-    tidygedcom::addPersonToPed(
+  tidygedcom::addPersonToPed(
     personID = 2690, # duplicated Frederica
     name = "TODO",
     sex = "U",
@@ -321,7 +331,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = 465,
     overwrite = TRUE
   ) %>%
-      tidygedcom::addPersonToPed(
+  tidygedcom::addPersonToPed(
     personID = 2853, # duplicated William of Hesse-Cassel
     name = "TODO",
     sex = "U",
@@ -352,14 +362,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
       TRUE ~ NA_real_
     ),
     momID = case_when(
-      personID %in% c(565,2653,2655) ~ 571, # merging duplicate Wilhelmina of Prussia
-      personID == 1295 ~ 1068, #merging duplicated Frederica
+      personID %in% c(565, 2653, 2655) ~ 571, # merging duplicate Wilhelmina of Prussia
+      personID == 1295 ~ 1068, # merging duplicated Frederica
       personID == 1297 ~ 624,
       personID == 1282 ~ 1884,
       personID == 1614 ~ 1139, # merging Auguste Wittelsbachs
       personID == 1988 ~ 2579, # judith of flanders
       personID == 2604 ~ 1806, # Eadgifu
-      personID == 2657 ~  200,
+      personID == 2657 ~ 200,
       TRUE ~ momID
     ),
     dadID = case_when(
@@ -377,7 +387,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
       personID == 2657 ~ 199,
       TRUE ~ dadID
     ),
-     sex = case_when(
+    sex = case_when(
       personID %in% c(
         235,
         1098,
@@ -846,7 +856,7 @@ date_overrides <- tribble(
   648, "17 JUN 1869", "17 MAR 1955", # Aloys of Liechtenstein
   649, "16 AUG 1906", "13 NOV 1989", # Franz Joseph II of Liechtenstein
   650, "8 MAR 1748", "9 APR 1806", # William V of Orange
-  651, NA_character_,NA_character_, # Wilhelmina of Prussia
+  651, NA_character_, NA_character_, # Wilhelmina of Prussia
   653, "28 FEB 1797", "8 SEP 1881", # Frederick of the Netherlands
   659, "30 APR 1909", "20 MAR 2004", # Juliana of Netherlands
   660, "29 JUN 1911", "1 DEC 2004", # Bernhard of Lippe-Biesterfeld
@@ -1029,7 +1039,7 @@ date_overrides <- tribble(
   1007, "10 NOV 1480", "1517", # Bridget of York; death year only
   1008, "1450", "9 FEB 1499", # John Welles, 1st Viscount Welles
   1010, "10 DEC 1472", "19 NOV 1481", # Anne Mowbray
-  1011, "1473", "25 AUG 1554", # Thomas Howard, 3rd Duke of Norfolk
+  1011, NA, NA, # Thomas Howard, 3rd Duke of Norfolk
   1012, "1475", "9 JUN 1511", # William Courtenay, 1st Earl of Devon
   1013, "1432", "17 FEB 1461", # John Grey of Groby
   1017, "25 DEC 1584", "3 OCT 1611", # Margaret of Austria, Queen of Spain
@@ -1060,7 +1070,7 @@ date_overrides <- tribble(
   1048, "1 JUN 1985", NA_character_, # Christian Heinrich of Hanover; living
   1049, "12 DEC 1962", "29 NOV 1988", # Isabella von Thurn und Valsassina; source conflict: another source gives 8 SEP 1962, selected 12 DEC 1962
   1050, "13 FEB 1988", NA_character_, # Otto Heinrich of Hanover; living
-  1051, "5 OCT 1377", "29 APR 1417" , # Louis II of Anjou
+  1051, "5 OCT 1377", "29 APR 1417", # Louis II of Anjou
   1052, "3 JUL 1933", "29 DEC 2022", # Maximilian / Max, Margrave of Baden
   1053, "9 APR 1882", "17 NOV 1945", # Frederick Francis IV of Mecklenburg-Schwerin
   1054, "16 APR 1940", NA_character_, # Margrethe II of Denmark; living
@@ -1122,7 +1132,7 @@ date_overrides <- tribble(
   1122, "15 SEP 1904", "18 MAR 1983", # Umberto II of Italy
   1123, "11 OCT 1927", "10 JAN 2005", # Josephine-Charlotte of Belgium
   1124, "6 JUN 1934", NA_character_, # Albert II of Belgium; living
-  1125, "23 JUL 1339", "20 SEP 1384" , # Louis I of Anjou
+  1125, "23 JUL 1339", "20 SEP 1384", # Louis I of Anjou
   1126, "11 JUN 1928", "5 DEC 2014", # Fabiola de Mora y Aragón
   1127, "11 SEP 1937", NA_character_, # Paola Ruffo di Calabria; living
   1128, "15 APR 1960", NA_character_, # Philippe of Belgium; living
@@ -1752,7 +1762,7 @@ date_overrides <- tribble(
   2062, "30 AUG 1334", "23 MAR 1369", # Peter/Pedro of Castile
   2063, "1310", "1380", # Payne Roet of Guienne
   2064, "1340", "13 NOV 1371", # Hugh Swynford
-  2065,  NA, NA, # duplicate
+  2065, NA, NA, # duplicate
   2066, "4 OCT 1379", "25 DEC 1406", # Henry III of Castile
   2067, "24 AUG 1358", "9 OCT 1390", # John I of Castile
   2068, "13 JAN 1334", "29 MAY 1379", # Henry II of Castile
@@ -1968,7 +1978,7 @@ date_overrides <- tribble(
   2322, "1520", "1563", # Elizabeth Talboys
   2323, "1548", "9 FEB 1604", # Anne Russell / Countess of Warwick
   2325, NA, NA, # duplicated Margaret Audley
-  2326,  NA, NA, # Thomas Howard, 4th Duke of Norfolk; likely duplicate
+  2326, NA, NA, # Thomas Howard, 4th Duke of Norfolk; likely duplicate
   2328, "20 JUL 1529", "5 MAY 1586", # Henry Sidney
   2329, "1535", "14 DEC 1595", # Henry Hastings, 3rd Earl of Huntingdon
   2330, "7 JUN 1532", "8 SEP 1560", # Amy Robsart
@@ -2060,7 +2070,7 @@ date_overrides <- tribble(
   2434, "13 MAR 1741", "20 FEB 1790", # Joseph II, Holy Roman Emperor
   2435, "3 SEP 1781", "21 FEB 1824", # Eugène de Beauharnais, Duke of Leuchtenberg
   2436, NA, NA, # duplicated
-  2437,  NA, NA, # duplicated
+  2437, NA, NA, # duplicated
   2439, "13 APR 1519", "5 JAN 1589", # Catherine de Medici
   2440, "13 OCT 1499", "20 JUL 1524", # Claude of France
   2441, "11 APR 1492", "21 DEC 1549", # Margaret of Navarre
@@ -2123,7 +2133,7 @@ date_overrides <- tribble(
   2509, "6 AUG 1775", "3 JUN 1844", # of Angouleme
   2510, "24 JAN 1778", "14 FEB 1820", # of Berry
   2511, "6 OCT 1773", "26 AUG 1850", # Louis Philippe I of France
-  2512, NA, NA, #duplicate Queen Desideria of Sweden
+  2512, NA, NA, # duplicate Queen Desideria of Sweden
   2513, "13 APR 1747", "6 NOV 1793", # Louis Philippe Joseph d’Orléans / Philippe Égalité
   2514, "13 MAR 1753", "23 JUN 1821", # Louise Marie Adélaïde de Bourbon-Penthièvre
   2515, "12 MAY 1725", "18 NOV 1785", # Louis Philippe I, Duke of Orléans
@@ -2336,7 +2346,7 @@ date_overrides <- tribble(
   2850, "19 OCT 1726", "8 AUG 1756", # Louise of Denmark and Norway / Duchess of Saxe-Hildburghausen
   2851, "10 JUN 1727", "23 SEP 1780", # Ernest Frederick III of Saxe-Hildburghausen
   2852, "24 JAN 1746", "29 MAR 1792", # Gustav III of Sweden
-  2853, NA_character_,NA_character_, # duplicate William I, Elector of Hesse-Cassel
+  2853, NA_character_, NA_character_, # duplicate William I, Elector of Hesse-Cassel
   2856, "1 SEP 1647", "1 JUL 1717", # Anne Sophie of Denmark
   2857, "11 APR 1649", "30 OCT 1704", # Frederica Amalia of Denmark
   2858, "11 SEP 1656", "26 JUL 1693", # Ulrika Eleonora of Denmark / Queen of Sweden
@@ -2444,7 +2454,7 @@ date_overrides <- tribble(
   2996, "5 SEP 1877", "1976", # Mary Hamilton (Polly) Scobell
   2997, "3 JAN 1907", "30 MAY 1940", # Ronald Cartland
   2998, "4 JAN 1912", "29 MAY 1940", # Anthony Cartland
-  3009, "899", 	"27 MAY 964", # blanking the infant Cartland row replacing with Arnulf I of Flanders
+  3009, "899", "27 MAY 964", # blanking the infant Cartland row replacing with Arnulf I of Flanders
   3010, "31 DEC 1939", NA_character_ # Glen McCorquodale
 )
 
@@ -2656,7 +2666,7 @@ name_overrides <- tribble(
   640, "Otto Franz of Austria",
   641, "Elisabeth Amalie of Austria",
   646, "Karl Ludwig of Austria",
-#  651, "Wilhelmina of Prussia",
+  #  651, "Wilhelmina of Prussia",
   653, "Frederick of the Netherlands",
   673, "Gyula Apponyi de Nagy-Appony",
   675, "Geraldine of Albania",
@@ -2805,7 +2815,7 @@ name_overrides <- tribble(
   1966, "Æthelwulf of Wessex",
   1968, "Æthelstan of Kent",
   1969, "Æthelbald of Wessex",
-  1970, "Baldwin I of Flanders", #duplicate judith of flanders
+  1970, "Baldwin I of Flanders", # duplicate judith of flanders
   1971, "Æthelberht of Wessex",
   1972, "Æthelred I of Wessex",
   1973, "Egbert of Wessex",
@@ -3443,7 +3453,7 @@ royal92_cleaned <- royal92 %>%
       personID == 1616 ~ "Queen of Sweden",
       personID %in%
         c(1706, 2162, 2789) ~ "Captain",
-      personID  == 1736 ~ "Elector of Hesse-Cassel",
+      personID == 1736 ~ "Elector of Hesse-Cassel",
       personID == 1802 ~ "wife of Edward the Elder",
       personID == 1804 ~ "son of Edward the Elder",
       personID == 1811 ~ NA_character_,
@@ -3468,8 +3478,10 @@ royal92_cleaned <- royal92 %>%
       personID %in%
         c(1897, 2470) ~ "Count of Dreux",
       personID %in%
-        c(1904, 1906,
-          2280, 2283) ~ "Earl of March",
+        c(
+          1904, 1906,
+          2280, 2283
+        ) ~ "Earl of March",
       personID %in%
         c(1907, 1908) ~ "Baron Mortimer",
       personID == 1914 ~ "Marquess Wellesley",
@@ -3512,12 +3524,14 @@ royal92_cleaned <- royal92 %>%
       personID == 2160 ~ "Baron Mount Temple",
       personID == 2180 ~ "Lord Rhys",
       personID %in%
-        c(2191, 2192,
-          2193, 2194) ~ "Baron Inchiquin",
+        c(
+          2191, 2192,
+          2193, 2194
+        ) ~ "Baron Inchiquin",
       personID %in%
         c(2195, 2202) ~ "King of Thomond",
       personID == 2218 ~ "Countess of Pembroke",
-      personID == 2269  ~ NA_character_,
+      personID == 2269 ~ NA_character_,
       personID == 2270 ~ "Count of Saint-Pol",
       personID == 2271 ~ "Earl Rivers",
       personID == 2278 ~ "Lord Cherleton",
@@ -3575,8 +3589,10 @@ royal92_cleaned <- royal92 %>%
       personID == 2407 ~ "Earl of Banbury",
       personID == 2414 ~ "Lord Offaly",
       personID %in%
-        c(2426,
-          2518, 2533) ~ "Duke of Burgundy",
+        c(
+          2426,
+          2518, 2533
+        ) ~ "Duke of Burgundy",
       personID == 2427 ~ "Electress",
       personID == 2432 ~ "Empress",
       personID == 2435 ~ "Duke of Leuchtenberg",
@@ -3586,7 +3602,6 @@ royal92_cleaned <- royal92 %>%
       personID == 2472 ~ "Bishop of Rouen",
       personID == 2483 ~ "Count of Provence",
       personID == 2474 ~ "Countess of Boulogne and Toulouse",
-
       personID == 2517 ~ "Duke of Orléans; Regent",
       personID == 2520 ~ "Countess of Beaumont",
       personID %in%
@@ -3648,7 +3663,6 @@ royal92_cleaned <- royal92 %>%
     ),
     attribute_title = str_replace_all(attribute_title, text_cleanup_regex) %>%
       str_squish(),
-
     name = str_replace_all(
       name,
       text_cleanup_regex
@@ -3686,7 +3700,7 @@ if (FALSE) {
     group_split()
 
 
-    ggped_full <- ggPedigreeInteractive(royal92_famid[[1]],
+  ggped_full <- ggPedigreeInteractive(royal92_famid[[1]],
     personID = "personID",
     momID = "momID",
     dadID = "dadID",
@@ -3701,11 +3715,11 @@ if (FALSE) {
     tooltip_columns = c("personID", "name", "title", "birth_date", "death_date")
   )
 
-htmlwidgets::saveWidget(
- ggped_full,
- file = "data_raw/ggped_full.html",
-  selfcontained = TRUE
-)
+  htmlwidgets::saveWidget(
+    ggped_full,
+    file = "data_raw/ggped_full.html",
+    selfcontained = TRUE
+  )
 
   royal92_trimmed1 <-
     royal92_famid[[1]] %>% trimPedigree(
@@ -3730,12 +3744,11 @@ htmlwidgets::saveWidget(
     tooltip_columns = c("personID", "name", "title", "birth_date", "death_date")
   )
 
-htmlwidgets::saveWidget(
- ggped_trimmed1,
- file = "data_raw/ggped_trimmed1.html",
-  selfcontained = TRUE
-)
-
+  htmlwidgets::saveWidget(
+    ggped_trimmed1,
+    file = "data_raw/ggped_trimmed1.html",
+    selfcontained = TRUE
+  )
 }
 
 royal92 %>%
@@ -3745,7 +3758,7 @@ royal92 %>%
     first_name = str_extract(name, "^[^ ]+"),
     last_name = str_extract(name, "[^ ]+$"),
   ) %>%
-  arrange(desc(famID),last_name, personID)
+  arrange(desc(famID), last_name, personID)
 
 
 royal92 %>%
@@ -3755,32 +3768,28 @@ royal92 %>%
     first_name = str_extract(name, "^[^ ]+"),
     last_name = str_extract(name, "[^ ]+$"),
   ) %>%
-  arrange(desc(famID),last_name, personID)
+  arrange(desc(famID), last_name, personID)
 
 # deal with the mortimor mess Mortimer
 
 royal92 %>%
-  select(birth_date,death_date, personID, name, famID, momID, dadID, sex) %>%
+  select(birth_date, death_date, personID, name, famID, momID, dadID, sex) %>%
   mutate(
     first_name = str_extract(name, "^[^ ]+"),
     last_name = str_extract(name, "[^ ]+$"),
   ) %>%
   # look at people with Mortimer in their name
-  filter(str_detect(name, "Mortimer")==TRUE) %>%
+  filter(str_detect(name, "Mortimer") == TRUE) %>%
   arrange(birth_date, personID)
 
 royal92 %>%
-  select(birth_date,death_date, personID, name, famID, momID, dadID, sex) %>%
+  select(birth_date, death_date, personID, name, famID, momID, dadID, sex) %>%
   mutate(
     first_name = str_extract(name, "^[^ ]+"),
     last_name = str_extract(name, "[^ ]+$"),
   ) %>%
   group_by(death_date) %>%
-# look at multiple people with the same date
+  # look at multiple people with the same date
   filter(n() > 1) %>%
   arrange(death_date, famID, last_name, personID) %>%
   print(n = 100)
-
-
-
-

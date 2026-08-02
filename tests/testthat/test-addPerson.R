@@ -1,4 +1,3 @@
-
 test_that("addPersonToPed works as expected", {
   # Initial pedigree data frame
   ped <- data.frame(
@@ -175,4 +174,3 @@ test_that("addPersonToPed - non-data.frame input raises error", {
     # stopifnot(is.data.frame(ped)) fires for non-data.frame input
   )
 })
-
