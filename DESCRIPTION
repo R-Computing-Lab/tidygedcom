@@ -1,7 +1,7 @@
 Package: tidygedcom
 Type: Package
 Title: Read and Tidy 'GEDCOM' Genealogy Files
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person("S. Mason", "Garrison", , "garrissm@wfu.edu", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-4804-6003")),

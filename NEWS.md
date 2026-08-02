@@ -1,3 +1,8 @@
+# tidygedcom 0.2.0
+
+* Transferred addPersonToPed from BGmisc to tidygedcom.
+* Removed multiple duplicated people from Royal92
+
 # tidygedcom 0.1.0
 
 * Initial CRAN submission.
@@ -6,6 +11,7 @@
 
 * `readGedcom(parse_dates = TRUE)` now retains dates that are precise only to the month or the year. Previously these became `NA`, which discarded most of the dates in a typical historical pedigree. Partial dates are completed with the midpoint of the known interval (the 15th of a known month, 15 June for a known year); set the new `impute_partial_dates = FALSE` to restore the stricter behavior and keep only dates that specify a day.
 * Date qualifiers written with a trailing period (`Abt.`, `Aft.`), as Ancestry.com exports them, are now stripped. Previously only the specification's unpunctuated forms (`ABT`, `AFT`) were recognized, so `"Aft. Oct 1896"` failed to parse.
+
 
 ### Bug fixes
 
