@@ -75,6 +75,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = 911,
     overwrite = TRUE
   ) %>%
+    tidygedcom::addPersonToPed(
+    personID = 970, #
+    name = "Xavier Bourbon-Parma", # Duke of Parma
+     sex = "M",
+    momID = NA,
+    dadID = 1523,
+    overwrite = TRUE
+  )  %>%
   tidygedcom::addPersonToPed(
     personID = 1011, # duplicated Thomas 3rd Howard
     name = "Hedwig of Saxony",
@@ -121,6 +129,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     sex = "F",
     momID = 1884,
     dadID = 1881,
+    overwrite = TRUE
+  ) %>%
+    tidygedcom::addPersonToPed(
+    personID = 1686, #
+    name = "Carlos Hugo Bourbon-Parma", # Duke of Parma
+    sex = "M",
+    momID = NA,
+    dadID = 970,
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
@@ -417,6 +433,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = NA,
     dadID = NA
   ) %>%
+    tidygedcom::addPersonToPed(
+    personID = 1523, #
+    name = "Robert Bourbon-Parma",
+    sex = "M",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  ) %>%
   # Add twinID, momID, dadID, and sex corrections based on historical records and data cleaning needs
   mutate(
     momID = as.numeric(momID),
@@ -450,6 +474,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     ),
     dadID = case_when(
       personID == 157 ~ 1213,
+      personID == 260 ~ 1523,
       personID == 1295 ~ 1067, # merging duplicate Frederick Eugene Wurttemberg
       personID == 1297 ~ 623,
       personID == 1438 ~ 639,
@@ -459,6 +484,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
       personID == 1868 ~ 2300, # William IX of Aquitaine is the father of William X of Aquitaine
       personID == 1988 ~ 1970,
       personID == 2216 ~ 1883, # combining William Marshals
+      personID == 2229  ~ 1870, # merging Ada de Warennes
       personID == 2247 ~ 2217, # Findláech of Moray is the father of macbeth
       personID == 2289 ~ 2690,
       personID == 2389 ~ 2372, # resolving the frances howards
@@ -815,6 +841,7 @@ date_overrides <- tribble(
   465, "10 AUG 1888", "21 JAN 1940", # Christopher of Greece and Denmark, Gregorian/New Style; Old Style birth = 29 JUL 1888
   466, "24 JUN 1869", "25 NOV 1957", # George of Greece and Denmark
   467, "7 APR 1880", "2 NOV 1880", # Olga of Greece and Denmark
+  469, "18 SEP 1923", "1 AUG 2016", # Anne of Bourbon-Parma / Queen Anne of Romania
   474, "25 MAR 1921", "30 JAN 1993", # Alexandra of Greece / Queen of Yugoslavia
   475, "6 SEP 1923", "3 NOV 1970", # Peter II of Yugoslavia
   476, "26 JUN 1914", "24 NOV 2001", # Sophie of Greece and Denmark
@@ -1099,7 +1126,7 @@ date_overrides <- tribble(
   967, "23 AUG 1954", NA_character_, # Haakon Lorentzen; living
   968, "27 FEB 1957", NA_character_, # Ingeborg Lorentzen; living
   969, "8 MAY 1968", NA_character_, # Ragnhild Alexandra Lorentzen; living
-  970, "18 SEP 1923", "1 AUG 2016", # Anne of Bourbon-Parma / Queen Anne of Romania
+  970, "25 MAY 1889", 	"7 MAY 1977", # Duplicate
   972, "26 MAR 1949", NA_character_, # Margareta of Romania; living
   973, "15 NOV 1950", NA_character_, # Elena of Romania; living
   974, "28 FEB 1953", NA_character_, # Irina of Romania; living
@@ -1490,7 +1517,7 @@ date_overrides <- tribble(
   1517, "1045", "19 MAY 1102", # Stephen Henry, Count of Blois
   1518, "1090", "8 JAN 1152", # Theobald, Count of Blois
   1520, "11 NOV 1155", "5 OCT 1214", # Alfonso VIII of Castile
-  1523, "1120", "1178", # Ada de Warenne
+  1523, "9 JUL 1848", 	"16 NOV 1907", # Robert I, Duke of Parma
   1525, "1000", "3 JUL 1035", # Robert the Devil / Robert I of Normandy
   1527, "23 AUG 963", "28 AUG 1026", # Richard II of Normandy
   1529, "997", "6 AUG 1027", # Richard III of Normandy
@@ -2816,7 +2843,6 @@ name_overrides <- tribble(
   1442, "Ferdinand Philippe Marie d'Orléans",
   1512, "Margaret of Scotland",
   1515, "David I of Scotland",
-  1523, "Ada de Warenne",
   1552, "Harthacnut",
   1585, "Alexander III of Scotland",
   1594, "John IV (the Conqueror) of Montfort",
@@ -3516,6 +3542,7 @@ royal92_cleaned <- royal92 %>%
       personID %in%
         c(914) ~ "Grand Duchess of Russia",
       personID == 932 ~ "Princess of Prussia",
+      personID == 970 ~ NA_character_,
       personID == 990 ~ "Earl of Westmoreland",
       personID %in%
         c(1051, 1125) ~ "Duke of Anjou",
@@ -3530,6 +3557,7 @@ royal92_cleaned <- royal92 %>%
           1473, 1476,
           1492, 1494
         ) ~ "Earl of Arran",
+      personID == 1523 ~ "Duke of Parma",
       personID %in%
         c(
           1588, 1834,
@@ -3750,6 +3778,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2994 ~ "8th Earl of Dartmouth",
       personID == 3009 ~ "Count of Flanders",
       personID == 3011 ~ "1st Viscount Lisle",
+
       TRUE ~ attribute_title
     ),
     attribute_title = str_replace_all(attribute_title, text_cleanup_regex) %>%
@@ -3805,7 +3834,8 @@ if (FALSE) {
       ped_packed = TRUE,
       ped_align = TRUE
     ),
-    tooltip_columns = c("personID", "name", "title", "birth_date", "death_date")
+    tooltip_columns = c("personID", "name",
+                        "title", "birth_date", "death_date")
   )
 
   htmlwidgets::saveWidget(
