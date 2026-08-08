@@ -26,10 +26,3 @@ stripDateQualifiers(x)
 
 A character vector of the same length, trimmed, with escapes and
 qualifiers removed.
-
-## Examples
-
-``` r
-tidygedcom:::stripDateQualifiers(c("ABT 1835", "Aft. Oct 1896"))
-#> [1] "1835"     "Oct 1896"
-```
