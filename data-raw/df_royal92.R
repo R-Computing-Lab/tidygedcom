@@ -122,7 +122,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = 1295,
     dadID = 1294,
     overwrite = TRUE
-  ) %>%
+  ) %>%    tidygedcom::addPersonToPed(
+    personID = 1523, #
+    name = "Robert Bourbon-Parma",
+    sex = "M",
+    momID = NA,
+    dadID = NA,
+    overwrite = TRUE
+  )  %>%
   tidygedcom::addPersonToPed(
     personID = 1582,
     name = "Sanchia of Provence",
@@ -411,7 +418,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = 2624,
     overwrite = TRUE
   ) %>%
-  tidygedcom::addPersonToPed(
+    tidygedcom::addPersonToPed(
+    personID = 2909, #
+    name = "Alexandrine of Baden",
+    sex = "F",
+    momID = NA,
+    dadID = 3013,
+    overwrite = TRUE
+  ) %>%  tidygedcom::addPersonToPed(
     personID = 3009, # overwriting unnamed stillborn sibling of barbara cartland
     name = "Arnulf I of Flanders",
     sex = "M",
@@ -432,15 +446,22 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     sex = "F",
     momID = NA,
     dadID = NA
+  )%>%
+    tidygedcom::addPersonToPed(
+    personID = 3013, #
+    name = "Leopold Zähringen",
+    sex = "M",
+    momID = 2461,
+    dadID = 621
   ) %>%
     tidygedcom::addPersonToPed(
-    personID = 1523, #
-    name = "Robert Bourbon-Parma",
-    sex = "M",
+    personID = 2461, #
+    name = "Louise Caroline of Hochberg",
+    sex = "F",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
-  ) %>%
+  )%>%
   # Add twinID, momID, dadID, and sex corrections based on historical records and data cleaning needs
   mutate(
     momID = as.numeric(momID),
@@ -654,7 +675,6 @@ date_overrides <- tribble(
   167, "23 MAR 1887", "27 SEP 1967", # Felix Yussoupov
   169, "10 OCT 1931", "16 MAR 2003", # Ronald Ivor Ferguson
   170, "9 JUN 1937", "19 SEP 1998", # Susan Mary Wright / Susan Barrantes
-  # Teackle Wallis Warfield
   171, "8 FEB 1869", "15 NOV 1896", # Teackle Wallis Warfield
   172, "30 NOV 1869", "2 NOV 1929", # Alice Montague
   173, "17 APR 1882", "17 OCT 1893", # Violet Hyacinth Bowes-Lyon
@@ -2202,6 +2222,7 @@ date_overrides <- tribble(
   2458, "27 MAR 972", "20 JUL 1031", # Robert II the Pious of France
   2459, "986", "25 JUL 1032", # Constance of Arles
   2460, "1007", "17 SEP 1025", # Hugh Magnus of France; birth year only
+  2461, "26 MAY 1768", "23 JUN 1820",
   2462, "964", "16 JAN 1010", # Bertha of Burgundy
   2463, "941", "24 OCT 996", # Hugh Capet
   2465, "1293", "3 JAN 1322", # Philip V the Tall of France
@@ -2573,7 +2594,8 @@ date_overrides <- tribble(
   3009, "899", "27 MAY 964", # blanking the infant Cartland row replacing with Arnulf I of Flanders
   3010, "31 DEC 1939", NA_character_, # Glen McCorquodale,
   3011, "Bef. 1475", "3 March 1542", #   Arthur Plantagenet, 1st Viscount Lisle
-  3012, "1445", NA_character_
+  3012, "1445", NA_character_,
+  3013, "29 AUG 1790", "24 APR 1852"
 
 )
 
@@ -3726,7 +3748,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2554 ~ "daughter of Charlemagne",
       personID == 2578 ~ "son of Charles the Bald",
       personID == 2584 ~ "King of West Francia",
-      personID == 2624 ~ "1st Earl of Arundel", # duplicate overwrite
+      personID == 2624 ~ "Earl of Arundel", # duplicate overwrite
       personID == 2632 ~ "Baron Geddes",
       personID %in%
         c(2634, 2875) ~ "Princess of Asturias",
@@ -3738,7 +3760,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2657 ~ "Princess of the Netherlands",
       personID == 2682 ~ "Countess of Arundel", # duplicate overwrite
       personID == 2689 ~ NA_character_, # duplicate overwrite
-      personID == 2690 ~ "3rd Earl of Arundel", # duplicate overwrite
+      personID == 2690 ~ "Earl of Arundel", # duplicate overwrite
       personID == 2731 ~ "Princess of Sweden",
       personID == 2770 ~ "Count of Wisborg",
       personID == 2771 ~ "Duke of Närke; Prince of Sweden",
@@ -3759,7 +3781,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2893 ~ "Duke of Savoy",
       personID == 2900 ~ "Duke of Vendôme",
       personID == 2904 ~ "Prince Napoléon",
-      personID == 2905 ~ "2nd Earl of Arundel", # duplicate overwrite,
+      personID == 2905 ~ "Earl of Arundel", # duplicate overwrite,
       personID %in%
         c(2914, 2915) ~ "Duchess of Montpensier",
       personID == 2916 ~ "Duchess of Orléans",
@@ -3775,10 +3797,9 @@ royal92_cleaned <- royal92 %>%
       personID == 2956 ~ "Earl of Albemarle",
       personID == 2964 ~ "Princess of Yugoslavia",
       personID == 2965 ~ "Prince of Yugoslavia",
-      personID == 2994 ~ "8th Earl of Dartmouth",
+      personID == 2994 ~ "Earl of Dartmouth",
       personID == 3009 ~ "Count of Flanders",
-      personID == 3011 ~ "1st Viscount Lisle",
-
+      personID == 3011 ~ "Viscount Lisle",
       TRUE ~ attribute_title
     ),
     attribute_title = str_replace_all(attribute_title, text_cleanup_regex) %>%
