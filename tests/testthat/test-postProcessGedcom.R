@@ -236,3 +236,17 @@ test_that("mapFAMS2parents warns and returns NULL when required columns are miss
 
   expect_null(out)
 })
+
+test_that("date qualifiers are stripped", {
+expect_equal(
+    stripDateQualifiers(c("ABT 1835", "Aft. Oct 1896")),
+    c("1835", "Oct 1896")
+  )
+})
+
+test_that("partial dates are imputed", {
+expect_equal(
+    imputePartialDates(c("Oct 1814", "1844", "28 Apr 1775", NA)),
+    c("15 Oct 1814", "15 JUN 1844", "28 Apr 1775", NA)
+  )
+})

@@ -10,8 +10,9 @@ imputePartialDates(x, default_day = "15", default_month = "JUN")
 \item{x}{Character vector of GEDCOM date strings.}
 
 \item{default_day}{Character string of the day to impute for month-precision
-dates (default `"15"`).
-@param default_month Character string of the month to impute for year-precision}
+dates (default `"15"`).}
+
+\item{default_month}{Character string of the month to impute for year-precision}
 }
 \value{
 A character vector of the same length, with month- and
@@ -30,8 +31,5 @@ carry a day, and values that match neither pattern, are returned unchanged.
 
 Callers should strip calendar escapes and qualifiers (`ABT`, `BEF`, `AFT`)
 before calling this function.
-}
-\examples{
-tidygedcom:::imputePartialDates(c("Oct 1814", "1844", "28 Apr 1775", NA))
 }
 \keyword{internal}

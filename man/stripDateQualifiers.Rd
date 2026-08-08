@@ -24,7 +24,4 @@ specification uses `"ABT JUN 1880"`. Requiring one or the other is what
 keeps the pattern from biting into ordinary words that merely begin with
 those letters, such as "before".
 }
-\examples{
-tidygedcom:::stripDateQualifiers(c("ABT 1835", "Aft. Oct 1896"))
-}
 \keyword{internal}

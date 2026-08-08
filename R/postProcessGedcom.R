@@ -93,8 +93,6 @@ postProcessGedcom <- function(df_temp,
 #' @param x Character vector of GEDCOM date strings.
 #' @return A character vector of the same length, trimmed, with escapes and
 #'   qualifiers removed.
-#' @examples
-#' tidygedcom:::stripDateQualifiers(c("ABT 1835", "Aft. Oct 1896"))
 #' @keywords internal
 #' @importFrom stringr str_replace_all str_trim
 stripDateQualifiers <- function(x) {
@@ -127,11 +125,9 @@ stripDateQualifiers <- function(x) {
 #' @param x Character vector of GEDCOM date strings.
 #' @param default_day Character string of the day to impute for month-precision
 #'  dates (default `"15"`).
-#'  @param default_month Character string of the month to impute for year-precision
+#' @param default_month Character string of the month to impute for year-precision
 #' @return A character vector of the same length, with month- and
 #'   year-precision entries expanded to a full `"%d %b %Y"` date string.
-#' @examples
-#' tidygedcom:::imputePartialDates(c("Oct 1814", "1844", "28 Apr 1775", NA))
 #' @keywords internal
 imputePartialDates <- function(x,
                                default_day = "15",

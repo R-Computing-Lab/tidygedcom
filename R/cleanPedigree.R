@@ -283,7 +283,7 @@ repairManually <- function(ped, fixes) {
         ),
         names(ped)
       )
-      print(ped[already_fixed, info_cols, drop = FALSE])
+      message(ped[already_fixed, info_cols, drop = FALSE])
       stop("Manual fix `", fix_name, "` overlaps with a previous manual fix.")
     }
 

@@ -4,6 +4,10 @@ This is a new submission that splits some functions and a dataset from the BGmis
 
 Once this package is on CRAN, the BGmisc package will be updated to remove the functions that have been moved to tidygedcom. The BGmisc package will continue to provide functions for modeling pedigrees and other genealogical analyses, while tidygedcom will focus on reading and parsing GEDCOM files. We implemented a similar spinoff of plotting functions from BGmisc to ggpedigree, which is now on CRAN. Like ggpedigree, the tidygedcom package is intended to be a companion package to BGmisc, providing a streamlined and efficient way to read and parse GEDCOM files for genealogical analysis. 
 
+# Requested revisions
+- Used ::: in documentation, Solution: removed examples from internal functions, converted them to tests instead.
+- Requested methods reference. Added citation to related paper that describes the data structure and methods used in the package Hunter et al. (2026) <doi:10.1007/s10519-026-10259-z>.
+
 # Test Environments
 
 1. Local OS: Windows 11 x64 (build 26220), R 4.6.1 (2026-06-24 ucrt)

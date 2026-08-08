@@ -15,7 +15,8 @@ Description: Reads and parses 'GEDCOM' (Genealogical Data Communication)
     suitable for pedigree and kinship analysis. Additional helpers summarize
     file contents, convert place coordinates, and repair malformed records.
     Wikipedia family tree templates can be parsed into the same tidy
-    structure.
+    structure. For a discussion of these and related data structures 
+    see [Hunter et al. (2026) <doi:10.1007/s10519-026-10259-z>].
 License: GPL-3
 URL: https://github.com/R-Computing-Lab/tidygedcom/,
     https://r-computing-lab.github.io/tidygedcom/
