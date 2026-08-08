@@ -259,6 +259,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     dadID = 1743,
     overwrite = TRUE
   ) %>%
+    tidygedcom::addPersonToPed(
+    personID = 2379, #
+    name = "Frances Plantagenet",
+    sex = "F",
+    momID = 2325,
+    dadID = 3011,
+    overwrite = TRUE
+  ) %>%
   tidygedcom::addPersonToPed(
     personID = 2436, # duplicated Franz Karl of Austria, Joan of France
     name = "Joan of France",
@@ -408,13 +416,6 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     sex = "F",
     momID = NA,
     dadID = NA
-  )  %>%
-    tidygedcom::addPersonToPed(
-    personID = 3013, #
-    name = "Frances Plantagenet",
-    sex = "F",
-    momID = 2325,
-    dadID = 3011
   ) %>%
   # Add twinID, momID, dadID, and sex corrections based on historical records and data cleaning needs
   mutate(
@@ -460,6 +461,8 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
       personID == 2216 ~ 1883, # combining William Marshals
       personID == 2247 ~ 2217, # Findláech of Moray is the father of macbeth
       personID == 2289 ~ 2690,
+      personID == 2389 ~ 2372, # resolving the frances howards
+      personID == 2390 ~ 2357, # resolving the frances howards
       personID == 2449 ~ 684, # mergin Joseph of Austria
       personID == 2463 ~ 1812, # linking Hugh the Great to son
       personID == 2482 ~ 1881, # merging Ramon Berenguer V, Count of Provence
@@ -2105,6 +2108,7 @@ date_overrides <- tribble(
   2375, "13 AUG 1584", "3 JUN 1640", # Theophilus Howard, 2nd Earl of Suffolk
   2376, "8 OCT 1587", "16 JUL 1669", # Thomas Howard, 1st Earl of Berkshire
   2378, "1588", "1672", # Catherine Howard; identity inferred from Suffolk sibling cluster
+  2379, "1519", NA_character_, # overwriting duplicate Frances Howard
   2383, "16 DEC 1592", "25 DEC 1676", # William Cavendish, Duke of Newcastle; row title currently Earl
   2384, "28 MAR 1591", "3 DEC 1668", # William Cecil, 2nd Earl of Salisbury; row title says Berkshire, likely title/name mismatch
   2385, "11 JAN 1591", "14 SEP 1646", # Robert Devereux, 3rd Earl of Essex
@@ -2542,8 +2546,8 @@ date_overrides <- tribble(
   3009, "899", "27 MAY 964", # blanking the infant Cartland row replacing with Arnulf I of Flanders
   3010, "31 DEC 1939", NA_character_, # Glen McCorquodale,
   3011, "Bef. 1475", "3 March 1542", #   Arthur Plantagenet, 1st Viscount Lisle
-  3012, "1445", NA_character_,
-  3013, "1519", NA_character_
+  3012, "1445", NA_character_
+
 )
 
 # notes:
@@ -3859,18 +3863,6 @@ royal92 %>%
   ) %>%
   arrange(desc(famID), last_name, personID)
 
-# deal with the mortimor mess Mortimer
-
-royal92 %>%
-  select(birth_date, death_date, personID, name, famID, momID, dadID, sex) %>%
-  mutate(
-    first_name = str_extract(name, "^[^ ]+"),
-    last_name = str_extract(name, "[^ ]+$"),
-  ) %>%
-  # look at people with Mortimer in their name
-  filter(str_detect(name, "Mortimer") == TRUE) %>%
-  arrange(birth_date, personID)
-
 royal92 %>%
   select(birth_date, death_date, personID, name, famID, momID, dadID, sex) %>%
   mutate(
@@ -3880,5 +3872,18 @@ royal92 %>%
   group_by(death_date) %>%
   # look at multiple people with the same date
   filter(n() > 1) %>%
-  arrange(death_date, famID, last_name, personID) %>%
-  print(n = 100)
+  arrange(death_date, famID, desc(last_name), personID) %>%
+  print(n = 50)
+# deal with the Howard mess
+
+royal92 %>%
+  select(birth_date, death_date, personID, name, famID, momID, dadID, sex) %>%
+  mutate(
+    first_name = str_extract(name, "^[^ ]+"),
+    last_name = str_extract(name, "[^ ]+$"),
+  ) %>%
+  # look at people with Howard in their name
+  filter(str_detect(name, "Howard") == TRUE) %>%
+  arrange(birth_date, personID)
+
+
