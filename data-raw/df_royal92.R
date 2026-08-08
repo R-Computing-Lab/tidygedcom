@@ -165,16 +165,16 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   ) %>%
   tidygedcom::addPersonToPed(
     personID = 2065, # duplicated Katherine Swynford
-    name = "TODO",
-    sex = "U",
+    name = "Otto IV of Burgundy",
+    sex = "M",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
     personID = 2070, # duplicated Edmund Stafford
-    name = "TODO",
-    sex = "U",
+    name = "Emma of Italy",
+    sex = "F",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
@@ -189,8 +189,8 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   ) %>%
   tidygedcom::addPersonToPed(
     personID = 2217, # duplicated William Marshal
-    name = "TODO",
-    sex = "U",
+    name = "Findláech of Moray",
+    sex = "M",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
@@ -229,10 +229,10 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   ) %>%
   tidygedcom::addPersonToPed(
     personID = 2326, # duplicated Thomas Howard
-    name = "TODO",
-    sex = "U",
-    momID = NA,
-    dadID = NA,
+    name = "Isabella Mortimer",
+    sex = "F",
+    momID = 1909,
+    dadID = 1908,
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
@@ -245,50 +245,50 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   ) %>%
   tidygedcom::addPersonToPed(
     personID = 2344, # duplicated Anne of York
-    name = "TODO",
-    sex = "U",
-    momID = NA,
-    dadID = NA,
+    name = "Philip of France",
+    sex = "M",
+    momID = 2491,
+    dadID = 1743,
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
-    personID = 2436, # duplicated Franz Karl of Austria
-    name = "TODO",
-    sex = "U",
-    momID = NA,
-    dadID = NA,
+    personID = 2436, # duplicated Franz Karl of Austria, Joan of France
+    name = "Joan of France",
+    sex = "F",
+    momID = 2491,
+    dadID = 2437, # d'Aunays confessed to being the dad,during the Tour de Nesle affair
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
     personID = 2437, # duplicated Auguste Wittelsbach
-    name = "TODO",
-    sex = "U",
+    name = "Gautier of Aunay",
+    sex = "M",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
     personID = 2450, # duplicated Joseph of Austria
-    name = "TODO",
-    sex = "U",
+    name = "John FitzAlan",
+    sex = "M",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
   ) %>%
     tidygedcom::addPersonToPed(
     personID = 2483, # duplicated Ramon Berenguer V, Count of Provence
-    name = "TODO",
-    sex = "U",
+    name = "William de Warenne",
+    sex = "M",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
     personID = 2512, # duplicated Désirée Clary
-    name = "TODO",
-    sex = "U",
+    name = "William de Warenne",
+    sex = "M",
     momID = NA,
-    dadID = NA,
+    dadID = 1848,
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
@@ -309,10 +309,10 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   ) %>%
   tidygedcom::addPersonToPed(
     personID = 2585, # duplicated Eadgifu of England
-    name = "TODO",
-    sex = "U",
+    name = "Alice de Warenne",
+    sex = "F",
     momID = NA,
-    dadID = NA,
+    dadID = 2512,
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
@@ -325,16 +325,16 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   ) %>%
   tidygedcom::addPersonToPed(
     personID = 2624, # duplicated Frederick Francis II of Mecklenburg-Schwerin
-    name = "TODO",
-    sex = "U",
-    momID = NA,
-    dadID = NA,
+    name = "Richard Fitzalan",
+    sex = "M",
+    momID = 2326,
+    dadID = 2450,
     overwrite = TRUE
   ) %>%
     tidygedcom::addPersonToPed(
     personID = 2682, # Frederick Francis II of Mecklenburg-Schwerin
-    name = "TODO",
-    sex = "U",
+    name = "Alice of Saluzzo",
+    sex = "F",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
@@ -343,16 +343,16 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     personID = 2689, # duplicated Frederick Eugene of Württemberg
     name = "Eleanor of Lancaster",
     sex = "F",
-    momID = NA,
-    dadID = NA,
+    momID = 1498,
+    dadID = 1497,
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
     personID = 2690, # duplicated Frederica
-    name = "Richard Fitzalan",
+    name = "Richard Fitzalan", # 3rd earl of Arundel
     sex = "M",
-    momID = NA,
-    dadID = NA,
+    momID = 2585,
+    dadID = 2905,
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
@@ -373,10 +373,10 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   ) %>%
     tidygedcom::addPersonToPed(
     personID = 2905, # duplicated Rudolph of Austria
-    name = "TODO",
-    sex = "U",
-    momID = NA,
-    dadID = NA,
+    name = "Edmund Fitzalan",
+    sex = "M",
+    momID = 2682,
+    dadID = 2624,
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
@@ -410,8 +410,10 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
       personID == 1343 ~ 2853, # Joan Fitzalan
       personID == 1614 ~ 1139, # merging Auguste Wittelsbachs
       personID == 1988 ~ 2579, # judith of flanders
+      personID == 2289 ~ 2689,
       personID == 2463 ~ 1011, # linking Hugh Capet to mother ~
       personID == 2482 ~ 1884, # adding missing mother Beatrice of Savoy
+      personID == 2607 ~ 2070, # mother louis v of france
       personID == 2604 ~ 1806, # Eadgifu
       personID == 2657 ~ 200,
       TRUE ~ momID
@@ -423,12 +425,16 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
       personID == 1438 ~ 639,
       personID == 1596 ~ 2518, # merging Philip the Bolds
       personID == 1812 ~ 573,
+      personID == 1848 ~ 2483,
       personID == 1868 ~ 2300, # William IX of Aquitaine is the father of William X of Aquitaine
       personID == 1988 ~ 1970,
       personID == 2216 ~ 1883, # combining William Marshals
+      personID == 2247 ~ 2217, # Findláech of Moray is the father of macbeth
+      personID == 2289 ~ 2690,
       personID == 2449 ~ 684, # mergin Joseph of Austria
       personID == 2463 ~ 1812, # linking Hugh the Great to son
       personID == 2482 ~ 1881, # merging Ramon Berenguer V, Count of Provence
+      personID %in% c(2490, 2491) ~ 2065, # Otto IV of Burgundy is the father of Joanii and Blanche of Burgundy
       personID == 2538 ~ 1051,
       personID == 2657 ~ 199,
       TRUE ~ dadID
@@ -1452,6 +1458,7 @@ date_overrides <- tribble(
   1517, "1045", "19 MAY 1102", # Stephen Henry, Count of Blois
   1518, "1090", "8 JAN 1152", # Theobald, Count of Blois
   1520, "11 NOV 1155", "5 OCT 1214", # Alfonso VIII of Castile
+  1523, "1120", "1178", # Ada de Warenne
   1525, "1000", "3 JUL 1035", # Robert the Devil / Robert I of Normandy
   1527, "23 AUG 963", "28 AUG 1026", # Richard II of Normandy
   1529, "997", "6 AUG 1027", # Richard III of Normandy
@@ -1798,7 +1805,6 @@ date_overrides <- tribble(
   2050, "672", "718", # Ingild of Wessex
   2051, "670", "31 AUG 725", # Cuthburh of Wimborne
   2053, "630", "14 DEC 705", # Aldfrith of Northumbria
-  # ; death year varies 704/705, selected 705
   2054, "758", "784", # Ealhmund of Kent and death year
   2057, "1307", "26 SEP 1345", # William II of Hainault
   2058, "1314", "26 DEC 1360", # Thomas Holland, 1st Earl of Kent
@@ -1808,12 +1814,12 @@ date_overrides <- tribble(
   2062, "30 AUG 1334", "23 MAR 1369", # Peter/Pedro of Castile
   2063, "1310", "1380", # Payne Roet of Guienne
   2064, "1340", "13 NOV 1371", # Hugh Swynford
-  2065, NA, NA, # duplicate
+  2065, "1248", "17 MAR 1303", # duplicate Otto IV of Burgundy
   2066, "4 OCT 1379", "25 DEC 1406", # Henry III of Castile
   2067, "24 AUG 1358", "9 OCT 1390", # John I of Castile
   2068, "13 JAN 1334", "29 MAY 1379", # Henry II of Castile
   2069, "25 MAR 1342", "16 JAN 1373", # Humphrey de Bohun, Earl of Hereford; date source sometimes gives 1341/1342
-  2070, NA, NA, # Edmund Stafford, Earl of Stafford
+  2070, "948", "987", # Emma of Italy
   2071, "1381", "2 SEP 1399", # Humphrey 2nd Earl of Buckingham
   2074, "1370", "24 SEP 1435", # Isabeau/Isabelle of Bavaria
   2079, "1409", "1449", # Margaret Beaufort, Countess of Devon
@@ -1839,7 +1845,7 @@ date_overrides <- tribble(
   2102, "30 SEP 1599", "24 APR 1674", # Frances Devereux / Duchess of Somerset
   2103, "10 NOV 1565", "25 FEB 1601", # Robert Devereux, Earl of Essex
   2104, "1517", "2 JAN 1570", # Henry Clifford, Earl of Cumberland
-  2105, "1519", "30 NOV 1586", # Adrian Stokes; death year differs from current placeholder
+  2105, "1519", "30 NOV 1586", # Adrian Stokes
   2106, "25 AUG 1540", "26 JAN 1568", # Catherine Grey
   2107, "20 APR 1545", "20 APR 1578", # Mary Grey
   2108, "22 MAY 1539", "6 APR 1621", # Edward Seymour, Earl of Hertford
@@ -1923,7 +1929,7 @@ date_overrides <- tribble(
   2214, "1000", "7 FEB 1072", # Diarmait mac Maíl na mBó
   2215, "1025", "1070", # Murchad mac Diarmata; row death differs and identity should be checked
   2216, "1145", "1188", # Aoife/Eva MacMurrough
-  2217, "1146", "14 MAY 1219", # William Marshal, Earl of Pembroke
+  2217, NA, "1020", # Findláech of Moray
   2218, "1172", "1220", # Isabel de Clare, Countess of Pembroke
   2219, "1130", "20 APR 1176", # Richard de Clare / Strongbow
   2220, "1145", "1188", # Aoife/Eva MacMurrough
@@ -1980,7 +1986,7 @@ date_overrides <- tribble(
   2276, "27 SEP 1442", "1492", # John de la Pole, Duke of Suffolk; death year only
   2277, "1350", "25 APR 1397", # Thomas Holland, 2nd Earl of Kent
   2278, "1370", "14 MAR 1421", # Edward Charleton, Lord Cherleton
-  2279, "2 MAR 1378", "21 JUL 1403", # Edmund Stafford, Earl of Stafford; duplicate/identity match to personID 2070 likely
+  2279, "2 MAR 1378", "21 JUL 1403", # Edmund Stafford, Earl of Stafford
   2280, "23 APR 1393", "1409", # son of Roger Mortimer
   2281, "1375", "1405", # Eleanor Mortimer
   2282, "1357", "5 DEC 1419", # Edward Courtenay; identity should be checked against Courtenay branch
@@ -2024,7 +2030,7 @@ date_overrides <- tribble(
   2322, "1520", "1563", # Elizabeth Talboys
   2323, "1548", "9 FEB 1604", # Anne Russell / Countess of Warwick
   2325, NA, NA, # duplicated Margaret Audley
-  2326, NA, NA, # Thomas Howard, 4th Duke of Norfolk; likely duplicate
+  2326, "1247", "1 APR 1292", # Isabella Mortimer, lady of Clun and Oswestry
   2328, "20 JUL 1529", "5 MAY 1586", # Henry Sidney
   2329, "1535", "14 DEC 1595", # Henry Hastings, 3rd Earl of Huntingdon
   2330, "7 JUN 1532", "8 SEP 1560", # Amy Robsart
@@ -2041,7 +2047,7 @@ date_overrides <- tribble(
   2341, "1443", "21 MAY 1524", # Thomas Howard, 2nd Duke of Norfolk
   2342, "1445", "4 APR 1497", # Elizabeth Tilney
   2343, "1473", "25 AUG 1554", # Thomas Howard, 3rd Duke of Norfolk
-  2344, NA, NA, # Anne of York duplicate
+  2344, "5 JAN 1314", "MAR 1322", # Anne of York duplicate Philip of France
   2345, "1497", "30 NOV 1558", # Elizabeth Stafford / Duchess of Norfolk
   2347, "1477", "15 MAY 1545", # Agnes Tilney and mid-month death date
   2348, "1510", "12 JAN 1573", # William Howard, 1st Baron Howard of Effingham
@@ -2115,8 +2121,8 @@ date_overrides <- tribble(
   2433, "8 DEC 1708", "18 AUG 1765", # Francis I Stephen, Holy Roman Emperor
   2434, "13 MAR 1741", "20 FEB 1790", # Joseph II, Holy Roman Emperor
   2435, "3 SEP 1781", "21 FEB 1824", # Eugène de Beauharnais, Duke of Leuchtenberg
-  2436, NA, NA, # duplicated
-  2437, NA, NA, # duplicated
+  2436, "1315", "17 MAY 1321", # duplicated
+  2437, "1290", "19 APR 1314", # duplicated
   2439, "13 APR 1519", "5 JAN 1589", # Catherine de Medici
   2440, "13 OCT 1499", "20 JUL 1524", # Claude of France
   2441, "11 APR 1492", "21 DEC 1549", # Margaret of Navarre
@@ -2126,7 +2132,7 @@ date_overrides <- tribble(
   2445, "25 MAY 1906", "9 MAR 1997", # Alice Soares de Toledo / Alice de Toledo
   2448, "15 JUL 1750", "9 DEC 1806", # Francis Frederick of Saxe-Coburg-Saalfeld
   2449, "23 AUG 1836", "19 SEP 1902", # Maria Henrietta of Austria / Queen of the Belgians
-  2450, NA, NA, # duplicated
+  2450, "14 SEP 1246", "18 March 1272", # duplicated
   2452, "1 DEC 1081", "1 AUG 1137", # Louis VI the Fat of France
   2453, "1092", "18 NOV 1154", # Adelaide of Savoy / Maurienne
   2454, "23 MAY 1052", "29 JUL 1108", # Philip I of France
@@ -2154,14 +2160,14 @@ date_overrides <- tribble(
   2480, "1200", "19 JAN 1234", # Philip Hurepel of France
   2481, "11 NOV 1220", "21 AUG 1271", # Alphonse of Poitiers
   2482, "1221", "20 DEC 1295", # Margaret of Provence
-  2483, NA, NA, # duplicated
+  2483, "1165", "27 MAY 1240", # duplicated
   2484, "21 MAR 1227", "7 JAN 1285", # Charles of Anjou
   2485, "13 MAY 1254", "12 JAN 1321", # Marie of Brabant / Queen of France
   2486, "14 JAN 1273", "2 APR 1305", # Joan I of Navarre
   2487, "1293", "12 OCT 1328", # Clemence of Hungary
   2488, "1288", "16 JUL 1342", # Charles I of Hungary
   2489, "1254", "5 MAY 1309", # Charles II of Naples
-  2490, "1293", "12 DEC 1349", # Joan II of Burgundy
+  2490, "1293", "21 JAN 1330", # Joan II of Burgundy
   2491, "1296", "29 APR 1326", # Blanche of Burgundy
   2492, "1304", "26 MAR 1324", # Marie of Luxembourg
   2493, "1310", "4 MAR 1371", # Joan of Évreux
@@ -2179,7 +2185,7 @@ date_overrides <- tribble(
   2509, "6 AUG 1775", "3 JUN 1844", # of Angouleme
   2510, "24 JAN 1778", "14 FEB 1820", # of Berry
   2511, "6 OCT 1773", "26 AUG 1850", # Louis Philippe I of France
-  2512, NA, NA, # duplicate Queen Desideria of Sweden
+  2512, "9 FEB 1256", "15 DEC 1286", # duplicate Queen Desideria of Sweden
   2513, "13 APR 1747", "6 NOV 1793", # Louis Philippe Joseph d’Orléans / Philippe Égalité
   2514, "13 MAR 1753", "23 JUN 1821", # Louise Marie Adélaïde de Bourbon-Penthièvre
   2515, "12 MAY 1725", "18 NOV 1785", # Louis Philippe I, Duke of Orléans
@@ -2241,7 +2247,7 @@ date_overrides <- tribble(
   2582, "866", "6 DEC 884", # Carloman II of France
   2583, "850", "10 NOV 901", # Adelaide of Paris / Adelaide Judith
   2584, "17 SEP 879", "7 OCT 929", # Charles III the Simple
-  2585, NA, NA, # duplicated Eadgifu of England
+  2585, "15 JUN 1287", "23 MAY 1338", #   Alice de Warenne, Countess of Arundel
   2586, "830", "896", # Engelberga / Engeberge
   2587, "852", "22 JUN 896", # Ermengarde of Provence
   2588, "841", "11 JAN 887", # Boso of Provence
@@ -2275,8 +2281,7 @@ date_overrides <- tribble(
   2618, "1247", "28 JAN 1271", # Isabella of Aragon / Queen of France
   2619, "1290", "14 AUG 1315", # Margaret of Burgundy
   2620, "8 MAY 1326", "29 SEP 1360", # Joan of Boulogne
-  2624, NA, NA, # Frederick Francis II of Mecklenburg-Schwerin; duplicate/identity match to personID 1213 likely
-  2629, "25 OCT 1931", "16 NOV 1937", # Ludwig of Hesse and by Rhine
+  2624, "3 FEB 1267", "9 MAR 1302", #   Richard Fitzalan, 1st Earl of Arundel
   2630, "14 APR 1933", "16 NOV 1937", # Alexander of Hesse and by Rhine
   2631, "20 SEP 1936", "14 JUN 1939", # Johanna of Hesse and by Rhine
   2632, "21 JUN 1879", "8 JAN 1954", # Auckland Campbell Geddes, 1st Baron Geddes
@@ -2318,14 +2323,14 @@ date_overrides <- tribble(
   2677, "13 JUN 1860", "28 JAN 1919", # Dmitri Konstantinovich Romanov, Gregorian/New Style; Old Style birth = 1 JUN 1860
   2679, "25 JAN 1865", "24 MAR 1927", # Elizabeth Mavrikievna / Elisabeth of Saxe-Altenburg
   2680, "24 OCT 1829", "13 MAY 1907", # Maurice of Saxe-Altenburg
-  2682, NA_character_, NA_character_, # Duplicated Frederick Francis II of Mecklenburg-Schwerin
+  2682, NA_character_, "25 SEP 1292", #  Alice of Saluzzo, Countess of Arundel
   2683, "16 JUL 1884", "29 SEP 1957", # George Bagration-Mukhranski / Georgi Bagration-Mukhrani
   2684, "5 JUL 1886", "18 JUL 1918", # Ivan Konstantinovich Romanov, Gregorian/New Style; Old Style birth = 23 JUN 1886
   2685, "1 JAN 1891", "18 JUL 1918", # Konstantin Konstantinovich Romanov, Gregorian/New Style; Old Style birth = 20 DEC 1890
   2686, "10 JUN 1894", "18 JUL 1918", # Igor Konstantinovich Romanov, Gregorian/New Style; Old Style birth = 29 MAY 1894
   2687, "4 NOV 1884", "16 OCT 1962", # Helen of Serbia / Jelena Petrovic-Njegos
   2688, "11 JUL 1844", "16 AUG 1921", # Peter I of Serbia; duplicate/identity match to personID 2530 likely
-  2689, "11 SEP 1318", 	"11 JAN 1372", #  duplicate/identity match to personID 1067 likely
+  2689, "11 SEP 1318", 	"11 JAN 1372", #  Eleanor of Lancaster
   2690, "1306", "24 JAN 1376", # Friederike Dorothea Sophia of Brandenburg-Schwedt; duplicate/identity match to personID 1068 likely
   2691, "29 NOV 1690", "16 MAR 1747", # Christian August of Anhalt-Zerbst
   2692, "24 OCT 1712", "30 MAY 1760", # Johanna Elisabeth of Holstein-Gottorp
@@ -2441,7 +2446,7 @@ date_overrides <- tribble(
   2902, "21 MAY 1864", "23 AUG 1945", # Stéphanie of Belgium
   2903, "30 JUL 1872", "8 MAR 1955", # Clémentine of Belgium
   2904, "18 JUL 1862", "3 MAY 1926", # Victor, Prince Napoléon
-  2905, NA, NA, # duplicate/identity match to personID 1439 likely
+  2905, "1 May 1285", "17 NOV 1326", #   Edmund Fitzalan, 2nd Earl of Arundel
   2906, "24 AUG 1863", "29 JUL 1946", # Elemér Lónyay
   2907, "28 MAR 1844", "3 JUL 1921", # Philipp of Saxe-Coburg and Gotha
   2909, "6 DEC 1820", "20 DEC 1904", # Alexandrine of Baden
@@ -2713,7 +2718,6 @@ name_overrides <- tribble(
   640, "Otto Franz of Austria",
   641, "Elisabeth Amalie of Austria",
   646, "Karl Ludwig of Austria",
-  #  651, "Wilhelmina of Prussia",
   653, "Frederick of the Netherlands",
   673, "Gyula Apponyi de Nagy-Appony",
   675, "Geraldine of Albania",
@@ -2778,6 +2782,7 @@ name_overrides <- tribble(
   1442, "Ferdinand Philippe Marie d'Orléans",
   1512, "Margaret of Scotland",
   1515, "David I of Scotland",
+  1523, "Ada de Warenne",
   1552, "Harthacnut",
   1585, "Alexander III of Scotland",
   1594, "John IV (the Conqueror) of Montfort",
@@ -3471,7 +3476,7 @@ royal92_cleaned <- royal92 %>%
       ) ~ "Earl of Leicester",
       personID %in% c(
         876, 1883,
-        2217,  2332
+        2332
       ) ~ "Earl of Pembroke",
       personID == 877 ~ "Crown Prince of Yugoslavia",
       personID %in%
@@ -3602,7 +3607,7 @@ royal92_cleaned <- royal92 %>%
       personID %in%
         c(2319, 2323) ~ "Countess of Warwick",
       personID %in%
-        c(2326) ~ NA_character_, # duplicate overwrite
+        c(2326) ~ "Lady of Clun and Oswestry", # duplicate overwrite
       personID == 2334 ~ "Countess of Derby",
       personID %in%
         c(2335, 2353) ~ "Earl of Derby",
@@ -3649,7 +3654,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2450 ~ NA_character_, # duplicate overwrite
       personID == 2469 ~ "son of Louis VI",
       personID == 2472 ~ "Bishop of Rouen",
-      personID == 2483 ~ NA_character_, # duplicate overwrite
+      personID == 2483 ~ "5th Earl of Surrey", # duplicate overwrite
       personID == 2474 ~ "Countess of Boulogne and Toulouse",
       personID == 2517 ~ "Duke of Orléans; Regent",
       personID == 2520 ~ "Countess of Beaumont",
@@ -3659,7 +3664,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2554 ~ "daughter of Charlemagne",
       personID == 2578 ~ "son of Charles the Bald",
       personID == 2584 ~ "King of West Francia",
-      personID == 2624 ~ NA_character_, # duplicate overwrite
+      personID == 2624 ~ "1st Earl of Arundel", # duplicate overwrite
       personID == 2632 ~ "Baron Geddes",
       personID %in%
         c(2634, 2875) ~ "Princess of Asturias",
@@ -3669,7 +3674,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2645 ~ "Prince of Civitella-Cesi",
       personID == 2654 ~ "Grand Duchess",
       personID == 2657 ~ "Princess of the Netherlands",
-      personID == 2682 ~ NA_character_, # duplicate overwrite
+      personID == 2682 ~ "Countess of Arundel", # duplicate overwrite
       personID == 2689 ~ NA_character_, # duplicate overwrite
       personID == 2690 ~ "3rd Earl of Arundel", # duplicate overwrite
       personID == 2731 ~ "Princess of Sweden",
@@ -3692,7 +3697,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2893 ~ "Duke of Savoy",
       personID == 2900 ~ "Duke of Vendôme",
       personID == 2904 ~ "Prince Napoléon",
-      personID == 2905 ~ NA_character_, # duplicate overwrite,
+      personID == 2905 ~ "2nd Earl of Arundel", # duplicate overwrite,
       personID %in%
         c(2914, 2915) ~ "Duchess of Montpensier",
       personID == 2916 ~ "Duchess of Orléans",
