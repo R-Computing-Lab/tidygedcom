@@ -122,8 +122,8 @@ strategy](https://docs.gitlab.com/user/project/repository/branches/strategies/):
   developed on separate branches created from the dev_main branch. Name
   these branches according to the feature or change they are meant to
   address.
-- **Development Branches**: Our approach includes two development
-  branches, each serving distinct roles:
+- **Development Branches**: Our approach typically includes two
+  development branches, each serving distinct roles:
   - **`dev_main`**: This branch is the final integration stage before
     changes are merged into the `main` branch. It is considered stable,
     and only well-tested features and updates that are ready for the

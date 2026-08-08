@@ -2,6 +2,7 @@
 
 * Transferred addPersonToPed from BGmisc to tidygedcom.
 * Removed multiple duplicated people from Royal92
+* Implemented CRAN-related requests, moved example for internal functions to a unit test.
 
 # tidygedcom 0.1.0
 
