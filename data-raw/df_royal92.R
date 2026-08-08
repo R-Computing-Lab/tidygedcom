@@ -205,8 +205,8 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
   ) %>%
     tidygedcom::addPersonToPed(
     personID = 2288, # duplicated John Hastings
-    name = "TODO",
-    sex = "U",
+    name = "Edmund Dudley",
+    sex = "M",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
@@ -220,9 +220,17 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
+    personID = 2310,
+    name = "John Dudley",
+    sex = "M",
+    momID = 2325,
+    dadID = 2288,
+    overwrite = TRUE
+  ) %>%
+  tidygedcom::addPersonToPed(
     personID = 2325, # duplicated Margaret Audley
-    name = "TODO",
-    sex = "U",
+    name = "Elizabeth Grey",
+    sex = "F",
     momID = NA,
     dadID = NA,
     overwrite = TRUE
@@ -386,6 +394,27 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = 1987,
     dadID = 1988,
     overwrite = TRUE
+  ) %>%
+    tidygedcom::addPersonToPed(
+    personID = 3011, #
+    name = "Arthur Plantagenet",
+    sex = "M",
+    momID = 3012,
+    dadID = 991
+  )  %>%
+    tidygedcom::addPersonToPed(
+    personID = 3012, #
+    name = "Elizabeth Lucy",
+    sex = "F",
+    momID = NA,
+    dadID = NA
+  )  %>%
+    tidygedcom::addPersonToPed(
+    personID = 3013, #
+    name = "Frances Plantagenet",
+    sex = "F",
+    momID = 2325,
+    dadID = 3011
   ) %>%
   # Add twinID, momID, dadID, and sex corrections based on historical records and data cleaning needs
   mutate(
@@ -1886,7 +1915,7 @@ date_overrides <- tribble(
   2152, "11 OCT 1957", NA_character_, # Katharine Fraser; living
   2155, "9 AUG 1914", "26 APR 1943", # Alastair Arthur of Connaught, 2nd Duke of Connaught
   2157, "4 MAY 1889", "17 JAN 1977", # Janet Bryce; approximate identity from Ogilvy/Bryce context
-  2158, "6 NOV 1892", "8 APR 1938", # George Mountbatten, 2nd Marquess of Milford Haven; likely duplicate/identity match to personID 102
+  2158, "6 JUN 1961", NA_character_, # George Mountbatten, 4th Marquess of Milford Haven
   2159, "9 MAR 1963", NA_character_, # Ivar Mountbatten; living
   2160, "13 SEP 1867", "3 JUL 1939", # Wilfrid Ashley, 1st Baron Mount Temple
   2162, "19 OCT 1910", "31 MAR 1989", # Hamilton Joseph Keyes O'Malley (Q75382629)
@@ -1995,7 +2024,7 @@ date_overrides <- tribble(
   2285, "21 NOV 1375", "24 SEP 1401", # Philippa Mortimer
   2286, "20 MAY 1364", "21 JUL 1403", # Henry Percy / Hotspur
   2287, "1351", "28 MAR 1421", # Thomas de Camoys
-  2288, NA, NA, # John Hastings, Earl of Pembroke; duplicate/identity match to personID 1417 likely
+  2288, "1462", "17 AUG 1510", # Edmund Dudley
   2289, "1346", "21 SEP 1397", # Richard FitzAlan, Earl of Arundel
   2290, "1350", "7 MAR 1429", # Thomas Poynings, Lord St John; identity should be checked
   2291, "14 MAY 1316", "29 NOV 1378", # Charles IV, Holy Roman Emperor
@@ -2029,7 +2058,7 @@ date_overrides <- tribble(
   2321, "1500", "26 MAY 1552", # Anne Whorwood
   2322, "1520", "1563", # Elizabeth Talboys
   2323, "1548", "9 FEB 1604", # Anne Russell / Countess of Warwick
-  2325, NA, NA, # duplicated Margaret Audley
+  2325, "1482", "1525", # duplicated Margaret Audley
   2326, "1247", "1 APR 1292", # Isabella Mortimer, lady of Clun and Oswestry
   2328, "20 JUL 1529", "5 MAY 1586", # Henry Sidney
   2329, "1535", "14 DEC 1595", # Henry Hastings, 3rd Earl of Huntingdon
@@ -2511,7 +2540,10 @@ date_overrides <- tribble(
   2997, "3 JAN 1907", "30 MAY 1940", # Ronald Cartland
   2998, "4 JAN 1912", "29 MAY 1940", # Anthony Cartland
   3009, "899", "27 MAY 964", # blanking the infant Cartland row replacing with Arnulf I of Flanders
-  3010, "31 DEC 1939", NA_character_ # Glen McCorquodale
+  3010, "31 DEC 1939", NA_character_, # Glen McCorquodale,
+  3011, "Bef. 1475", "3 March 1542", #   Arthur Plantagenet, 1st Viscount Lisle
+  3012, "1445", NA_character_,
+  3013, "1519", NA_character_
 )
 
 # notes:
@@ -2520,8 +2552,6 @@ date_overrides <- tribble(
 
 # 1847: likely Isabel de Warenne based on the Balliol/Warenne placement, but the row’s given name alone is underspecified. I included the date data and flagged the inference.
 
-
-# 2158 likely duplicates George Mountbatten already represented at personID == 102.
 
 # 2215 has a current death-year pattern that may not match the most likely identification as Murchad mac Diarmata; I included the date data and flagged the identity concern.
 
@@ -3715,6 +3745,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2965 ~ "Prince of Yugoslavia",
       personID == 2994 ~ "8th Earl of Dartmouth",
       personID == 3009 ~ "Count of Flanders",
+      personID == 3011 ~ "1st Viscount Lisle",
       TRUE ~ attribute_title
     ),
     attribute_title = str_replace_all(attribute_title, text_cleanup_regex) %>%
