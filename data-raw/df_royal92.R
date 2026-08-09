@@ -404,6 +404,14 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     overwrite = TRUE
   ) %>%
   tidygedcom::addPersonToPed(
+    personID = 2688, #
+    name = "John Mowbray", # 2nd Duke of Norfolk
+    sex = "M",
+    momID = NA,
+    dadID = 3018,
+    overwrite = TRUE
+  ) %>%
+  tidygedcom::addPersonToPed(
     personID = 2689, # duplicated Frederick Eugene of Württemberg
     name = "Eleanor of Lancaster",
     sex = "F",
@@ -527,14 +535,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     name = "John Mowbray", # 3rd duke of norfolk
     sex = "M",
     momID = NA,
-    dadID = 3021
-  ) %>%
-  tidygedcom::addPersonToPed(
-    personID = 3021, #
-    name = "John Mowbray", # 2nd Duke of Norfolk
-    sex = "M",
-    momID = NA,
-    dadID = 3018
+    dadID = 2688
   ) %>%
   # Add twinID, momID, dadID, and sex corrections based on historical records and data cleaning needs
   mutate(
@@ -590,6 +591,7 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
       personID %in% c(2490, 2491) ~ 2065, # Otto IV of Burgundy is the father of Joanii and Blanche of Burgundy
       personID == 2538 ~ 1051,
       personID == 2657 ~ 199,
+      personID == 2687 ~ 2530, # merging peter of serbia
       TRUE ~ dadID
     ),
     sex = case_when(
@@ -2211,7 +2213,7 @@ date_overrides <- tribble(
   2356, "1519", "7 DEC 1557", # Mary Howard / Duchess of Richmond and Somerset
   2357, "1520", "28 JAN 1582", # Thomas Howard, Viscount Bindon
   2358, "1517", "30 JUN 1577", # Frances de Vere
-  2359, "10 MAR 1538", "2 JUN 1572", # Thomas Howard, 4th Duke of Norfolk; likely duplicate/identity match to personID 2326
+  2359, "10 MAR 1538", "2 JUN 1572", # Thomas Howard, 4th Duke of Norfolk
   2360, "25 FEB 1540", "15 JUN 1614", # Henry Howard, 1st Earl of Northampton
   2361, "1538", "7 APR 1596", # Catherine Howard; identity inferred from Howard sibling cluster
   2362, "1537", "1593", # Jane Howard
@@ -2484,7 +2486,7 @@ date_overrides <- tribble(
   2685, "1 JAN 1891", "18 JUL 1918", # Konstantin Konstantinovich Romanov, Gregorian/New Style; Old Style birth = 20 DEC 1890
   2686, "10 JUN 1894", "18 JUL 1918", # Igor Konstantinovich Romanov, Gregorian/New Style; Old Style birth = 29 MAY 1894
   2687, "4 NOV 1884", "16 OCT 1962", # Helen of Serbia / Jelena Petrovic-Njegos
-  2688, "11 JUL 1844", "16 AUG 1921", # Peter I of Serbia; duplicate/identity match to personID 2530 likely
+  2688, "1392", "19 OCT 1432",
   2689, "11 SEP 1318", "11 JAN 1372", #  Eleanor of Lancaster
   2690, "1306", "24 JAN 1376", # Friederike Dorothea Sophia of Brandenburg-Schwedt; duplicate/identity match to personID 1068 likely
   2691, "29 NOV 1690", "16 MAR 1747", # Christian August of Anhalt-Zerbst
@@ -2528,11 +2530,11 @@ date_overrides <- tribble(
   2775, "17 MAY 1892", "21 JUN 1936", # Ebba Sophia Bernadotte af Wisborg
   2776, "3 AUG 1893", "17 JUL 1996", # Elsa Victoria Bernadotte af Wisborg
   2777, "2 JAN 1895", "17 SEP 1948", # Folke Bernadotte af Wisborg
-  2778, "20 DEC 1808", "30 MAR 1882", # Carl Jacob Munck af Fulkila; identity inferred from Ebba Munck parent row
+  2778, "20 DEC 1808", "30 MAR 1882", # Carl Jacob Munck af Fulkila
   2779, "4 OCT 1893", "8 OCT 1978", # Marianne de Geer af Leufsta
   2780, "10 APR 1916", "22 DEC 2019", # Dagmar Bernadotte af Wisborg
   2781, "12 JUL 1921", "3 NOV 2018", # Oscar Bernadotte af Wisborg
-  2782, "10 JAN 1926", NA_character_, # Catharina Bernadotte af Wisborg; living or death not found in this pass
+  2782, "10 JAN 1926", NA_character_, # Catharina Bernadotte af Wisborg
   2789, "10 AUG 1934", NA_character_, # Miles Carl Flach
   2790, "22 DEC 1960", NA_character_, # Jana Camilla Flach
   2829, "25 JUN 1899", "4 JAN 1977", # Margaretha of Sweden / Princess Axel of Denmark
@@ -2574,7 +2576,6 @@ date_overrides <- tribble(
   2876, "19 MAY 1797", "26 DEC 1818", # Maria Isabel of Portugal / Queen of Spain
   2877, "6 DEC 1803", "18 MAY 1829", # Maria Josepha Amalia of Saxony / Queen of Spain
   2878, "11 NOV 1748", "20 JAN 1819", # Charles IV of Spain;
-  # some sources give death as 19 JAN 1819
   2879, "9 DEC 1751", "2 JAN 1819", # Maria Luisa of Parma / Queen of Spain
   2880, "20 JAN 1716", "14 DEC 1788", # Charles III of Spain
   2881, "24 NOV 1724", "27 SEP 1760", # Maria Amalia of Saxony / Queen of Spain
@@ -2594,7 +2595,7 @@ date_overrides <- tribble(
   2895, "22 JAN 1724", "13 MAY 1779", # Henry XXIV Reuss-Ebersdorf
   2896, "20 AUG 1727", "22 APR 1796", # Caroline Ernestine of Erbach-Schönberg
   2897, "8 MAR 1724", "8 SEP 1800", # Ernest Frederick of Saxe-Coburg-Saalfeld
-  2898, "13 JAN 1724", "17 MAY 1802", # Sophie Antoinette of Brunswick-Wolfenbüttel; source/date style varies
+  2898, "13 JAN 1724", "17 MAY 1802", # Sophie Antoinette of Brunswick-Wolfenbüttel
   2899, "26 OCT 1802", "14 NOV 1866", # Miguel I of Portugal / Michael of Portugal
   2900, "18 JAN 1872", "1 FEB 1931", # Emmanuel d'Orléans, Duke of Vendôme
   2901, "18 FEB 1858", "1 MAR 1924", # Louise of Belgium
@@ -2660,7 +2661,7 @@ date_overrides <- tribble(
   2991, "1 JAN 1951", NA_character_, # Rupert Legge; living
   2992, "16 JUL 1963", NA_character_, # Lady Charlotte Legge; living
   2993, "28 DEC 1968", NA_character_, # Henry Legge; living
-  2994, "14 MAR 1888", "16 OCT 1962", # "Humphry Legge, 8th Earl of Dartmouth"
+  2994, "14 MAR 1888", "16 OCT 1962", # Humphry Legge, 8th Earl of Dartmouth
   2995, "3 JAN 1876", "27 MAY 1917", # Bertram Cartland / Bertie Cartland
   2996, "5 SEP 1877", "1976", # Mary Hamilton (Polly) Scobell
   2997, "3 JAN 1907", "30 MAY 1940", # Ronald Cartland
@@ -2676,8 +2677,7 @@ date_overrides <- tribble(
   3017, "1385", "1436",
   3018, "22 MAR 1366", "22 SEP 1399",
   3019, "18 OCT 1444", "14 JAN 1476",
-  3020, "12 SEP 1415", "6 NOV 1461",
-  3021, "1392", "19 OCT 1432"
+  3020, "12 SEP 1415", "6 NOV 1461"
 )
 
 # notes:
@@ -2690,17 +2690,11 @@ date_overrides <- tribble(
 # 2215 has a current death-year pattern that may not match the most likely identification as Murchad mac Diarmata; I included the date data and flagged the identity concern.
 
 
-# 2359 likely duplicates Thomas Howard, 4th Duke of Norfolk, already represented at personID == 2326.
-
-
 # 2384 has a title/name mismatch. The row name fits William Cecil, 2nd Earl of Salisbury, but the current title says Berkshire.
 
 # 2389 may be the Frances Howard involved in the Essex/Somerset marriage context, but the current death-year placeholder appears inconsistent with that identification.
 
-
 # 2501 appears to be Louis I, Duke of Orléans, but the row label says Louis of Beaumont / Count of Valois, so that identity/name should be reviewed separately.
-
-# 2688: likely duplicate/identity match to Peter I of Serbia at personID == 2530.
 
 # 2964, 2965, and 2967 resolve the Greek/Yugoslav branch: Olga of Greece and Denmark, Prince Paul of Yugoslavia, and Elizabeth of Greece and Denmark.
 
@@ -3341,7 +3335,6 @@ name_overrides <- tribble(
   2685, "Konstantin Konstantinovich Romanov",
   2686, "Igor Konstantinovich Romanov",
   2687, "Helen of Serbia",
-  2688, "Peter I of Serbia",
   2691, "Christian August of Anhalt-Zerbst",
   2692, "Johanna Elisabeth of Holstein-Gottorp",
   2693, "Peter of Greece and Denmark",
@@ -3839,6 +3832,7 @@ royal92_cleaned <- royal92 %>%
       personID == 2654 ~ "Grand Duchess",
       personID == 2657 ~ "Princess of the Netherlands",
       personID == 2682 ~ "Countess of Arundel", # duplicate overwrite
+      personID == 2688 ~ NA_character_, # duplicate overwrite
       personID == 2689 ~ NA_character_, # duplicate overwrite
       personID == 2690 ~ "Earl of Arundel", # duplicate overwrite
       personID == 2731 ~ "Princess of Sweden",
