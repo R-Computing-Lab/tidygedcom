@@ -537,6 +537,13 @@ royal92 <- df_raw <- tidygedcom::readGedcom("data-raw/royal92/royal92.ged") %>%
     momID = NA,
     dadID = 2688
   ) %>%
+  tidygedcom::addPersonToPed(
+    personID = 3021, #
+    name = "William VI of Hesse-Kassel", # Landgrave of Hesse-Kassel
+    sex = "M",
+    momID = NA,
+    dadID =   2120
+  ) %>%
   # Add twinID, momID, dadID, and sex corrections based on historical records and data cleaning needs
   mutate(
     momID = as.numeric(momID),
@@ -855,7 +862,6 @@ date_overrides <- tribble(
   350, "21 SEP 1788", "27 JAN 1836", # Wilhelmina of Baden
   351, "26 OCT 1775", "29 NOV 1830", # John Maurice von Hauke
   352, "1790", "27 AUG 1831", # Sophie la Fontaine;
-  # approximate birth year
   353, "21 SEP 1827", "25 JAN 1892", # Constantine Nikolaievitch of Russia, Gregorian/New Style; Old Style = 9 SEP 1827, 13 JAN 1892
   354, "8 JUL 1830", "6 JUL 1911", # Elizabeth Alexandra of Saxe-Altenburg / Alexandra Iosifovna
   355, "27 AUG 1789", "25 NOV 1868", # Joseph of Saxe-Altenburg
@@ -1050,7 +1056,6 @@ date_overrides <- tribble(
   631, "13 NOV 1848", "26 JUN 1922", # Albert I of Monaco
   632, "12 JUL 1870", "9 MAY 1949", # Louis II of Monaco
   634, "30 SEP 1898", "16 NOV 1977", # Charlotte, Duchess of Valentinois;
-  # some sources give 15 NOV 1977
   635, "24 OCT 1895", "10 NOV 1964", # Pierre de Polignac
   636, "31 MAY 1923", "6 APR 2005", # Rainier III of Monaco
   638, "27 JAN 1805", "28 MAY 1872", # Sophie of Bavaria
@@ -1104,7 +1109,6 @@ date_overrides <- tribble(
   765, "22 DEC 1617", "28 AUG 1680", # Charles I Louis, Elector Palatine
   766, "17 DEC 1619", "29 NOV 1682", # Rupert of the Rhine / Duke of Cumberland
   767, "16 JAN 1621", "1652", # Maurice of the Palatinate;
-  # death year approximate, lost at sea
   768, "5 OCT 1625", "10 MAR 1663", # Edward, Count Palatine of Simmern
   769, "20 NOV 1627", "16 MAR 1686", # Charlotte of Hesse-Kassel
   770, "7 SEP 1674", "14 AUG 1728", # Ernest Augustus, Duke of York and Albany
@@ -1832,7 +1836,7 @@ date_overrides <- tribble(
   1844, "1210", "28 JAN 1290", # Dervorguilla of Galloway
   1845, "1208", "25 OCT 1268", # John de Balliol
   1846, "1249", "25 NOV 1314", # John Balliol, King of Scots
-  1847, "1253", "1292", # Isabel de Warenne; identity inferred from Balliol/Warenne placement
+  1847, "1253", "1292", # Isabel de Warenne
   1848, "1231", "27 SEP 1304", # John de Warenne, 6th Earl of Surrey
   1849, "1283", "15 JAN 1364", # Edward Balliol and mid-month death date
   1850, "1012", "1 SEP 1067", # Baldwin V of Flanders
@@ -2677,15 +2681,13 @@ date_overrides <- tribble(
   3017, "1385", "1436",
   3018, "22 MAR 1366", "22 SEP 1399",
   3019, "18 OCT 1444", "14 JAN 1476",
-  3020, "12 SEP 1415", "6 NOV 1461"
+  3020, "12 SEP 1415", "6 NOV 1461",
+  3021, "23 MAY 1629", "16 JUL 1663"
 )
 
 # notes:
 
 #  1801: the row title says “King of Denmark,” but the likely identity is Sihtric Cáech/Sihtric of Northumbria or Dublin. I included the date data and noted the title/identity caution in the comment.
-
-# 1847: likely Isabel de Warenne based on the Balliol/Warenne placement, but the row’s given name alone is underspecified. I included the date data and flagged the inference.
-
 
 # 2215 has a current death-year pattern that may not match the most likely identification as Murchad mac Diarmata; I included the date data and flagged the identity concern.
 
@@ -3637,7 +3639,7 @@ royal92_cleaned <- royal92 %>%
       personID %in%
         c(914) ~ "Grand Duchess of Russia",
       personID == 932 ~ "Princess of Prussia",
-      personID == 970 ~ NA_character_,
+      personID %in% c(970, 1523) ~ "Duke of Parma",
       personID == 990 ~ "Earl of Westmoreland",
       personID %in%
         c(1051, 1125) ~ "Duke of Anjou",
@@ -3653,7 +3655,7 @@ royal92_cleaned <- royal92 %>%
           1473, 1476,
           1492, 1494
         ) ~ "Earl of Arran",
-      personID == 1523 ~ "Duke of Parma",
+
       personID %in%
         c(
           1588, 1834,
