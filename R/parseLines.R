@@ -66,18 +66,19 @@ extractGedcomLevel <- function(line) {
 #' Extracts a four-digit year from a GEDCOM date string, stripping calendar
 #' escapes (e.g., `\@#DGREGORIAN\@`) and common qualifiers (`ABT`, `BEF`,
 #' `AFT`, `BET`/`AND`) before searching for the year. Returns `NA_integer_`
-#' when no four-digit year is found.
+#' when no year is found. The function can be used to extract years from various GEDCOM date formats, including approximate dates and date ranges.
 #'
 #' @param x Character vector of GEDCOM date strings.
+#' @param year_len Integer specifying the length of the year to extract (default is 4).
 #' @return Integer vector of years.
 #' @examples
 #' extractGedcomYear(c("ABT 1 JAN 1900", "BEF 31 DEC 2000", "1850", NA))
 #' @export
 #' @importFrom stringr str_extract
-extractGedcomYear <- function(x) {
+extractGedcomYear <- function(x,year_len = 4) {
   x <- gsub("@#D[A-Z ]+@\\s*", "", x)
   x <- gsub("\\b(?:ABT|BEF|AFT|BET|AND)\\.?\\s*", "", x,
     ignore.case = TRUE, perl = TRUE
   )
-  as.integer(stringr::str_extract(x, "\\b\\d{4}\\b"))
+  as.integer(stringr::str_extract(x, paste0("\\b\\d{", year_len, "}\\b")))
 }
