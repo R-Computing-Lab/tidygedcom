@@ -1,0 +1,265 @@
+---
+title: "War of the Roses: Who was the rightful King of England?"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{War of the Roses: Who was the rightful King of England?}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 7,
+  fig.height = 4.5
+)
+options(rmarkdown.html_vignette.check_title = FALSE)
+```
+
+# Overview
+
+The Wars of the Roses (1455--1487) were a series of civil wars for the
+English throne fought between two branches of the royal House of
+Plantagenet: **Lancaster** (red rose) and **York** (white rose). Both
+houses descended from **Edward III**, and the conflict was, at its core,
+a dispute about which line of descent granted the stronger claim.
+
+The `war_of_the_roses` dataset encodes this pedigree — `r nrow(pedigreedata::war_of_the_roses)` individuals from Edward III to Henry VII — including names, Wikipedia URLs, and twin information. In this vignette, we use the pedigree to trace the competing dynastic claims and ask: by the rules of succession, who *should* have been king?
+
+```{r load}
+library(pedigreedata)
+library(dplyr)
+library(quadprog)
+data(war_of_the_roses)
+head(war_of_the_roses[, c("id", "name", "sex", "momID", "dadID", "famID")])
+```
+
+---
+
+# The cast of characters
+
+## Who is in the dataset?
+
+```{r cast}
+cat("Total individuals:  ", nrow(war_of_the_roses), "\n")
+cat(
+  "Named individuals:  ",
+  sum(!is.na(war_of_the_roses$name) & war_of_the_roses$name != ""), "\n"
+)
+cat(
+  "Founders (no parents recorded):  ",
+  sum(is.na(war_of_the_roses$momID) & is.na(war_of_the_roses$dadID)), "\n"
+)
+cat(
+  "With Wikipedia URLs: ",
+  sum(!is.na(war_of_the_roses$url) & war_of_the_roses$url != ""), "\n"
+)
+```
+
+## Founders — the starting generation
+
+The pedigree is rooted at Edward III and his contemporaries whose children
+intermarried into the royal family.
+
+```{r founders}
+war_of_the_roses |>
+  filter(is.na(momID) & is.na(dadID), sex != "U") |>
+  select(id, name, sex) |>
+  arrange(id)
+```
+
+## Twins
+
+The dataset records twin pairs where known, including zygosity.
+
+```{r twins}
+twins <- war_of_the_roses |> filter(!is.na(twinID))
+if (nrow(twins) > 0) {
+  twins |> select(id, name, sex, twinID, zygosity)
+} else {
+  cat("No twins recorded.\n")
+}
+```
+
+
+
+# The competing claims
+
+The conflict turned on which of Edward III's sons founded the superior
+line of descent. Edward III had five sons who survived to adulthood:
+
+1. **Edward, the Black Prince** — died before his father; his son became Richard II (deposed 1399, died 1400, no children)
+2. **Lionel, Duke of Clarence** — died young; left a daughter, Philippa, through whom the Mortimer and then Yorkist claim ran
+3. **John of Gaunt, Duke of Lancaster** — ancestor of Henry IV, V, and VI (the Lancastrian kings)
+4. **Edmund, Duke of York** — ancestor of the House of York through the male line, but this claim was weaker in seniority
+5. **Thomas, Duke of Gloucester** — died without surviving issue relevant to the succession
+
+The key question: does descent through a *daughter* (Lionel's line → Philippa → Mortimers → Yorkists) outrank descent through a *younger son* (John of Gaunt → Lancasters)?
+
+```{r sons-of-edward}
+# Edward III's children in the dataset
+edward_id <- war_of_the_roses$id[war_of_the_roses$name == "Edward III"]
+edward_children <- war_of_the_roses |>
+  filter(dadID == edward_id | momID == edward_id) |>
+  select(id, name, sex) |>
+  arrange(id)
+cat("Children of Edward III in this dataset:\n")
+print(edward_children)
+```
+
+## Tracing the Lancastrian line
+
+```{r lancaster-line}
+# Trace: Edward III → John of Gaunt → Bolingbroke (Henry IV) → Henry V → Henry VI
+lancaster_names <- c(
+  "Edward III",
+  "John of Gaunt",
+  "Henry IV",
+  "Henry V",
+  "Henry VI"
+)
+war_of_the_roses |>
+  filter(name %in% lancaster_names) |>
+  select(id, name, momID, dadID) |>
+  arrange(id)
+```
+
+## Tracing the Yorkist line
+
+The Yorkist claim ran through the female line from Lionel of Antwerp
+(Edward III's third son) via his daughter Philippa to the Mortimers,
+and then to Richard, Duke of York.
+
+```{r york-line}
+york_names <- c(
+  "Edward III",
+  "Lionel of Antwerp",
+  "Philippa of Clarence",
+  "Roger Mortimer",
+  "Richard of Conisburgh",
+  "Richard Duke of York",
+  "Edward IV",
+  "Richard III"
+)
+war_of_the_roses |>
+  filter(name %in% york_names) |>
+  select(id, name, momID, dadID) |>
+  arrange(id)
+```
+
+
+
+# The resolution: Henry VII
+
+Henry Tudor ended the conflict by uniting both claims. On his mother's
+side (Margaret Beaufort) he descended from John of Gaunt, giving him a
+Lancastrian claim. By marrying **Elizabeth of York** — daughter of
+Edward IV — he united the two roses.
+
+```{r henry-vii}
+war_of_the_roses |>
+  filter(name %in% c(
+    "Henry VII", "Henry Tudor",
+    "Elizabeth of York", "Margaret Beaufort"
+  )) |>
+  select(id, name, sex, momID, dadID)
+```
+
+
+
+# Pedigree visualization
+
+```{r pedigree-plot, fig.width = 12, fig.height = 8, eval = requireNamespace("ggpedigree", quietly = TRUE)}
+library(ggpedigree)
+library(BGmisc)
+library(ggplot2)
+
+# Validate pedigree for plotting
+wor_plot <- checkSex(war_of_the_roses,
+  code_male = "M", code_female = "F", verbose = FALSE, repair = TRUE
+) |>
+  checkParentIDs(
+    addphantoms = TRUE, repair = TRUE,
+    parentswithoutrow = FALSE, repairsex = FALSE
+  ) %>%
+  rename(personID = ID)
+
+# Focal fill from Edward III (id = 1) shows degree of relatedness to the root
+ggPedigree(wor_plot,
+  personID = "personID",
+  momID = "momID",
+  dadID = "dadID",
+  famID = "famID",
+  config = list(
+    code_male = "M",
+    code_female = "F",
+    code_na = "U",
+    label_column = "name",
+    label_method = "ggrepel",
+    label_include = TRUE,
+    label_text_size = 2,
+    label_text_angle = -90,
+    label_nudge_x = -0.05,
+    focal_fill_include = TRUE,
+    focal_fill_personID = 1,
+    focal_fill_force_zero = TRUE,
+    sex_legend_show = FALSE,
+    sex_color_include = FALSE,
+    focal_fill_force_zero = TRUE,
+    focal_fill_mid_color = "orange",
+    focal_fill_low_color = "#9F2A63FF",
+    focal_fill_na_value = "black",
+    focal_fill_use_log = TRUE,
+    focal_fill_legend_title = "Relatedness to\nEdward III"
+  )
+) + labs(
+  title = "Pedigree of the Wars of the Roses",
+  subtitle = "Key claimants and their relationship to Edward III"
+)
+```
+
+The color gradient shows degree of genetic relatedness to Edward III.
+Both Lancastrian and Yorkist claimants appear in mid-range values —
+confirming that both sides descended from him, but through paths of
+differing proximity.
+
+But relatedness alone doesn't determine the rightful claim. The rules of succession were complex and contested, and different interpretations of the law of inheritance could yield different winners. 
+
+```{r}
+wor_plot$edward_add <- ped2add(wor_plot, personID = "personID", momID = "momID", dadID = "dadID", sparse = FALSE)[, 1]
+
+subset(wor_plot, name %in% c(
+  "Edward III", "Henry VII", "Richard III",
+  "Edward V", "Henry VIII", "Elizabeth of York"
+)) |>
+  select(name, edward_add) |>
+  arrange(desc(edward_add))
+```
+
+
+If relatedness was the only criterion, then Edward IV (Yorkist) would have an equally strong claim as Richard III (Yorkist), and both would outrank Henry VII (Lancaster).
+
+# So who was the rightful king?
+
+The answer depends entirely on the succession rule applied:
+
+| Rule | Winner | Reasoning |
+|------|--------|-----------|
+| **Strict agnatic** (males only, eldest first) | Lancaster | John of Gaunt (son 4) outranks York's male-line descent from Edmund (son 5) |
+| **Cognatic primogeniture** (females can transmit claims) | York | Philippa of Clarence (from son 3) outranks John of Gaunt (son 4) |
+| **Highest Genetic Relatedness to Edward III** | Edward IV | Both Edward IV and Richard III have the same relatedness, but Edward IV's claim was stronger due to being the elder brother of Richard III. Henry VII's relatedness is lower, reflecting his more distant descent from Edward III. |
+| **Pragmatic/Tudor** | Henry VII | Unified both claims by conquest and marriage |
+
+The Yorkists had the stronger *hereditary* case; the Lancasters had
+possession of the throne for 60 years. Henry VII's genius was to make
+the question moot.
+
+
+
+# Source
+
+Compiled from public genealogical records.
+See: <https://en.wikipedia.org/wiki/Wars_of_the_Roses>
