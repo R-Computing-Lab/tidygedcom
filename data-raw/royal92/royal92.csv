@@ -480,8 +480,8 @@ personID,momID,dadID,famID,twinID,name,sex,birth_date,death_date,title
 479,NA,NA,1,NA,Berthold of Baden,M,1906-02-24,1963-10-27,Margrave of Baden
 480,148,479,1,NA,Four Children,M,NA,NA,NA
 481,NA,NA,30,NA,Christoph of Hesse,M,1901-05-14,1943-10-07,Prince
-482,NA,NA,1,NA,George William of Hanover,M,1915-03-25,2006-01-08,Prince
-483,476,482,1,NA,Eight children,M,NA,NA,NA
+482,NA,2120,1,NA,William VI of Hesse-Kassel,M,1629-05-23,1663-07-16,NA
+483,476,1031,1,NA,Eight children,M,NA,NA,NA
 484,NA,NA,1,NA,Ludwig of Württemberg,M,1756-08-30,1817-09-20,Duke of Württemberg
 485,575,574,1,NA,Henriette of Nassau-Weilburg,F,1780-04-22,1857-01-02,NA
 486,348,347,1,NA,Alexander of Battenberg,M,1857-04-05,1893-11-17,Prince
@@ -3019,4 +3019,3 @@ personID,momID,dadID,famID,twinID,name,sex,birth_date,death_date,title
 3018,NA,NA,1,NA,Thomas Mowbray,M,1366-03-22,1399-09-22,Duke of Norfolk
 3019,NA,3020,1,NA,John de Mowbray,M,1444-10-18,1476-01-14,NA
 3020,NA,2688,1,NA,John Mowbray,M,1415-09-12,1461-11-06,NA
-3021,NA,2120,1,NA,William VI of Hesse-Kassel,M,1629-05-23,1663-07-16,NA

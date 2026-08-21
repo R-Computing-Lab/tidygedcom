@@ -75,7 +75,7 @@ extractGedcomLevel <- function(line) {
 #' extractGedcomYear(c("ABT 1 JAN 1900", "BEF 31 DEC 2000", "1850", NA))
 #' @export
 #' @importFrom stringr str_extract
-extractGedcomYear <- function(x,year_len = 4) {
+extractGedcomYear <- function(x, year_len = 4) {
   x <- gsub("@#D[A-Z ]+@\\s*", "", x)
   x <- gsub("\\b(?:ABT|BEF|AFT|BET|AND)\\.?\\s*", "", x,
     ignore.case = TRUE, perl = TRUE

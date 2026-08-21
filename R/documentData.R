@@ -22,5 +22,5 @@
 #' @keywords datasets
 #' @name royal92
 #' @usage data(royal92)
-#' @format A data frame with 3010 observations
+#' @format A data frame with 3020 observations
 NULL
