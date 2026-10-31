@@ -2,6 +2,8 @@
 
 ## tidygedcom 0.2.0
 
+CRAN release: 2026-09-01
+
 - Transferred addPersonToPed from BGmisc to tidygedcom.
 - Removed multiple duplicated people from Royal92
 - Implemented CRAN-related requests, moved example for internal
